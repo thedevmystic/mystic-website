@@ -9,7 +9,8 @@ import './Button.css';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
-  variant?: 'primary' | 'secondary' | 'ghost' | 'ui' | 'circular' | 'disabled';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'ui' | 'circular';
+  disabled?: boolean;
   className?: string;
 }
 
@@ -17,11 +18,12 @@ export default function Button({
   children,
   className,
   variant = 'secondary',
+  disabled = false,
   ...props
 }: ButtonProps) {
   const buttonRef = useRef<HTMLButtonElement | null>(null);
 
-  const combinedClassName = `button ${variant} ${className}`;
+  const combinedClassName = `button ${variant} ${disabled ? 'disabled' : ''} ${className}`.trim();
 
   const handleMouseEnter = () => {
     if (!buttonRef.current) return;
@@ -35,7 +37,7 @@ export default function Button({
     const height = rect.height + 2;
     const borderRadius = computedStyle.borderRadius;
 
-    if (variant === 'disabled') {
+    if (variant.includes('disabled')) {
       window.dispatchEvent(new CustomEvent('mouse-disabled-start'));
     }
 
@@ -53,7 +55,7 @@ export default function Button({
   };
 
   const handleMouseLeave = () => {
-    if (variant === 'disabled') {
+    if (variant.includes('disabled')) {
       window.dispatchEvent(new CustomEvent('mouse-disabled-end'));
     }
 

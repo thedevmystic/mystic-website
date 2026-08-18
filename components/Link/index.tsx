@@ -12,6 +12,7 @@ import './Link.css';
 interface LinkProps extends NextLinkProps {
   children: ReactNode;
   variant?: 'underline' | 'no-underline';
+  disabled?: boolean;
   className?: string;
 }
 
@@ -19,10 +20,11 @@ export default function Link({
   children,
   href,
   variant = 'underline',
+  disabled = false,
   className: userClassName = '',
   ...props
 }: LinkProps) {
-  const className = `link ${variant === 'underline' ? 'underline' : 'no-underline'} ${userClassName}`;
+  const className = `link ${variant === 'underline' ? 'underline' : 'no-underline'} ${disabled ? 'disabled' : ''} ${userClassName}`;
 
   const dispatchEvent = (eventName: string) => {
     window.dispatchEvent(new CustomEvent(eventName));

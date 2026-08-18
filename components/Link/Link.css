@@ -27,3 +27,12 @@
 .link.no-underline {
   text-decoration: none;
 }
+
+/* Variant: Disabled */
+.link.disabled {
+  opacity: 0.5;
+  pointer-events: none; /* Disable pointer events for disabled links */
+}
+.link.disabled:hover {
+  color: inherit; /* Prevent color change on hover for disabled links */
+}
