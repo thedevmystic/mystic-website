@@ -1,8 +1,5 @@
-'use client';
-
-import { useState } from 'react';
-
 import Button from '@/components/Button';
+import CodeBlock from '@/components/CodeBlock';
 import Link from '@/components/Link';
 
 const TYPE_SCALE = [
@@ -20,6 +17,15 @@ const TYPE_FAMILIES = [
   { label: 'Sans — IBM Plex Sans', className: 'font-sans' },
   { label: 'Mono — JetBrains Mono', className: 'font-mono' },
 ] as const;
+
+const CODE = `
+#include <iostream>
+
+int main() {
+  std::cout << "Hello, World!" << std::endl;
+  return 0;
+}
+`.trim();
 
 type Swatch = {
   name: string;
@@ -95,19 +101,12 @@ const SURFACE_CONTAINERS = [
 ];
 
 export default function TokenDemoPage() {
-  const [dark, setDark] = useState(false);
-
   return (
-    <div
-      className={`min-h-screen bg-background text-on-background transition-colors duration-300 ${dark ? 'dark' : 'light'}`}
-    >
+    <div>
       <div className="mx-auto max-w-4xl px-6 py-16">
         {/* Header */}
         <header className="mb-16 flex items-center justify-between border-b border-outline-variant pb-8">
           <span className="text-3xl text-primary font-cursive">mystic framework</span>
-          <Button onClick={() => setDark((v) => !v)} variant="ui">
-            {dark ? 'Light mode' : 'Dark mode'}
-          </Button>
         </header>
 
         {/* Typography */}
@@ -207,7 +206,15 @@ export default function TokenDemoPage() {
             <Button variant="secondary">Button</Button>
             <Button variant="ghost">Button</Button>
             <Button variant="ui">Button</Button>
+            <Button variant="disabled">Button</Button>
+            <Button variant="circular">X</Button>
           </div>
+        </section>
+
+        {/* Code block */}
+        <section className="mb-16">
+          <h2 className="mb-6 text-xl font-semibold tracking-wide text-on-surface">Code block</h2>
+          <CodeBlock code={CODE} language="cpp" />
         </section>
       </div>
     </div>

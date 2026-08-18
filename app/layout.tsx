@@ -13,7 +13,8 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={fonts}>
-      <body className="bg-background text-on-background font-sans antialiased">
+      {/* TODO(thedevmystic): Remove the "dark" class when the dark mode toggle is implemented */}
+      <body className="min-h-screen bg-background text-on-background transition-colors duration-300 dark antialiased">
         <Cursor />
         {children}
       </body>
