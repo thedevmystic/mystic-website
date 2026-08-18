@@ -13,7 +13,7 @@ body {
   left: 0;
   width: 25px;
   height: 25px;
-  background-color: var(--color-on-primary);
+  background-color: white;
   mix-blend-mode: difference;
   border-radius: 50%;
   pointer-events: none;
