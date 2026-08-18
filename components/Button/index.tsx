@@ -9,7 +9,7 @@ import './Button.css';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
-  variant?: 'primary' | 'secondary' | 'ghost' | 'ui';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'ui' | 'circular' | 'disabled';
   className?: string;
 }
 
@@ -35,6 +35,10 @@ export default function Button({
     const height = rect.height + 2;
     const borderRadius = computedStyle.borderRadius;
 
+    if (variant === 'disabled') {
+      window.dispatchEvent(new CustomEvent('mouse-disabled-start'));
+    }
+
     const event = new CustomEvent('mouse-snap-start', {
       detail: {
         centerX,
@@ -49,6 +53,10 @@ export default function Button({
   };
 
   const handleMouseLeave = () => {
+    if (variant === 'disabled') {
+      window.dispatchEvent(new CustomEvent('mouse-disabled-end'));
+    }
+
     window.dispatchEvent(new CustomEvent('mouse-snap-end'));
   };
 
