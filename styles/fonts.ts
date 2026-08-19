@@ -45,7 +45,7 @@ export const jetBrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   weight: 'variable',
   variable: '--font-jetbrains-mono',
-  preload: true,
+  preload: false,
   display: 'swap',
 });
 
@@ -53,7 +53,7 @@ export const allura = Allura({
   subsets: ['latin'],
   weight: '400',
   variable: '--font-allura',
-  preload: true,
+  preload: true /* Used for wordmark, so preload */,
   display: 'swap',
 });
 

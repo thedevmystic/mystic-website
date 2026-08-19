@@ -230,6 +230,12 @@ export default function TokenDemoPage() {
           <h2 className="mb-6 text-xl font-semibold tracking-wide text-on-surface">Code block</h2>
           <CodeBlock code={CODE} language="cpp" />
         </section>
+
+        {/* MDX Showcase */}
+        <section className="mb-16">
+          <h2 className="mb-6 text-xl font-semibold tracking-wide text-on-surface">MDX</h2>
+          <Link href="/mdx">Check out the MDX showcase</Link>
+        </section>
       </div>
     </div>
   );
