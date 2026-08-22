@@ -64,6 +64,7 @@ function LinkGroup({ title, links }: { title: string; links: LinkGroupProps[] })
           <Link
             key={link.text}
             href={link.href}
+            target={link.href.startsWith('/') ? undefined : '_blank'}
             variant="no-underline"
             removeSpan
             className="text-sm text-on-surface-variant hover:text-primary transition-colors"
