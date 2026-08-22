@@ -70,6 +70,12 @@ export default function Cursor() {
         sizePos.current.width += (targetSize.current.width - sizePos.current.width) * ease;
         sizePos.current.height += (targetSize.current.height - sizePos.current.height) * ease;
 
+        // Round to the nearest integer to avoid subpixel rendering issues
+        dotPos.current.x = Math.round(dotPos.current.x);
+        dotPos.current.y = Math.round(dotPos.current.y);
+        sizePos.current.width = Math.round(sizePos.current.width);
+        sizePos.current.height = Math.round(sizePos.current.height);
+
         if (dotRef.current) {
           dotRef.current.style.width = `${sizePos.current.width}px`;
           dotRef.current.style.height = `${sizePos.current.height}px`;

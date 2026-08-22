@@ -14,6 +14,7 @@ interface LinkProps extends NextLinkProps {
   variant?: 'underline' | 'no-underline';
   target?: '_blank' | '_self' | '_parent' | '_top';
   disabled?: boolean;
+  removeSpan?: boolean;
   className?: string;
 }
 
@@ -23,6 +24,7 @@ export default function Link({
   variant = 'underline',
   target = '_self',
   disabled = false,
+  removeSpan = false,
   className: userClassName = '',
   ...props
 }: LinkProps) {
@@ -61,7 +63,7 @@ export default function Link({
         {...props}
       >
         {children}
-        {isExternal && (
+        {!removeSpan && (
           <span className="inline-block ml-1 text-xs" aria-hidden="true">
             ↗
           </span>

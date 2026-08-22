@@ -1,6 +1,7 @@
 /* Layout for the application. */
 
 import type { Metadata } from 'next';
+import Footer from '@/components/Footer';
 import Cursor from '@/components/Cursor';
 import { fonts } from '@/styles/fonts';
 import '@/styles/main.css';
@@ -17,6 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-screen bg-background text-on-background transition-colors duration-300 dark antialiased">
         <Cursor />
         {children}
+        <Footer />
       </body>
     </html>
   );

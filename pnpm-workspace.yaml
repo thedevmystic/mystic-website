@@ -1,3 +1,5 @@
 allowBuilds:
   sharp: true
   unrs-resolver: true
+minimumReleaseAgeExclude:
+  - scroll-utils@1.0.0
