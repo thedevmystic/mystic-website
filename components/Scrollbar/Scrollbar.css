@@ -1,0 +1,12 @@
+/* Scrollbar Styles */
+
+.os-theme-custom {
+  --os-size: 8px;
+  --os-track-bg: transparent;
+  --os-track-border-radius: none;
+
+  --os-handle-bg: color-mix(in srgb, var(--color-primary) 30%, transparent);
+  --os-handle-bg-hover: color-mix(in srgb, var(--color-primary) 50%, transparent);
+  --os-handle-bg-active: color-mix(in srgb, var(--color-primary) 70%, transparent);
+  --os-handle-border-radius: 4px;
+}
