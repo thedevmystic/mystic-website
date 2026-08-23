@@ -1,11 +1,12 @@
 /* Layout for the application. */
 
 import type { Metadata } from 'next';
+
+import Cursor from '@/components/Cursor';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
-import Cursor from '@/components/Cursor';
-import { ThemeProvider } from '@/styles/ThemeProvider';
 import { fonts } from '@/styles/fonts';
+import { ThemeProvider } from '@/styles/ThemeProvider';
 import '@/styles/main.css';
 
 export const metadata: Metadata = {

@@ -3,16 +3,15 @@
 'use client';
 
 import { ComponentType, useRef } from 'react';
-import { ArrowUp, Mail } from 'lucide-react';
 
+import { ArrowUp, Mail } from 'lucide-react';
 import { createScrollHandler } from 'scroll-utils';
 
-import Constants from '@/lib/constants';
-
-import Logo from '@/components/Logo';
-import Link from '@/components/Link';
-import Button from '@/components/Button';
 import { Github, Twitter, Bluesky, LinkedIn, BrandIconProps } from '@/components/BrandIcon';
+import Button from '@/components/Button';
+import Link from '@/components/Link';
+import Logo from '@/components/Logo';
+import Constants from '@/lib/constants';
 
 interface LinkGroupProps {
   href: string;
@@ -116,10 +115,10 @@ export default function Footer() {
                 >
                   <Link
                     href={social.href}
+                    ref={linkRef}
                     target="_blank"
                     variant="no-underline"
                     removeSpan
-                    {...({ ref: linkRef } as any)}
                   >
                     <social.icon size={18} className="text-on-surface-variant" aria-hidden="true" />
                   </Link>
@@ -128,9 +127,9 @@ export default function Footer() {
               <Button variant="circular" aria-label="Email" onClick={handleLinkClick}>
                 <Link
                   href={`mailto:${Constants.Email}`}
+                  ref={linkRef}
                   variant="no-underline"
                   removeSpan
-                  {...({ ref: linkRef } as any)}
                 >
                   <Mail className="text-on-surface-variant" size={18} aria-hidden="true" />
                 </Link>

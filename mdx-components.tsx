@@ -1,10 +1,11 @@
 /* MDX configuration file. */
 
 import type { AnchorHTMLAttributes, HTMLAttributes, ReactNode } from 'react';
-import type { MDXComponents } from 'mdx/types';
 
-import Link from '@/components/Link';
 import CodeBlock from '@/components/CodeBlock';
+import Link from '@/components/Link';
+
+import type { MDXComponents } from 'mdx/types';
 
 // ---------------------------------------------------------------------------
 // Helpers

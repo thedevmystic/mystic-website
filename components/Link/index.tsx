@@ -2,7 +2,7 @@
 
 'use client';
 
-import { ReactNode } from 'react';
+import { ReactNode, ForwardedRef, forwardRef } from 'react';
 
 import NextLink from 'next/link';
 import type { LinkProps as NextLinkProps } from 'next/link';
@@ -19,17 +19,20 @@ interface LinkProps extends NextLinkProps {
   className?: string;
 }
 
-export default function Link({
-  children,
-  href,
-  variant = 'underline',
-  target = '_self',
-  disabled = false,
-  removeSpan = false,
-  noHover = false,
-  className: userClassName = '',
-  ...props
-}: LinkProps) {
+const Link = forwardRef(function Link(
+  {
+    children,
+    href,
+    variant = 'underline',
+    target = '_self',
+    disabled = false,
+    removeSpan = false,
+    noHover = false,
+    className: userClassName = '',
+    ...props
+  }: LinkProps,
+  ref: ForwardedRef<HTMLAnchorElement>,
+) {
   const isExternal =
     target === '_blank' ||
     (href && !(href as string).startsWith('/') && !(href as string).startsWith('#'));
@@ -49,6 +52,7 @@ export default function Link({
   if (disabled) {
     return (
       <span
+        ref={ref as ForwardedRef<HTMLSpanElement>}
         className={className}
         onMouseEnter={() => dispatchEvent('mouse-hover-start')}
         onMouseLeave={() => dispatchEvent('mouse-hover-end')}
@@ -62,6 +66,7 @@ export default function Link({
   if (isExternal) {
     return (
       <a
+        ref={ref}
         href={href as string}
         target={target}
         rel={target === '_blank' ? 'noopener noreferrer' : undefined}
@@ -82,6 +87,7 @@ export default function Link({
 
   return (
     <NextLink
+      ref={ref}
       href={href}
       target={target}
       className={className}
@@ -92,4 +98,6 @@ export default function Link({
       {children}
     </NextLink>
   );
-}
+});
+
+export default Link;

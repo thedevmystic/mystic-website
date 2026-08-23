@@ -3,12 +3,13 @@
 'use client';
 
 import { useState, useRef } from 'react';
+
 import { Search, Sun, Moon, Monitor, Menu, X } from 'lucide-react';
 
-import Button from '@/components/Button';
-import Logo from '@/components/Logo';
-import Link from '@/components/Link';
 import { Github } from '@/components/BrandIcon';
+import Button from '@/components/Button';
+import Link from '@/components/Link';
+import Logo from '@/components/Logo';
 import SearchModal from '@/components/SearchModal';
 import Constants from '@/lib/constants';
 import { useTheme } from '@/styles/ThemeProvider';
@@ -51,14 +52,7 @@ function NavLink({ label, href, external, isMobile, githubIconOnly }: NavItem) {
   if (githubIconOnly) {
     return (
       <Button variant="circular" onClick={handleClick}>
-        <Link
-          href={href}
-          variant="no-underline"
-          target={'_blank'}
-          removeSpan
-          noHover
-          {...({ ref: linkRef } as any)}
-        >
+        <Link href={href} ref={linkRef} variant="no-underline" target={'_blank'} removeSpan noHover>
           <Github size={20} />
         </Link>
       </Button>
@@ -69,11 +63,11 @@ function NavLink({ label, href, external, isMobile, githubIconOnly }: NavItem) {
     <Button variant="ui" onClick={handleClick}>
       <Link
         href={href}
+        ref={linkRef}
         variant="no-underline"
         target={external ? '_blank' : '_self'}
         removeSpan={external}
         noHover
-        {...({ ref: linkRef } as any)}
       >
         {label}
       </Link>
