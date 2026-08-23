@@ -12,19 +12,20 @@ import { ThemeProvider } from '@/styles/ThemeProvider';
 import '@/styles/main.css';
 
 export const metadata: Metadata = {
-  title: 'The Mystic Framework - Under Development',
-  description: 'Under development.',
+  title: 'The Mystic Framework',
+  description:
+    'Performant. Elegant. Simply Mystic. A modern C++ framework built for speed and clarity.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={fonts} suppressHydrationWarning>
-      <body className="min-h-screen bg-background text-on-background transition-colors duration-300 antialiased">
+      <body className="flex flex-col min-h-screen bg-surface text-on-surface transition-colors duration-300 antialiased">
         <ThemeProvider>
           <Cursor />
           <NextTopLoader color="var(--color-primary)" height={2} showSpinner={false} />
           <Navbar />
-          {children}
+          <main className="flex-grow">{children}</main>
           <Footer />
         </ThemeProvider>
       </body>

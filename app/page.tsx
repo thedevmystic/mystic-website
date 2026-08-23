@@ -100,15 +100,10 @@ const SURFACE_CONTAINERS = [
   { label: 'bright', bg: 'bg-surface-bright' },
 ];
 
-export default function TokenDemoPage() {
+export default function Home() {
   return (
-    <div>
-      <div className="mx-auto max-w-4xl px-6 py-16">
-        {/* Header */}
-        <header className="mb-16 flex items-center justify-between border-b border-outline-variant pb-8">
-          <span className="text-3xl text-primary font-cursive">mystic framework</span>
-        </header>
-
+    <>
+      <div className="mx-auto max-w-3xl px-6 py-16">
         {/* Typography */}
         <section className="mb-16">
           <h2 className="mb-6 text-xl font-semibold tracking-wide text-on-surface">
@@ -223,6 +218,6 @@ export default function TokenDemoPage() {
           <Link href="/mdx">Check out the MDX showcase</Link>
         </section>
       </div>
-    </div>
+    </>
   );
 }

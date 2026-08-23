@@ -16,6 +16,7 @@ interface LinkProps extends NextLinkProps {
   disabled?: boolean;
   removeSpan?: boolean;
   noHover?: boolean;
+  underlineOnHover?: boolean;
   className?: string;
 }
 
@@ -28,6 +29,7 @@ const Link = forwardRef(function Link(
     disabled = false,
     removeSpan = false,
     noHover = false,
+    underlineOnHover = false,
     className: userClassName = '',
     ...props
   }: LinkProps,
@@ -42,6 +44,7 @@ const Link = forwardRef(function Link(
     ${variant === 'underline' ? 'underline' : 'no-underline'}
     ${disabled ? 'disabled' : ''}
     ${noHover ? 'no-hover' : ''}
+    ${underlineOnHover ? 'underline-on-hover' : ''}
     ${userClassName}
   `.trim();
 

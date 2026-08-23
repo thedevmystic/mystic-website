@@ -71,12 +71,12 @@ function Blockquote({ className = '', children, ...props }: HTMLAttributes<HTMLE
 // ---------------------------------------------------------------------------
 
 const HEADING_STYLES = {
-  h1: 'text-4xl font-bold font-serif tracking-tight mt-10 mb-4',
-  h2: 'text-3xl font-bold font-serif tracking-tight mt-10 mb-4',
-  h3: 'text-2xl font-semibold font-serif tracking-tight mt-8 mb-3',
-  h4: 'text-xl font-semibold font-serif mt-8 mb-3',
-  h5: 'text-lg font-semibold font-serif tracking-wide mt-6 mb-2',
-  h6: 'text-md font-semibold font-serif tracking-wide text-on-surface-variant mt-6 mb-2',
+  h1: 'text-2xl font-bold font-sans tracking-tight mb-8',
+  h2: 'text-xl font-bold font-sans tracking-tight mt-10 mb-8',
+  h3: 'text-lg font-bold font-sans tracking-normal mt-8 mb-6',
+  h4: 'text-md font-semibold font-sans mt-8 mb-6',
+  h5: 'text-md font-semibold font-sans tracking-wide mt-6 mb-4',
+  h6: 'text-md font-semibold font-sans tracking-wide text-on-surface-variant mt-6 mb-4',
 } as const;
 
 const HEADING_ANCHOR_CSS =

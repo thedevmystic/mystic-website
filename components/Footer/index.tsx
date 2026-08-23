@@ -67,6 +67,7 @@ function LinkGroup({ title, links }: { title: string; links: LinkGroupProps[] })
             target={link.href.startsWith('/') ? undefined : '_blank'}
             variant="no-underline"
             removeSpan
+            underlineOnHover
             className="text-sm text-on-surface-variant hover:text-primary transition-colors"
           >
             {link.text}
