@@ -16,6 +16,11 @@
   color: var(--color-primary);
 }
 
+/* If no hover */
+.link.no-hover:hover {
+  color: inherit; /* Keep the original color on hover */
+}
+
 /* Variant: Underline */
 .link.underline {
   text-decoration: underline;

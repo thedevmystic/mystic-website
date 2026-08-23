@@ -31,10 +31,10 @@ export default function Button({
     const rect = buttonRef.current.getBoundingClientRect();
     const computedStyle = window.getComputedStyle(buttonRef.current);
 
-    const centerX = Math.round(rect.left + rect.width / 2);
-    const centerY = Math.round(rect.top + rect.height / 2);
-    const width = Math.round(rect.width - 2);
-    const height = Math.round(rect.height - 2);
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const width = rect.width - 2;
+    const height = rect.height - 2;
     const borderRadius = computedStyle.borderRadius;
 
     if (variant.includes('disabled')) {

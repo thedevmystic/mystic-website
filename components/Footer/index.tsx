@@ -2,16 +2,17 @@
 
 'use client';
 
-import Image from 'next/image';
+import { ComponentType, useRef } from 'react';
 import { ArrowUp, Mail } from 'lucide-react';
 
 import { createScrollHandler } from 'scroll-utils';
 
 import Constants from '@/lib/constants';
 
+import Logo from '@/components/Logo';
 import Link from '@/components/Link';
 import Button from '@/components/Button';
-import BrandIcon from '@/components/BrandIcon';
+import { Github, Twitter, Bluesky, LinkedIn, BrandIconProps } from '@/components/BrandIcon';
 
 interface LinkGroupProps {
   href: string;
@@ -21,7 +22,7 @@ interface LinkGroupProps {
 interface SocialLinkProps {
   href: string;
   label: string;
-  variant: 'github' | 'twitter' | 'bluesky' | 'linkedin';
+  icon: ComponentType<BrandIconProps>;
 }
 
 const SITEMAP_LINKS_GROUP: LinkGroupProps[] = [
@@ -49,10 +50,10 @@ const LEGAL_LINKS_GROUP: LinkGroupProps[] = [
 ];
 
 const SOCIAL_LINKS: SocialLinkProps[] = [
-  { href: Constants.Links.Org, label: 'GitHub', variant: 'github' },
-  { href: Constants.SocialLinks.Twitter, label: 'Twitter', variant: 'twitter' },
-  { href: Constants.SocialLinks.Bluesky, label: 'Bluesky', variant: 'bluesky' },
-  { href: Constants.SocialLinks.LinkedIn, label: 'LinkedIn', variant: 'linkedin' },
+  { href: Constants.Links.Org, label: 'GitHub', icon: Github },
+  { href: Constants.SocialLinks.Twitter, label: 'Twitter', icon: Twitter },
+  { href: Constants.SocialLinks.Bluesky, label: 'Bluesky', icon: Bluesky },
+  { href: Constants.SocialLinks.LinkedIn, label: 'LinkedIn', icon: LinkedIn },
 ];
 
 function LinkGroup({ title, links }: { title: string; links: LinkGroupProps[] }) {
@@ -84,14 +85,22 @@ export default function Footer() {
     window.dispatchEvent(new CustomEvent('mouse-snap-end'));
   };
 
+  // When clicked on button link should be clicked too
+  const linkRef = useRef<HTMLAnchorElement | null>(null);
+  const handleLinkClick = () => {
+    linkRef.current?.click();
+  };
+
   return (
-    <footer className="bg-surface-container border-t border-outline-variant">
+    <footer className="bg-surface border-t border-outline-variant">
       <div className="max-w-6xl mx-auto px-6 pt-12 pb-6">
         <div className="flex flex-wrap items-start justify-between gap-8 mb-10">
           <div className="max-w-xs min-w-[200px]">
-            <div className="flex items-center gap-2 mb-2">
-              <Image src="/logo.svg" alt="" width={24} height={24} aria-hidden="true" />
-              <span className="text-md font-serif text-on-surface">Mystic Framework</span>
+            <div className="flex items-center gap-1 mb-2">
+              <Logo size={26} aria-hidden="true" />
+              <span className="text-md font-sans italic font-medium text-on-surface">
+                mystic framework
+              </span>
             </div>
             <p className="text-sm text-on-surface-variant leading-normal">
               Performant. Elegant. Simply Mystic. A modern C++ framework built for speed and
@@ -102,20 +111,28 @@ export default function Footer() {
                 <Button
                   key={social.label}
                   variant="circular"
-                  className="p-2"
                   aria-label={social.label}
+                  onClick={handleLinkClick}
                 >
-                  <Link href={social.href} target="_blank" variant="no-underline" removeSpan>
-                    <BrandIcon
-                      variant={social.variant}
-                      className="size-4 text-on-surface-variant"
-                    />
+                  <Link
+                    href={social.href}
+                    target="_blank"
+                    variant="no-underline"
+                    removeSpan
+                    {...({ ref: linkRef } as any)}
+                  >
+                    <social.icon size={18} className="text-on-surface-variant" aria-hidden="true" />
                   </Link>
                 </Button>
               ))}
-              <Button variant="circular" className="p-2" aria-label="Email">
-                <Link href={`mailto:${Constants.Email}`} variant="no-underline" removeSpan>
-                  <Mail className="size-4 text-on-surface-variant" aria-hidden="true" />
+              <Button variant="circular" aria-label="Email" onClick={handleLinkClick}>
+                <Link
+                  href={`mailto:${Constants.Email}`}
+                  variant="no-underline"
+                  removeSpan
+                  {...({ ref: linkRef } as any)}
+                >
+                  <Mail className="text-on-surface-variant" size={18} aria-hidden="true" />
                 </Link>
               </Button>
             </div>

@@ -8,11 +8,11 @@ const Constants = {
   },
   SocialLinks: {
     GitHub: 'https://github.com/thedevmystic',
+    Twitter: 'https://x.com/thedevmystic',
+    LinkedIn: 'https://www.linkedin.com/in/thedevmystic',
     Instagram: 'https://instagram.com/thedevmystic',
     Youtube: 'https://youtube.com/@thedevmystic',
     Bluesky: 'https://bsky.app/profile/thedevmystic.vercel.app',
-    Twitter: 'https://x.com/thedevmystic',
-    LinkedIn: 'https://www.linkedin.com/in/thedevmystic',
     Substack: 'https://thedevmystic.substack.com',
     Orcid: 'https://orcid.org/0009-0009-3747-844X',
   },

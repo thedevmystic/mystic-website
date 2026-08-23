@@ -27,6 +27,7 @@ import { Allura, Fraunces, IBM_Plex_Sans, JetBrains_Mono } from 'next/font/googl
 
 export const fraunces = Fraunces({
   subsets: ['latin'],
+  style: ['normal', 'italic'],
   weight: 'variable',
   variable: '--font-fraunces',
   preload: true,
@@ -35,6 +36,7 @@ export const fraunces = Fraunces({
 
 export const ibmPlexSans = IBM_Plex_Sans({
   subsets: ['latin'],
+  style: ['normal', 'italic'],
   weight: 'variable',
   variable: '--font-ibm-plex-sans',
   preload: true,
@@ -53,7 +55,7 @@ export const allura = Allura({
   subsets: ['latin'],
   weight: '400',
   variable: '--font-allura',
-  preload: true /* Used for wordmark, so preload */,
+  preload: false,
   display: 'swap',
 });
 

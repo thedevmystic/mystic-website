@@ -2,7 +2,9 @@
 
 import type { Metadata } from 'next';
 import Footer from '@/components/Footer';
+import Navbar from '@/components/Navbar';
 import Cursor from '@/components/Cursor';
+import { ThemeProvider } from '@/styles/ThemeProvider';
 import { fonts } from '@/styles/fonts';
 import '@/styles/main.css';
 
@@ -13,12 +15,14 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={fonts}>
-      {/* TODO(thedevmystic): Remove the "dark" class when the dark mode toggle is implemented */}
-      <body className="min-h-screen bg-background text-on-background transition-colors duration-300 dark antialiased">
-        <Cursor />
-        {children}
-        <Footer />
+    <html lang="en" className={fonts} suppressHydrationWarning>
+      <body className="min-h-screen bg-background text-on-background transition-colors duration-300 antialiased">
+        <ThemeProvider>
+          <Cursor />
+          <Navbar />
+          {children}
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

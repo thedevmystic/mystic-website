@@ -203,25 +203,11 @@ export default function TokenDemoPage() {
           <h2 className="mb-6 text-xl font-semibold tracking-wide text-on-surface">Buttons</h2>
           <div className="flex gap-8">
             <Button variant="primary">Button</Button>
-            <Button variant="primary" disabled>
-              Button
-            </Button>
             <Button variant="secondary">Button</Button>
-            <Button variant="secondary" disabled>
-              Button
-            </Button>
+            <Button variant="outline">Button</Button>
             <Button variant="ghost">Button</Button>
-            <Button variant="ghost" disabled>
-              Button
-            </Button>
             <Button variant="ui">Button</Button>
-            <Button variant="ui" disabled>
-              Button
-            </Button>
             <Button variant="circular">X</Button>
-            <Button variant="circular" disabled>
-              X
-            </Button>
           </div>
         </section>
 

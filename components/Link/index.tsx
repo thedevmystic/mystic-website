@@ -15,6 +15,7 @@ interface LinkProps extends NextLinkProps {
   target?: '_blank' | '_self' | '_parent' | '_top';
   disabled?: boolean;
   removeSpan?: boolean;
+  noHover?: boolean;
   className?: string;
 }
 
@@ -25,6 +26,7 @@ export default function Link({
   target = '_self',
   disabled = false,
   removeSpan = false,
+  noHover = false,
   className: userClassName = '',
   ...props
 }: LinkProps) {
@@ -32,7 +34,13 @@ export default function Link({
     target === '_blank' ||
     (href && !(href as string).startsWith('/') && !(href as string).startsWith('#'));
 
-  const className = `link ${variant === 'underline' ? 'underline' : 'no-underline'} ${disabled ? 'disabled' : ''} ${userClassName}`;
+  const className = `
+    link
+    ${variant === 'underline' ? 'underline' : 'no-underline'}
+    ${disabled ? 'disabled' : ''}
+    ${noHover ? 'no-hover' : ''}
+    ${userClassName}
+  `.trim();
 
   const dispatchEvent = (eventName: string) => {
     window.dispatchEvent(new CustomEvent(eventName));
