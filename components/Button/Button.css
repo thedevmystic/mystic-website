@@ -9,7 +9,7 @@
   justify-content: center;
   padding: 2px 12px;
   border-radius: 9999px;
-  font-size: var(--font-sm);
+  font-size: inherit;
   font-weight: 500;
   outline: none; /* Cursor snaps to it */
   cursor: none;

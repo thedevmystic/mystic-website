@@ -96,7 +96,7 @@ export default function Navbar() {
         </Link>
 
         {/* Nav links */}
-        <div className="hidden md:flex items-center justify-center gap-x-1 col-start-2 text-sans">
+        <div className="hidden md:flex items-center justify-center gap-x-1 col-start-2 text-sans text-md">
           {NAV_ITEMS.map((item) => (
             <NavLink key={item.label} {...item} />
           ))}

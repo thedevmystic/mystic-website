@@ -23,7 +23,10 @@ export default function Button({
 }: ButtonProps) {
   const buttonRef = useRef<HTMLButtonElement | null>(null);
 
-  const combinedClassName = `button ${variant} ${disabled ? 'disabled' : ''} ${className}`.trim();
+  const combinedClassName = `
+    button text-sm
+    ${variant} ${disabled ? 'disabled' : ''} 
+    ${className}`.trim();
 
   const handleMouseEnter = () => {
     if (!buttonRef.current) return;
