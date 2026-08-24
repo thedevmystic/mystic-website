@@ -35,7 +35,7 @@ export default function Breadcrumb({ titles }: { titles: string[] | undefined })
 
   return (
     <nav
-      className="bg-surface h-[30px] sticky top-[50px] z-40 border-b border-l border-r border-outline-variant"
+      className="bg-surface h-[30px] w-full top-[50px] z-40 border-b border-outline-variant"
       aria-label="Breadcrumb"
     >
       <ol className="flex flex-row items-center px-4 py-1 overflow-x-auto">
