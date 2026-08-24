@@ -17,20 +17,19 @@ import { useTheme } from '@/styles/ThemeProvider';
 interface NavItem {
   label: string;
   href: string;
-  external?: boolean;
   isMobile?: boolean;
   githubIconOnly?: boolean;
 }
 
 const NAV_ITEMS: NavItem[] = [
   { label: 'Home', href: '/' },
+  { label: 'Blog', href: '/blog' },
   { label: 'Docs', href: '/docs' },
-  { label: 'Roadmap', href: '/roadmap' },
   { label: 'About', href: '/about' },
-  { label: 'GitHub', href: Constants.Links.Org, external: true },
+  { label: 'Contact', href: '/contact' },
 ];
 
-function NavLink({ label, href, external, isMobile, githubIconOnly }: NavItem) {
+function NavLink({ label, href, isMobile, githubIconOnly }: NavItem) {
   const linkRef = useRef<HTMLAnchorElement>(null);
   const handleClick = () => {
     linkRef.current?.click();
@@ -38,12 +37,7 @@ function NavLink({ label, href, external, isMobile, githubIconOnly }: NavItem) {
 
   if (isMobile) {
     return (
-      <Link
-        href={href}
-        variant="no-underline"
-        target={external ? '_blank' : '_self'}
-        removeSpan={external}
-      >
+      <Link href={href} variant="no-underline">
         {label}
       </Link>
     );
@@ -52,7 +46,7 @@ function NavLink({ label, href, external, isMobile, githubIconOnly }: NavItem) {
   if (githubIconOnly) {
     return (
       <Button variant="circular" onClick={handleClick}>
-        <Link href={href} ref={linkRef} variant="no-underline" target={'_blank'} removeSpan noHover>
+        <Link href={href} ref={linkRef} variant="no-underline" target="_blank" removeSpan noHover>
           <Github size={20} />
         </Link>
       </Button>
@@ -61,14 +55,7 @@ function NavLink({ label, href, external, isMobile, githubIconOnly }: NavItem) {
 
   return (
     <Button variant="ui" onClick={handleClick}>
-      <Link
-        href={href}
-        ref={linkRef}
-        variant="no-underline"
-        target={external ? '_blank' : '_self'}
-        removeSpan={external}
-        noHover
-      >
+      <Link href={href} ref={linkRef} variant="no-underline" noHover>
         {label}
       </Link>
     </Button>
@@ -79,9 +66,6 @@ export default function Navbar() {
   const { token: theme, setToken: setTheme } = useTheme();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  const linkNavItems = NAV_ITEMS.filter((item) => item.label !== 'GitHub');
-  const githubItem = NAV_ITEMS.find((item) => item.label === 'GitHub')!;
 
   const handleThemeToggle = () => {
     if (theme === 'light') {
@@ -113,7 +97,7 @@ export default function Navbar() {
 
         {/* Nav links */}
         <div className="hidden md:flex items-center justify-center gap-x-1 col-start-2 text-sans">
-          {linkNavItems.map((item) => (
+          {NAV_ITEMS.map((item) => (
             <NavLink key={item.label} {...item} />
           ))}
         </div>
@@ -125,16 +109,16 @@ export default function Navbar() {
           </Button>
 
           <span className="hidden md:inline-flex">
-            <NavLink label="GitHub Icon" href={githubItem.href} githubIconOnly />
+            <NavLink label="GitHub" href={Constants.Links.Org} githubIconOnly />
           </span>
 
           <Button variant="circular" aria-label="Change theme" onClick={handleThemeToggle}>
             {theme === 'light' ? (
-              <Sun size={20} />
+              <Sun size={20} aria-label="Light theme" />
             ) : theme === 'dark' ? (
-              <Moon size={20} />
+              <Moon size={20} aria-label="Dark theme" />
             ) : (
-              <Monitor size={20} />
+              <Monitor size={20} aria-label="System theme" />
             )}
           </Button>
 
@@ -154,19 +138,17 @@ export default function Navbar() {
       {/* Mobile dropdown menu */}
       <div
         className={`
-          sticky top-[50px] z-50
-          md:hidden grid transition-[grid-template-rows] duration-300 ease-in-out
-          bg-surface text-on-surface
-          ${isMobileMenuOpen ? 'border-b border-outline-variant' : ''}
-          ${isMobileMenuOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}
+          fixed top-0 left-0 right-0 pt-[50px] z-45
+          md:hidden transition-all duration-500 ease-in-out
+          bg-surface text-on-surface border-outline-variant
+          ${isMobileMenuOpen ? 'max-h-96' : 'max-h-0 invisible'}
+          overflow-hidden
         `}
       >
-        <div className="overflow-hidden">
-          <div className="flex flex-col items-end gap-y-1 px-4 py-3 text-sans">
-            {NAV_ITEMS.map((item) => (
-              <NavLink key={item.label} {...item} isMobile />
-            ))}
-          </div>
+        <div className="flex flex-col items-end gap-y-1 px-4 py-3 text-sans border-b border-outline-variant">
+          {NAV_ITEMS.map((item) => (
+            <NavLink key={item.label} {...item} isMobile />
+          ))}
         </div>
       </div>
 

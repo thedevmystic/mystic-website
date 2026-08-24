@@ -27,17 +27,17 @@ interface SocialLinkProps {
 const SITEMAP_LINKS_GROUP: LinkGroupProps[] = [
   { href: '/home', text: 'Home' },
   { href: '/docs', text: 'Docs' },
-  { href: '/roadmap', text: 'Roadmap' },
-  { href: Constants.Links.Org, text: 'GitHub' },
+  { href: '/blog', text: 'Blog' },
   { href: '/about', text: 'About' },
+  { href: '/contact', text: 'Contact' },
 ];
 
 const RESOURCES_LINKS_GROUP: LinkGroupProps[] = [
   { href: '/docs/getting-started', text: 'Getting Started' },
   { href: '/docs/faqs', text: 'FAQs' },
   { href: '/docs/changelog', text: 'Changelog' },
-  { href: '/docs/styleguide', text: 'Style Guide' },
-  { href: '/contact', text: 'Contact' },
+  { href: '/docs/roadmap', text: 'Roadmap' },
+  { href: '/docs/contributing', text: 'Contributing' },
 ];
 
 const LEGAL_LINKS_GROUP: LinkGroupProps[] = [
