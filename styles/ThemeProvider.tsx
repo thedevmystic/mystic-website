@@ -9,7 +9,7 @@ export type Theme = 'light' | 'dark';
 const { Provider: ThemeProvider, useToken: useTheme } = createTokenProvider({
   storageKey: 'theme',
   attribute: 'class',
-  defaultToken: 'system',
+  defaultToken: 'dark',
   enableSystem: true,
   enableColorScheme: true,
   tokens: ['light', 'dark', 'system'],
