@@ -30,7 +30,7 @@ export const fraunces = Fraunces({
   style: ['normal', 'italic'],
   weight: 'variable',
   variable: '--font-fraunces',
-  preload: true,
+  preload: false,
   display: 'swap',
 });
 
