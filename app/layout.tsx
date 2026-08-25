@@ -13,9 +13,17 @@ import { ThemeProvider } from '@/styles/ThemeProvider';
 import '@/styles/main.css';
 
 export const metadata: Metadata = {
-  title: 'The Mystic Framework',
+  title: 'Mystic Framework',
   description:
     'Performant. Elegant. Simply Mystic. A modern C++ framework built for speed and clarity.',
+  icons: {
+    icon: [
+      { url: '/favicons/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicons/favicon-32x32.png', type: 'image/png', sizes: '32x32' },
+      { url: '/favicons/favicon.ico', type: 'image/x-icon', sizes: 'any' },
+    ],
+    apple: '/favicons/apple-touch-icon.png',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
