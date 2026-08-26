@@ -73,51 +73,55 @@ export default function TableOfContent({ toc }: TableOfContentProps) {
   }, [toc]);
 
   return (
-    <nav ref={navRef} className="text-sm max-h-[calc(100vh-6rem)] pb-4">
-      {toc.map((h2) => {
-        const isH2Active = activeId === h2.id;
+    <>
+      <h2 className="text-xs font-mono text-on-surface-variant mb-2 uppercase">In this page</h2>
+      <nav ref={navRef} className="text-sm max-h-[calc(100vh-6rem)]">
+        {toc.map((h2) => {
+          const isH2Active = activeId === h2.id;
 
-        return (
-          <div key={h2.id}>
-            <div
-              className={`
-              block transition colors border-l hover:border-l-2 pl-4 py-1 ${
-                isH2Active
-                  ? 'text-primary border-primary font-medium border-l-2'
-                  : 'text-on-surface-variant border-outline-variant hover:text-on-surface hover:border-outline'
-              }
-            `}
-            >
-              <Link href={`#${h2.id}`} variant="no-underline" noHover>
-                {h2.text}
-              </Link>
-            </div>
-            {h2.children && h2.children.length > 0 && (
-              <div>
-                {h2.children.map((h3) => {
-                  const isH3Active = activeId === h3.id;
-                  return (
-                    <div
-                      key={h3.id}
-                      className={`
-                        block transition colors border-l hover:border-l-2 pl-8 py-1 ${
-                          isH3Active
-                            ? 'text-primary border-primary font-medium border-l-2'
-                            : 'text-on-surface-variant border-outline-variant hover:text-on-surface hover:border-outline'
-                        }
-                      `}
-                    >
-                      <Link href={`#${h3.id}`} variant="no-underline" noHover>
-                        {h3.text}
-                      </Link>
-                    </div>
-                  );
-                })}
+          return (
+            <div key={h2.id}>
+              <div
+                className={`
+                  block transition colors border-l hover:border-l-2 pl-4 py-1 ${
+                    isH2Active
+                      ? 'text-primary border-primary font-medium border-l-2'
+                      : 'text-on-surface-variant border-outline-variant hover:text-on-surface hover:border-outline'
+                  }
+                `}
+              >
+                <Link href={`#${h2.id}`} variant="no-underline" noHover underlineOnHover>
+                  {h2.text}
+                </Link>
               </div>
-            )}
-          </div>
-        );
-      })}
-    </nav>
+              {h2.children && h2.children.length > 0 && (
+                <div>
+                  {h2.children.map((h3) => {
+                    const isH3Active = activeId === h3.id;
+                    return (
+                      <div
+                        key={h3.id}
+                        className={`
+                          block transition colors border-l hover:border-l-2 pl-8 py-1 ${
+                            isH3Active
+                              ? 'text-primary border-primary font-medium border-l-2'
+                              : 'text-on-surface-variant border-outline-variant hover:text-on-surface hover:border-outline'
+                          }
+                        `}
+                      >
+                        <Link href={`#${h3.id}`} variant="no-underline" noHover underlineOnHover>
+                          {h3.text}
+                        </Link>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          );
+        })}
+        <span className="block border-l border-outline-variant p-2" />
+      </nav>
+    </>
   );
 }

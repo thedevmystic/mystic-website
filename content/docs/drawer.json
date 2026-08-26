@@ -1,0 +1,20 @@
+[
+  {
+    "catagory": "Docs",
+    "href": "/docs",
+    "items": [
+      { "label": "Style Guide", "href": "/docs/styleguide" },
+      { "label": "Roadmap", "href": "/docs/roadmap" },
+      { "label": "Changelog", "href": "/docs/changelog" }
+    ]
+  },
+  {
+    "catagory": "Functions",
+    "href": "/docs/functions",
+    "items": [
+      { "label": "GetDocs", "href": "/docs/functions/getdocs" },
+      { "label": "StartSever", "href": "/docs/functions/startserver" },
+      { "label": "Cleanup", "href": "/docs/funcctions/cleanup" }
+    ]
+  }
+]

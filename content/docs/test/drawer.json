@@ -1,0 +1,20 @@
+[
+  {
+    "catagory": "Test",
+    "href": "/docs",
+    "items": [
+      { "label": "Test 1", "href": "/docs/test1" },
+      { "label": "Test 2", "href": "/docs/test2" },
+      { "label": "Test 3", "href": "/docs/test3" }
+    ]
+  },
+  {
+    "catagory": "Something",
+    "href": "/docs",
+    "items": [
+      { "label": "Something 1", "href": "/docs/something1" },
+      { "label": "Something 2", "href": "/docs/something2" },
+      { "label": "Something 3", "href": "/docs/something3" }
+    ]
+  }
+]
