@@ -62,7 +62,11 @@ export default async function DocPage({ params }: PageProps) {
       {/* Main Column (Breadcrumbs + Content) */}
       <div className="w-full max-w-[768px] md:border-l md:border-r border-outline-variant justify-self-center">
         <Breadcrumb titles={breadcrumbs} />
-        <article className="px-4 py-8 md:px-6 md:py-12">
+        <article
+          id="main-content"
+          className="px-4 py-8 md:px-6 md:py-12 outline-none focus:ring-2 focus:ring-primary focus:ring-offset-0"
+          tabIndex={-1}
+        >
           <Content />
         </article>
       </div>
