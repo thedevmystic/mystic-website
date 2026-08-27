@@ -16,6 +16,11 @@
   color: var(--color-primary);
 }
 
+.link:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
 /* If no hover */
 .link.no-hover:hover {
   color: inherit; /* Keep the original color on hover */
