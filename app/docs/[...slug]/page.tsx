@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { ComponentType } from 'react';
 import fs from 'fs/promises';
 import path from 'path';
+import Pagination from '@/components/Pagination';
 import Breadcrumb from '@/components/Breadcrumb';
 import TableOfContents from '@/components/TableOfContent';
 import SidebarDrawer from '@/components/SidebarDrawer';
@@ -21,6 +22,8 @@ interface MDXModule {
   frontmatter?: {
     breadcrumbs?: string[];
     drawerId?: string;
+    prev?: string;
+    next?: string;
   };
 }
 
@@ -50,6 +53,8 @@ export default async function DocPage({ params }: PageProps) {
   const breadcrumbs = DocModule.frontmatter?.breadcrumbs;
   const drawerContent = await getDrawerContent(slug);
   const drawerId = DocModule.frontmatter?.drawerId;
+  const prev = DocModule.frontmatter?.prev;
+  const next = DocModule.frontmatter?.next;
 
   // Hide other columns until 236px + 768px + 236px = 1240px
   return (
@@ -68,6 +73,7 @@ export default async function DocPage({ params }: PageProps) {
         >
           <Content />
         </article>
+        <Pagination prev={prev} next={next} />
       </div>
 
       {/* Table of Contents */}
