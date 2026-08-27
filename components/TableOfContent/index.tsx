@@ -26,6 +26,10 @@ export default function TableOfContent({ toc }: TableOfContentProps) {
   const [activeId, setActiveId] = useState<string | null>(null);
   const navRef = useRef<HTMLElement | null>(null);
 
+  const isOverflow = navRef.current
+    ? navRef.current.scrollHeight > navRef.current.clientHeight
+    : false;
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -120,7 +124,7 @@ export default function TableOfContent({ toc }: TableOfContentProps) {
             </div>
           );
         })}
-        <span className="block border-l border-outline-variant p-2" />
+        {isOverflow && <span className="block border-l border-outline-variant p-2" />}
       </nav>
     </>
   );
