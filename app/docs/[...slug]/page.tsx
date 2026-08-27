@@ -65,7 +65,6 @@ export default async function DocPage({ params }: PageProps) {
         <article
           id="main-content"
           className="px-4 py-8 md:px-6 md:py-12 outline-none focus:ring-2 focus:ring-primary focus:ring-offset-0"
-          tabIndex={-1}
         >
           <Content />
         </article>
