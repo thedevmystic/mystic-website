@@ -15,6 +15,7 @@ interface LinkProps extends NextLinkProps {
   target?: '_blank' | '_self' | '_parent' | '_top';
   disabled?: boolean;
   removeSpan?: boolean;
+  tabIndex?: number;
   noHover?: boolean;
   underlineOnHover?: boolean;
   className?: string;
@@ -28,6 +29,7 @@ const Link = forwardRef(function Link(
     target = '_self',
     disabled = false,
     removeSpan = false,
+    tabIndex,
     noHover = false,
     underlineOnHover = false,
     className: userClassName = '',
@@ -74,6 +76,7 @@ const Link = forwardRef(function Link(
         target={target}
         rel={target === '_blank' ? 'noopener noreferrer' : undefined}
         className={className}
+        tabIndex={tabIndex ?? 0}
         onMouseEnter={() => dispatchEvent('mouse-hover-start')}
         onMouseLeave={() => dispatchEvent('mouse-hover-end')}
         {...props}
@@ -94,6 +97,7 @@ const Link = forwardRef(function Link(
       href={href}
       target={target}
       className={className}
+      tabIndex={tabIndex ?? 0}
       onMouseEnter={() => dispatchEvent('mouse-hover-start')}
       onMouseLeave={() => dispatchEvent('mouse-hover-end')}
       {...props}

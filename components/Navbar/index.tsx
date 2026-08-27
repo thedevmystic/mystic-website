@@ -2,7 +2,7 @@
 
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import { Search, Sun, Moon, Monitor, Menu, X } from 'lucide-react';
 
@@ -46,7 +46,15 @@ function NavLink({ label, href, isMobile, githubIconOnly }: NavItem) {
   if (githubIconOnly) {
     return (
       <Button variant="circular" onClick={handleClick}>
-        <Link href={href} ref={linkRef} variant="no-underline" target="_blank" removeSpan noHover>
+        <Link
+          href={href}
+          ref={linkRef}
+          variant="no-underline"
+          tabIndex={-1}
+          target="_blank"
+          removeSpan
+          noHover
+        >
           <Github size={20} />
         </Link>
       </Button>
@@ -55,7 +63,7 @@ function NavLink({ label, href, isMobile, githubIconOnly }: NavItem) {
 
   return (
     <Button variant="ui" onClick={handleClick}>
-      <Link href={href} ref={linkRef} variant="no-underline" noHover>
+      <Link href={href} ref={linkRef} variant="no-underline" noHover tabIndex={-1}>
         {label}
       </Link>
     </Button>
@@ -77,6 +85,21 @@ export default function Navbar() {
     }
   };
 
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'k' && (event.metaKey || event.ctrlKey)) {
+        event.preventDefault();
+        setIsSearchOpen((open) => !open);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
   return (
     <>
       <nav
@@ -96,7 +119,7 @@ export default function Navbar() {
         </Link>
 
         {/* Nav links */}
-        <div className="hidden md:flex items-center justify-center gap-x-1 col-start-2 text-sans text-md">
+        <div className="hidden md:flex items-center justify-center gap-x-1 col-start-2 text-sans text-sm font-medium">
           {NAV_ITEMS.map((item) => (
             <NavLink key={item.label} {...item} />
           ))}

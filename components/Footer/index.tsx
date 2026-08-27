@@ -118,6 +118,7 @@ export default function Footer() {
                     href={social.href}
                     ref={linkRef}
                     target="_blank"
+                    tabIndex={-1}
                     variant="no-underline"
                     removeSpan
                   >
@@ -130,6 +131,7 @@ export default function Footer() {
                   href={`mailto:${Constants.Email}`}
                   ref={linkRef}
                   variant="no-underline"
+                  tabIndex={-1}
                   removeSpan
                 >
                   <Mail className="text-on-surface-variant" size={18} aria-hidden="true" />

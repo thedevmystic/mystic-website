@@ -80,7 +80,7 @@ const HEADING_STYLES = {
 } as const;
 
 const HEADING_ANCHOR_CSS =
-  '[&_.heading-anchor]:ml-2 [&_.heading-anchor]:no-underline [&_.heading-anchor]:opacity-0 [&_.heading-anchor]:text-outline hover:[&_.heading-anchor]:opacity-100 [&_.heading-anchor]:transition-opacity [&_.heading-anchor]:after:content-["#"]';
+  '[&_.heading-anchor]:ml-2 [&_.heading-anchor]:no-underline [&_.heading-anchor]:opacity-0 [&_.heading-anchor]:text-outline hover:[&_.heading-anchor]:opacity-100 [&_.heading-anchor]:focus:opacity-100 [&_.heading-anchor]:transition-opacity [&_.heading-anchor]:after:content-["#"]';
 
 function makeHeading(tag: keyof typeof HEADING_STYLES) {
   const Tag = tag;
