@@ -13,8 +13,7 @@
     "href": "/docs",
     "items": [
       { "label": "Something 1", "href": "/docs/something1" },
-      { "label": "Something 2", "href": "/docs/something2" },
-      { "label": "Something 3", "href": "/docs/something3" }
+      { "label": "Something 2", "href": "/docs/something2" }
     ]
   }
 ]

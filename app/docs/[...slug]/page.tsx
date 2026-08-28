@@ -65,7 +65,7 @@ export default async function DocPage({ params }: PageProps) {
       </aside>
 
       {/* Main Column (Breadcrumbs + Content) */}
-      <div className="w-full max-w-[768px] md:border-l md:border-r border-outline-variant justify-self-center">
+      <div className="w-full max-w-[768px] md:border-l md:border-r border-outline-variant justify-self-center pt-[50px]">
         <Breadcrumb titles={breadcrumbs} />
         <article
           id="main-content"

@@ -9,7 +9,7 @@ import './Button.css';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
-  variant?: 'primary' | 'secondary' | 'ghost' | 'outline' | 'ui' | 'circular';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'outline' | 'ui' | 'circular' | 'inherit-color';
   disabled?: boolean;
   className?: string;
 }

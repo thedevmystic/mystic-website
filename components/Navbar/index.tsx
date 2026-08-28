@@ -3,6 +3,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 
 import { Search, Sun, Moon, Monitor, Menu, X } from 'lucide-react';
 
@@ -29,6 +30,9 @@ const NAV_ITEMS: NavItem[] = [
   { label: 'Contact', href: '/contact' },
 ];
 
+// Scroll distance (px) after which the home-page header stops being transparent.
+const SCROLL_THRESHOLD = 40;
+
 function NavLink({ label, href, isMobile, githubIconOnly }: NavItem) {
   const linkRef = useRef<HTMLAnchorElement>(null);
   const handleClick = () => {
@@ -45,7 +49,7 @@ function NavLink({ label, href, isMobile, githubIconOnly }: NavItem) {
 
   if (githubIconOnly) {
     return (
-      <Button variant="circular" onClick={handleClick}>
+      <Button variant="circular" onClick={handleClick} className="!text-on-surface-variant">
         <Link
           href={href}
           ref={linkRef}
@@ -55,14 +59,14 @@ function NavLink({ label, href, isMobile, githubIconOnly }: NavItem) {
           removeSpan
           noHover
         >
-          <Github size={20} />
+          <Github size={18} />
         </Link>
       </Button>
     );
   }
 
   return (
-    <Button variant="ui" onClick={handleClick}>
+    <Button variant="inherit-color" onClick={handleClick}>
       <Link href={href} ref={linkRef} variant="no-underline" noHover tabIndex={-1}>
         {label}
       </Link>
@@ -72,8 +76,13 @@ function NavLink({ label, href, isMobile, githubIconOnly }: NavItem) {
 
 export default function Navbar() {
   const { token: theme, setToken: setTheme } = useTheme();
+  const pathname = usePathname();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  const isHome = pathname === '/';
+  const isTransparent = isHome && !isScrolled;
 
   const handleThemeToggle = () => {
     if (theme === 'light') {
@@ -100,48 +109,82 @@ export default function Navbar() {
     };
   }, []);
 
+  useEffect(() => {
+    if (!isHome) {
+      setIsScrolled(true);
+      return;
+    }
+
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > SCROLL_THRESHOLD);
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [isHome]);
+
   return (
     <>
       <nav
-        className="
-          sticky top-0 z-50 h-[50px]
-          grid grid-cols-[1fr_1fr] md:grid-cols-[2fr_3fr_1fr]
-          items-center gap-x-4 px-4 md:px-6
-          bg-surface text-on-surface border-b border-outline-variant
-        "
+        className={`
+          fixed top-0 left-0 right-0 z-50 h-[50px]
+          flex items-center justify-between gap-x-4 px-4 md:px-8
+          text-on-surface-variant transition-colors duration-300 ease-in-out
+          ${
+            isTransparent
+              ? 'bg-transparent border-b border-transparent'
+              : 'bg-surface border-b border-outline-variant'
+          }
+        `}
       >
         {/* Logo */}
-        <Link href="/" variant="no-underline" className="justify-self-start" noHover>
-          <div className="flex items-center gap-1">
+        <Link href="/" variant="no-underline" noHover>
+          <div className="flex items-center gap-2">
             <Logo size={32} />
-            <span className="font-sans italic text-lg font-medium">mystic framework</span>
+            <span className="font-sans italic text-lg font-medium text-on-surface">
+              mystic framework
+            </span>
           </div>
         </Link>
 
         {/* Nav links */}
-        <div className="hidden md:flex items-center justify-center gap-x-1 col-start-2 text-sans text-sm font-medium">
+        <div className="hidden md:flex items-center gap-x-1 text-sans text-sm font-medium">
           {NAV_ITEMS.map((item) => (
             <NavLink key={item.label} {...item} />
           ))}
         </div>
 
         {/* Actions */}
-        <div className="flex items-center justify-end gap-x-2 col-start-2 md:col-start-3">
-          <Button variant="circular" aria-label="Open search" onClick={() => setIsSearchOpen(true)}>
-            <Search size={20} />
+        <div className="flex items-center gap-x-2">
+          <Button
+            variant="circular"
+            aria-label="Open search"
+            className="!text-on-surface-variant"
+            onClick={() => setIsSearchOpen(true)}
+          >
+            <Search size={18} />
           </Button>
 
           <span className="hidden md:inline-flex">
             <NavLink label="GitHub" href={Constants.Links.Org} githubIconOnly />
           </span>
 
-          <Button variant="circular" aria-label="Change theme" onClick={handleThemeToggle}>
+          <Button
+            variant="circular"
+            aria-label="Change theme"
+            className="!text-on-surface-variant"
+            onClick={handleThemeToggle}
+          >
             {theme === 'light' ? (
-              <Sun size={20} aria-label="Light theme" />
+              <Sun size={18} aria-label="Light theme" />
             ) : theme === 'dark' ? (
-              <Moon size={20} aria-label="Dark theme" />
+              <Moon size={18} aria-label="Dark theme" />
             ) : (
-              <Monitor size={20} aria-label="System theme" />
+              <Monitor size={18} aria-label="System theme" />
             )}
           </Button>
 
@@ -163,7 +206,7 @@ export default function Navbar() {
         className={`
           fixed top-0 left-0 right-0 pt-[50px] z-45
           md:hidden transition-all duration-500 ease-in-out
-          bg-surface text-on-surface border-outline-variant
+          bg-surface text-on-surface-variant border-outline-variant
           ${isMobileMenuOpen ? 'max-h-96' : 'max-h-0 invisible'}
           overflow-hidden
         `}
