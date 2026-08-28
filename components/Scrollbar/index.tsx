@@ -17,6 +17,10 @@ export default function Scrollbar({ children }: { children: React.ReactNode }) {
         autoHideDelay: 1000,
         clickScroll: true,
       },
+      overflow: {
+        x: 'hidden',
+        y: 'scroll',
+      },
     });
 
     return () => {
