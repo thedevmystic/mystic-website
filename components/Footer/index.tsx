@@ -11,7 +11,7 @@ import { Github, Twitter, Bluesky, LinkedIn, BrandIconProps } from '@/components
 import Button from '@/components/Button';
 import Link from '@/components/Link';
 import Logo from '@/components/Logo';
-import Constants from '@/lib/constants';
+import Constants from '@/utils/Constants';
 
 interface LinkGroupProps {
   href: string;

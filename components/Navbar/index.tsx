@@ -11,7 +11,7 @@ import Button from '@/components/Button';
 import Link from '@/components/Link';
 import Logo from '@/components/Logo';
 import SearchModal from '@/components/SearchModal';
-import Constants from '@/lib/constants';
+import Constants from '@/utils/Constants';
 import { useTheme } from '@/styles/ThemeProvider';
 
 interface NavItem {
