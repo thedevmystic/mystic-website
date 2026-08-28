@@ -8,6 +8,7 @@ import Cursor from '@/components/Cursor';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import Scrollbar from '@/components/Scrollbar';
+import SearchIndexPrefetcher from '@/components/SearchIndexPrefetcher';
 import SkipToMainContent from '@/components/SkipToMainContent';
 import WebManifestThemeWatcher from '@/components/WebManifestThemeWatcher';
 import { fonts } from '@/styles/fonts';
@@ -33,6 +34,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="flex flex-col min-h-screen bg-surface text-on-surface transition-colors duration-300 antialiased">
         <ThemeProvider>
           <WebManifestThemeWatcher />
+          <SearchIndexPrefetcher />
           <Scrollbar>
             <Cursor />
             <NextTopLoader color="var(--color-primary)" height={2} showSpinner={false} />
