@@ -13,7 +13,7 @@ interface PaginationProps {
 
 export default function Pagination({ prev, next }: PaginationProps) {
   return (
-    <div className="flex justify-between pb-8 px-4">
+    <div className="flex justify-between pb-8 px-4 md:px-6">
       {prev ? (
         <Link
           href={prev}
