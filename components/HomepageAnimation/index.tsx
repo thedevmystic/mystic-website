@@ -14,9 +14,6 @@ interface Node {
   r: number;
 }
 
-const NODE_COUNT = 80;
-const CONNECTION_DISTANCE = 60;
-
 export default function HomepageAnimation() {
   const { resolvedToken: theme } = useTheme();
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -33,14 +30,21 @@ export default function HomepageAnimation() {
     let nodes: Node[] = [];
     let frameId = 0;
 
+    let nodeCount = 80;
+    let connectionDistance = 60;
+
     const resize = () => {
       width = canvas.width = canvas.offsetWidth;
       height = canvas.height = canvas.offsetHeight;
+
+      const isDesktop = window.innerWidth >= 768;
+      nodeCount = isDesktop ? 120 : 80;
+      connectionDistance = isDesktop ? 80 : 60;
     };
 
     const initNodes = () => {
       nodes = [];
-      for (let i = 0; i < NODE_COUNT; i++) {
+      for (let i = 0; i < nodeCount; i++) {
         nodes.push({
           x: Math.random() * width,
           y: Math.random() * height,
@@ -69,8 +73,8 @@ export default function HomepageAnimation() {
           const dy = node.y - other.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
 
-          if (dist < CONNECTION_DISTANCE) {
-            const alpha = (1 - dist / CONNECTION_DISTANCE) * 0.5;
+          if (dist < connectionDistance) {
+            const alpha = (1 - dist / connectionDistance) * 0.5;
             ctx.beginPath();
             ctx.moveTo(node.x, node.y);
             ctx.lineTo(other.x, other.y);
