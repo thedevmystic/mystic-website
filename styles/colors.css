@@ -16,6 +16,16 @@
   --color-tertiary-container: rgb(250 216 253);
   --color-on-tertiary-container: rgb(87 62 92);
 
+  --color-success: rgb(38 106 46);
+  --color-on-success: rgb(255 255 255);
+  --color-success-container: rgb(197 244 198);
+  --color-on-success-container: rgb(0 73 31);
+
+  --color-warning: rgb(122 87 0);
+  --color-on-warning: rgb(255 255 255);
+  --color-warning-container: rgb(255 223 158);
+  --color-on-warning-container: rgb(89 63 0);
+
   --color-error: rgb(186 26 26);
   --color-on-error: rgb(255 255 255);
   --color-error-container: rgb(255 218 214);
@@ -81,6 +91,16 @@
   --color-tertiary-container: rgb(87 62 92);
   --color-on-tertiary-container: rgb(250 216 253);
 
+  --color-success: rgb(146 209 148);
+  --color-on-success: rgb(0 57 17);
+  --color-success-container: rgb(0 83 24);
+  --color-on-success-container: rgb(197 244 198);
+
+  --color-warning: rgb(240 196 96);
+  --color-on-warning: rgb(63 44 0);
+  --color-warning-container: rgb(89 63 0);
+  --color-on-warning-container: rgb(255 223 158);
+
   --color-error: rgb(255 180 171);
   --color-on-error: rgb(105 0 5);
   --color-error-container: rgb(147 0 10);
@@ -145,6 +165,11 @@
   --color-on-tertiary: var(--color-on-tertiary);
   --color-tertiary-container: var(--color-tertiary-container);
   --color-on-tertiary-container: var(--color-on-tertiary-container);
+
+  --color-success: var(--color-success);
+  --color-on-success: var(--color-on-success);
+  --color-success-container: var(--color-success-container);
+  --color-on-success-container: var(--color-on-success-container);
 
   --color-warning: var(--color-warning);
   --color-on-warning: var(--color-on-warning);
