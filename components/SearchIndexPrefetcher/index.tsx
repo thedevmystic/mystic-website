@@ -11,7 +11,7 @@ export default function SearchIndexPrefetcher() {
     const schedule =
       typeof window.requestIdleCallback === 'function'
         ? window.requestIdleCallback
-        : (cb: () => void) => setTimeout(cb, 2);
+        : (cb: () => void) => setTimeout(cb, 4000);
 
     const handle = schedule(() => {
       prefetchSearchIndexes();
