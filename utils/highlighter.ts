@@ -16,7 +16,7 @@ let highlighterPromise: Promise<Highlighter> | null = null;
 
 const LANGS = ['c', 'cpp', 'python', 'bash', 'json'] as const;
 
-export async function getHighlighter(): Promise<Highlighter> {
+export default async function getHighlighter(): Promise<Highlighter> {
   if (!highlighterPromise) {
     highlighterPromise = createHighlighter({
       themes: [theme],

@@ -1,3 +1,5 @@
+/* Code syntax highlighting styles for light and dark themes */
+
 :root {
   --code-background: var(--color-surface-container-low);
   --code-foreground: var(--color-on-surface);
