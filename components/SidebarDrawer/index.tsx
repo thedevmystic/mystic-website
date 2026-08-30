@@ -64,7 +64,7 @@ export default function SidebarDrawer({ items, currentId }: SidebarDrawerProps) 
   if (!items || items.length === 0) return null;
 
   return (
-    <nav ref={navRef} className="text-sm max-h-[calc(100vh-6rem)]">
+    <nav ref={navRef} data-lenis-prevent className="text-sm max-h-[calc(100vh-6rem)] drawer-scroll">
       {items.map((item) => {
         return (
           <div key={item.catagory} className="mb-4">

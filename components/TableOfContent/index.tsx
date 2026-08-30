@@ -24,11 +24,8 @@ interface TableOfContentProps {
 
 export default function TableOfContent({ toc }: TableOfContentProps) {
   const [activeId, setActiveId] = useState<string | null>(null);
+  const [isOverflow, setIsOverflow] = useState(false);
   const navRef = useRef<HTMLElement | null>(null);
-
-  const isOverflow = navRef.current
-    ? navRef.current.scrollHeight > navRef.current.clientHeight
-    : false;
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -62,14 +59,24 @@ export default function TableOfContent({ toc }: TableOfContentProps) {
   useEffect(() => {
     if (!navRef.current) return;
 
-    const osInstance = OverlayScrollbars(navRef.current, {
-      scrollbars: {
-        theme: 'os-theme-custom',
-        autoHide: 'scroll',
-        autoHideDelay: 1000,
-        clickScroll: true,
+    const osInstance = OverlayScrollbars(
+      navRef.current,
+      {
+        scrollbars: {
+          theme: 'os-theme-custom',
+          autoHide: 'scroll',
+          autoHideDelay: 1000,
+          clickScroll: true,
+        },
       },
-    });
+      {
+        updated: (instance) => {
+          setIsOverflow(instance.state().hasOverflow.y);
+        },
+      },
+    );
+
+    setIsOverflow(osInstance.state().hasOverflow.y);
 
     return () => {
       osInstance.destroy();
@@ -79,9 +86,10 @@ export default function TableOfContent({ toc }: TableOfContentProps) {
   return (
     <>
       <h2 className="text-xs font-mono text-on-surface-variant mb-2 uppercase">In this page</h2>
-      <nav ref={navRef} className="text-sm max-h-[calc(100vh-6rem)]">
-        {toc.map((h2) => {
+      <nav ref={navRef} data-lenis-prevent className="text-sm max-h-[calc(100vh-6rem)] toc-scroll">
+        {toc.map((h2, index) => {
           const isH2Active = activeId === h2.id;
+          const isLast = index === toc.length - 1;
 
           return (
             <div key={h2.id}>
@@ -121,10 +129,12 @@ export default function TableOfContent({ toc }: TableOfContentProps) {
                   })}
                 </div>
               )}
+              {isLast && isOverflow && (
+                <span className="block border-l border-outline-variant p-2" />
+              )}
             </div>
           );
         })}
-        {isOverflow && <span className="block border-l border-outline-variant p-2" />}
       </nav>
     </>
   );
