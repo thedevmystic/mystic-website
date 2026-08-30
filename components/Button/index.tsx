@@ -22,6 +22,7 @@ export default function Button({
   ...props
 }: ButtonProps) {
   const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const originalBorderColor = useRef<string>('');
 
   const combinedClassName = `
     button text-sm
@@ -34,10 +35,13 @@ export default function Button({
     const rect = buttonRef.current.getBoundingClientRect();
     const computedStyle = window.getComputedStyle(buttonRef.current);
 
+    originalBorderColor.current = computedStyle.borderColor;
+    buttonRef.current.style.borderColor = computedStyle.backgroundColor;
+
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
-    const width = rect.width - 2;
-    const height = rect.height - 2;
+    const width = rect.width;
+    const height = rect.height;
     const borderRadius = computedStyle.borderRadius;
 
     if (variant.includes('disabled')) {
@@ -58,6 +62,10 @@ export default function Button({
   };
 
   const handleMouseLeave = () => {
+    if (buttonRef.current) {
+      buttonRef.current.style.borderColor = originalBorderColor.current;
+    }
+
     if (variant.includes('disabled')) {
       window.dispatchEvent(new CustomEvent('mouse-disabled-end'));
     }
