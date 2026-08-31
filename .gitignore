@@ -41,5 +41,8 @@ yarn-error.log*
 next-env.d.ts
 
 # Search Indexes
-public/docs.json
-public/blog.json
+public/docs-search-index.json
+public/blog-search-index.json
+
+# Blog Indexes
+public/blog-index-*.json
