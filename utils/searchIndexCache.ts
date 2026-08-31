@@ -64,8 +64,8 @@ export async function prefetchSearchIndexes(): Promise<void> {
   cache.ready = (async () => {
     try {
       const [docsIndex, blogIndex] = await Promise.all([
-        buildIndex('/docs.json'),
-        buildIndex('/blog.json'),
+        buildIndex('/docs-search-index.json'),
+        buildIndex('/blog-search-index.json'),
       ]);
       cache.docs = docsIndex;
       cache.blog = blogIndex;

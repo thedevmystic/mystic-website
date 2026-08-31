@@ -11,7 +11,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "type-check": "tsc --noEmit",
-    "clean": "rimraf .next out public/docs.json public/blog.json",
+    "clean": "rimraf .next out public/docs-search-index.json public/blog-search-index.json",
     "update-deps": "pnpm dlx npm-check-updates -u -x eslint -x typescript",
     "generate-indexes": "node scripts/generate-indexes.js"
   },

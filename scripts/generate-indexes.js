@@ -74,8 +74,8 @@ function generateSearchIndex(folder, output) {
 
 function main() {
   console.log('Generating search indexes...');
-  generateSearchIndex('docs', 'docs.json');
-  generateSearchIndex('blog', 'blog.json');
+  generateSearchIndex('docs', 'docs-search-index.json');
+  generateSearchIndex('blog', 'blog-search-index.json');
   console.log('Search indexes generated successfully.');
 }
 
