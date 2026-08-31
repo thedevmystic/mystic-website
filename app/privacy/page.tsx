@@ -1,6 +1,6 @@
 /* Privacy Policy */
 
-'use client';
+import Link from '@/components/Link';
 
 interface PrrivacySection {
   title: string;
@@ -44,11 +44,6 @@ const privacySections: PrrivacySection[] = [
 const LAST_UPDATED_DATE = '31st August 2026 (UTC)';
 
 export default function PrivacyPolicy() {
-  const dispatchEvent = (eventName: string) => {
-    const event = new CustomEvent(eventName);
-    window.dispatchEvent(event);
-  };
-
   return (
     <div id="main-content" className="overflow-hidden pt-16">
       <section className="relative z-0 bg-surface px-6 py-16 md:px-12 lg:px-24">
@@ -87,16 +82,9 @@ export default function PrivacyPolicy() {
                 {section.thirdPartyPolicy && (
                   <p className="text-md text-on-surface-variant leading-relaxed">
                     For more information, please refer to the{' '}
-                    <a
-                      href={section.thirdPartyPolicy.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onMouseEnter={() => dispatchEvent('mouse-hover-start')}
-                      onMouseLeave={() => dispatchEvent('mouse-hover-end')}
-                      className="text-on-surface-variant cursor-none underline hover:text-primary transition-colors duration-300"
-                    >
+                    <Link variant="underline" href={section.thirdPartyPolicy.url} target="_blank">
                       {section.thirdPartyPolicy.name}
-                    </a>
+                    </Link>
                     .
                   </p>
                 )}
