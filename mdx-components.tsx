@@ -109,7 +109,9 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     h5: makeHeading('h5'),
     h6: makeHeading('h6'),
 
-    p: ({ children }) => <p className="text-md leading-relaxed text-on-surface my-4">{children}</p>,
+    p: ({ children }) => (
+      <p className="text-md leading-relaxed text-on-surface-variant my-4">{children}</p>
+    ),
 
     strong: ({ children }) => <strong className="font-semibold text-on-surface">{children}</strong>,
     em: ({ children }) => <em className="italic">{children}</em>,
