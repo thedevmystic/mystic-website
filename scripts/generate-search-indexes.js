@@ -50,7 +50,7 @@ function generateSearchIndex(folder, output) {
     const parsedPath = path.parse(relativePath);
 
     const routeParts = parsedPath.dir ? parsedPath.dir.split(path.sep) : [];
-    if (parsedPath.name !== 'index') {
+    if (parsedPath.name !== 'page' && parsedPath.name !== 'index') {
       routeParts.push(parsedPath.name);
     }
 
