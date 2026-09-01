@@ -47,7 +47,7 @@ export default function RecentSearch({
       <div>
         <p className="text-xs text-on-surface-variant px-4 pt-2 pb-1">{label}</p>
         {items.map((item, i) => {
-          const ItemIcon = item.section === 'docs' ? SquareText : BookText;
+          const ItemIcon = item.section === 'blog' ? SquareText : BookText;
           const active = selectedIndex === offset + i;
           return (
             <div

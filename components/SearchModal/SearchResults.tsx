@@ -32,7 +32,7 @@ function ResultRow({
   active: boolean;
   onSelect: (hit: SearchHit, headingSlug?: string) => void;
 }) {
-  const Icon = hit.section === 'docs' ? SquareText : BookText;
+  const Icon = hit.section === 'blog' ? SquareText : BookText;
   return (
     <div
       onClick={() => onSelect(hit)}
