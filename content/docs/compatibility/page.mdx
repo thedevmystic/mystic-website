@@ -1,0 +1,107 @@
+---
+title: 'Compatibility'
+tags: ['docs']
+excerpt: 'Check the compatibility of the framework with different platforms and environments.'
+breadcrumbs: ['Docs', 'Compatibility']
+drawerId: 'docs--compatibility'
+prev: '/docs/getting-started'
+next: '/docs/faqs'
+---
+
+# Compatibility
+
+This section provides information about the compatibility of the framework with various platforms and environments.
+It is important to ensure that your development environment meets the necessary requirements for optimal performance and functionality.
+
+## Supported Platforms
+
+MFW is compatible with the following platforms (or OSes):
+- Windows 10 and above
+- Linux distributions (Ubuntu, Fedora, Debian)
+
+> [!IMPORTANT]
+> It does not support macOS or any other operating systems at this time and there are no plans to support them in the near future.
+
+
+## Supported Architectures
+
+MFW is compatible with the following architectures:
+- x86_64 (64-bit)
+
+> [!IMPORTANT]
+> MFW does not support 32-bit architectures or ARM-based architectures at this time. It will never support 32-bit architectures,
+> but there are plans to support ARM-based architectures in the future.
+
+
+## C++ Version Compatibility
+
+MFW is built with **C++23** as its primary language standard, but it can also support C++20 with some tweaks and adjustments. However,
+there is no guarantee that all features will work as expected when using C++20, and some functionality may be limited or unavailable.
+It does not support C++17 or any earlier versions of the language standard. So, it is recommended to use C++23 for the best experience
+and full feature set.
+
+Note that the language standard may be changed in the future, and it is important to check the documentation for any updates regarding language
+standard compatibility.
+
+
+## Compiler Compatibility
+
+Since MFW is built with C++23, it requires a compiler that supports this standard. The following compilers are known to be compatible with MFW:
+- GCC 14 and above
+- Clang 18 and above
+- MSVC v143 and above
+
+Note that the compiler requirements are slightly higher than minimum requirements for C++23 because MFW utilizes **C++ Modules** extensively
+and these versions of the compilers have seamless support for it. No one is stopping you from using older versions of the compilers, but you
+may encounter issues with C++ Modules and other features that MFW relies on.
+
+Again, it is important to check the documentation for any updates regarding compiler compatibility, as new versions of compilers may be released
+that support C++23 and MFW better or when MFW itself is updated to support newer versions of the language standard.
+
+
+## Standard Library Compatibility
+
+MFW relies on modern standard library implementations:
+- `libstdc++` for GCC
+- `libc++` for Clang
+- `MSVC STL` for Microsoft Visual C++
+
+Ensure that your standard library implementation is also up-to-date to support C++23 for optimal performance and compatibility with MFW.
+
+
+## Build System Compatibility
+
+MFW uses **CMake** as its build system, and it requires CMake version 3.30 or above to build the framework. It is recommended to use the latest
+version of CMake for the best experience and compatibility with MFW.
+
+
+## Generator Compatibility
+
+MFW strictly supports only the **Ninja** generator (v0.11.0 or higher) for CMake. Other generators may work, but they are not officially supported
+and may lead to build issues or unexpected behavior. For example, Unix Makefiles are strictly incompatible with C++ Modules and by extension,
+MFW. So, it is highly recommended to use the Ninja generator when building MFW.
+
+
+## Integration with IDEs
+
+MFW can be integrated with popular IDEs such as Visual Studio, CLion, and VS Code. However, it is important to ensure that the IDE is configured
+to use the correct compiler, CMake version, and generator to avoid any compatibility issues. Refer to the IDE's documentation for instructions on how
+to configure it for C++23 and CMake with Ninja. List of versions of the IDEs that are known to work well with MFW are:
+- Visual Studio 2022 (v17.10 or higher)
+- CLion 2024.1 or higher
+- VS Code with the proper C++ extension and configuration for CMake and Ninja
+- Neovim with proper CMake and Ninja integration
+
+
+## Quick Summary
+
+| Category | Supported Versions |
+|----------|-------------------|
+| Platform | Windows 10 and above, Linux (Ubuntu, Fedora, Debian) |
+| Architecture | x86_64 (64-bit) |
+| C++ Standard | C++23 (recommended), C++20 (limited support) |
+| Compiler | GCC 14+, Clang 18+, MSVC 17.10+ |
+| Standard Library | libstdc++, libc++, MSVC STL |
+| Build System | CMake 3.30+ |
+| Generator | Ninja |
+| IDEs | Visual Studio 2022 (v17.10+), CLion 2024.1+, VS Code, Neovim |
