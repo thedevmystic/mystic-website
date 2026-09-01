@@ -2,6 +2,7 @@
 
 import { notFound } from 'next/navigation';
 import { ComponentType } from 'react';
+import type { Metadata } from 'next';
 import fs from 'fs/promises';
 import path from 'path';
 import Pagination from '@/components/Pagination';
@@ -20,10 +21,32 @@ interface PageProps {
 interface MDXModule {
   default: ComponentType;
   frontmatter?: {
+    title?: string;
+    excerpt?: string;
     breadcrumbs?: string[];
     drawerId?: string;
     prev?: string;
     next?: string;
+  };
+}
+
+export async function getDocModule(slug?: string[]): Promise<MDXModule> {
+  const slugPath = (slug || []).join('/');
+  try {
+    return (await import(`../../../content/docs/${slugPath}/page.mdx`)) as MDXModule;
+  } catch (error) {
+    return notFound();
+  }
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const resolvedParams = await params;
+  const docModule = await getDocModule(resolvedParams.slug);
+  const frontmatter = docModule.frontmatter;
+
+  return {
+    title: `${frontmatter?.title} | Docs | Mystic Framework` || 'Docs | Mystic Framework',
+    description: frontmatter?.excerpt || 'Read this documentation on Mystic Framework.',
   };
 }
 
@@ -41,13 +64,7 @@ export default async function DocPage({ params }: PageProps) {
     notFound();
   }
 
-  let DocModule: MDXModule;
-  try {
-    DocModule = (await import(`../../../content/docs/${slugPath}/page.mdx`)) as MDXModule;
-  } catch (error) {
-    notFound();
-  }
-
+  const DocModule = await getDocModule(slug);
   const Content = DocModule.default;
   const toc = extractToc(source);
   const breadcrumbs = DocModule.frontmatter?.breadcrumbs;

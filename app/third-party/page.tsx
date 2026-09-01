@@ -1,5 +1,6 @@
 /* Third Party Notices Page */
 
+import type { Metadata } from 'next';
 import Link from '@/components/Link';
 
 const dependencies = [
@@ -49,6 +50,11 @@ const dependencies = [
   { name: 'typescript', license: 'Apache-2.0' },
   { name: 'typescript-eslint', license: 'MIT' },
 ];
+
+export const metadata: Metadata = {
+  title: 'Third-Party | Mystic Framework',
+  description: 'Third-Party Notices for Mystic Framework',
+};
 
 export default function ThirdParty() {
   return (

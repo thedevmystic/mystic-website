@@ -1,6 +1,13 @@
 /* Blog Main Page */
 
+import type { Metadata } from 'next';
 import BlogViewer from '@/components/BlogViewer';
+
+export const metadata: Metadata = {
+  title: 'Blog | Mystic Framework',
+  description:
+    'The official blog of the Mystic Framework, where I share insights, updates, and stories about my work and the motivation behind it.',
+};
 
 export default function BlogPage() {
   return (

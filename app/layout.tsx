@@ -16,7 +16,7 @@ import { ThemeProvider } from '@/styles/ThemeProvider';
 import '@/styles/main.css';
 
 export const metadata: Metadata = {
-  title: 'Mystic Framework',
+  title: 'Mystic Framework - Performant. Elegant. Simply Mystic.',
   description:
     'Performant. Elegant. Simply Mystic. A modern C++ framework built for speed and clarity.',
   icons: {

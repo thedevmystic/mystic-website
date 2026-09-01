@@ -2,6 +2,7 @@
 
 import { notFound } from 'next/navigation';
 import { ComponentType } from 'react';
+import type { Metadata } from 'next';
 import fs from 'fs/promises';
 import path from 'path';
 import Pagination from '@/components/Pagination';
@@ -20,6 +21,11 @@ interface MDXModule {
     next?: string;
   };
 }
+
+export const metadata: Metadata = {
+  title: 'Docs | Mystic Framework',
+  description: 'Documentation for Mystic Framework',
+};
 
 export default async function DocPage() {
   const filePath = path.join(process.cwd(), 'content', 'docs', 'page.mdx');

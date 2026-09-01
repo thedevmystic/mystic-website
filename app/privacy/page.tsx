@@ -1,5 +1,7 @@
 /* Privacy Policy */
 
+import type { Metadata } from 'next';
+
 import Link from '@/components/Link';
 
 interface PrrivacySection {
@@ -40,6 +42,12 @@ const privacySections: PrrivacySection[] = [
       'We reserve the right to update or modify this privacy policy at any time. Any changes will be posted on this page with an updated "Last Updated" date. We encourage you to review this policy periodically for any updates. For any questions or concerns regarding this privacy policy, please contact us through the provided contact information on the website.',
   },
 ];
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy | Mystic Framework',
+  description:
+    'Privacy Policy for Mystic Framework website, outlining data collection, usage, and protection practices.',
+};
 
 const LAST_UPDATED_DATE = '31st August 2026 (UTC)';
 

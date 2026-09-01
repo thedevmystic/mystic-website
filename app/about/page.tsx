@@ -1,7 +1,14 @@
 /* About Page */
 
+import type { Metadata } from 'next';
+
 import ProjectSection from './ProjectSection';
 import CreatorSection from './CreatorSection';
+
+export const metadata: Metadata = {
+  title: 'About | Mystic Framework',
+  description: 'Learn more about Mystic Framework and its creator.',
+};
 
 export default function AboutPage() {
   return (
