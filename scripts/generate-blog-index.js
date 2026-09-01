@@ -40,7 +40,7 @@ function generateBlogIndex() {
       routeParts.push(parsedPath.name);
     }
 
-    const url = '/blog/' + routeParts.join('/');
+    const url = '/blog/posts/' + routeParts.join('/');
 
     return {
       title: data.title || '',
