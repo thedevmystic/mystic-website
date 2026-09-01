@@ -3,18 +3,26 @@
     "catagory": "Docs",
     "href": "/docs",
     "items": [
-      { "label": "Style Guide", "href": "/docs/styleguide" },
+      { "label": "Getting Started", "href": "/docs/getting-started" },
+      { "label": "Compatibility", "href": "/docs/compatibility" },
+      { "label": "FAQs", "href": "/docs/faqs" },
+      { "label": "Design Philosophy", "href": "/docs/design-philosophy" },
+      { "label": "Changelog", "href": "/docs/changelog" },
       { "label": "Roadmap", "href": "/docs/roadmap" },
-      { "label": "Changelog", "href": "/docs/changelog" }
+      { "label": "Contributing", "href": "/docs/contributing" },
+      { "label": "Code of Conduct", "href": "/docs/code-of-conduct" },
+      { "label": "Style Guide", "href": "/docs/style-guide" },
+      { "label": "License", "href": "/docs/license" },
+      { "label": "Security", "href": "/docs/security" },
+      { "label": "Support", "href": "/docs/support" },
+      { "label": "Glossary", "href": "/docs/glossary" }
     ]
   },
   {
-    "catagory": "Functions",
-    "href": "/docs/functions",
+    "catagory": "Modules",
+    "href": "/docs/modules",
     "items": [
-      { "label": "GetDocs", "href": "/docs/functions/getdocs" },
-      { "label": "StartSever", "href": "/docs/functions/startserver" },
-      { "label": "Cleanup", "href": "/docs/funcctions/cleanup" }
+      { "label": "Will be added soon", "href": "#" }
     ]
   }
 ]
