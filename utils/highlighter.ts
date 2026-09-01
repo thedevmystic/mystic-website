@@ -14,7 +14,7 @@ const theme = createCssVariablesTheme({
 
 let highlighterPromise: Promise<Highlighter> | null = null;
 
-const LANGS = ['c', 'cpp', 'python', 'bash', 'json'] as const;
+const LANGS = ['c', 'cpp', 'cmake', 'python', 'bash', 'json'] as const;
 
 export default async function getHighlighter(): Promise<Highlighter> {
   if (!highlighterPromise) {
