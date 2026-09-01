@@ -33,6 +33,7 @@ const Link = forwardRef(function Link(
     noHover = false,
     underlineOnHover = false,
     className: userClassName = '',
+    onClick,
     ...props
   }: LinkProps,
   ref: ForwardedRef<HTMLAnchorElement>,
@@ -54,6 +55,18 @@ const Link = forwardRef(function Link(
     window.dispatchEvent(new CustomEvent(eventName));
   };
 
+  const handleClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    if (disabled) {
+      event.preventDefault();
+      return;
+    }
+
+    dispatchEvent('mouse-hover-end');
+    if (onClick) {
+      onClick(event);
+    }
+  };
+
   if (disabled) {
     return (
       <span
@@ -61,6 +74,7 @@ const Link = forwardRef(function Link(
         className={className}
         onMouseEnter={() => dispatchEvent('mouse-hover-start')}
         onMouseLeave={() => dispatchEvent('mouse-hover-end')}
+        onClick={handleClick}
         {...props}
       >
         [[Hyperlink Disabled]]
@@ -79,6 +93,7 @@ const Link = forwardRef(function Link(
         tabIndex={tabIndex ?? 0}
         onMouseEnter={() => dispatchEvent('mouse-hover-start')}
         onMouseLeave={() => dispatchEvent('mouse-hover-end')}
+        onClick={handleClick}
         {...props}
       >
         {children}
@@ -100,6 +115,7 @@ const Link = forwardRef(function Link(
       tabIndex={tabIndex ?? 0}
       onMouseEnter={() => dispatchEvent('mouse-hover-start')}
       onMouseLeave={() => dispatchEvent('mouse-hover-end')}
+      onClick={handleClick}
       {...props}
     >
       {children}
