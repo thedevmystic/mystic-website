@@ -81,9 +81,7 @@ export default async function DocPage({ params }: PageProps) {
   return (
     <div className="grid grid-cols-1 min-[1240px]:grid-cols-[236px_768px_236px] justify-center gap-8">
       {/* Left Sidebar Spacer */}
-      <aside className="hidden min-[1240px]:block w-[236px] shrink-0 sticky top-20 self-start">
-        <SidebarDrawer items={drawerContent} currentId={drawerId} />
-      </aside>
+      <SidebarDrawer items={drawerContent} currentId={drawerId} />
 
       {/* Main Column (Breadcrumbs + Content) */}
       <div className="w-full max-w-[768px] md:border-l md:border-r border-outline-variant justify-self-center pt-[50px]">
