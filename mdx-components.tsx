@@ -2,6 +2,7 @@
 
 import type { AnchorHTMLAttributes, HTMLAttributes, ReactNode } from 'react';
 
+import { CldImage } from '@/components/CldImageClient';
 import CodeBlock from '@/components/CodeBlock';
 import Link from '@/components/Link';
 
@@ -128,6 +129,18 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
     blockquote: Blockquote,
 
+    ul: ({ children }) => (
+      <ul className="list-disc pl-6 my-8 space-y-2 text-md leading-relaxed text-on-surface-variant marker:text-outline">
+        {children}
+      </ul>
+    ),
+    ol: ({ children }) => (
+      <ol className="list-decimal pl-6 my-8 space-y-2 text-md leading-relaxed text-on-surface-variant marker:text-outline">
+        {children}
+      </ol>
+    ),
+    li: ({ children }) => <li className="pl-1 [&>p]:my-0 [&>ul]:my-2 [&>ol]:my-2">{children}</li>,
+
     pre: ({ children }) => {
       const codeElement = children as React.ReactElement<{
         className?: string;
@@ -163,6 +176,8 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     tr: ({ children }) => <tr className="even:bg-surface-container-low">{children}</tr>,
     th: ({ children }) => <th className="px-4 py-2 align-bottom">{children}</th>,
     td: ({ children }) => <td className="px-4 py-2 text-on-surface-variant">{children}</td>,
+
+    CldImage: CldImage,
 
     ...components,
   };
