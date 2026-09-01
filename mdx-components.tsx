@@ -31,14 +31,15 @@ function getTextContent(node: ReactNode): string {
 // ---------------------------------------------------------------------------
 // Alerts
 // ---------------------------------------------------------------------------
-
 const ALERT_STYLES: Record<string, string> = {
-  note: 'bg-primary-container text-on-primary-container border-primary [&_svg]:fill-primary',
-  tip: 'bg-secondary-container text-on-secondary-container border-secondary [&_svg]:fill-secondary',
+  note: 'bg-primary-container text-on-primary-container border-primary [&_svg]:fill-primary [&_*]:text-inherit',
+  tip: 'bg-secondary-container text-on-secondary-container border-secondary [&_svg]:fill-secondary [&_*]:text-inherit',
   important:
-    'bg-tertiary-container text-on-tertiary-container border-tertiary [&_svg]:fill-tertiary',
-  warning: 'bg-warning-container text-on-warning-container border-warning [&_svg]:fill-warning',
-  caution: 'bg-error-container text-on-error-container border-error [&_svg]:fill-error',
+    'bg-tertiary-container text-on-tertiary-container border-tertiary [&_svg]:fill-tertiary [&_*]:text-inherit',
+  warning:
+    'bg-warning-container text-on-warning-container border-warning [&_svg]:fill-warning [&_*]:text-inherit',
+  caution:
+    'bg-error-container text-on-error-container border-error [&_svg]:fill-error [&_*]:text-inherit',
 };
 
 const ALERT_TITLE_CSS =
