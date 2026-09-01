@@ -3,6 +3,7 @@
 import type { NextConfig } from 'next';
 
 import createMDX from '@next/mdx';
+import withSerwistInit from '@serwist/next';
 
 const nextConfig: NextConfig = {
   basePath: process.env.NEXT_PUBLIC_BASE_PATH || '',
@@ -35,4 +36,10 @@ const withMDX = createMDX({
   },
 });
 
-export default withMDX(nextConfig);
+const withSerwist = withSerwistInit({
+  swSrc: 'app/sw.ts',
+  swDest: 'public/sw.js',
+  disable: process.env.NODE_ENV === 'development',
+});
+
+export default withSerwist(withMDX(nextConfig));
