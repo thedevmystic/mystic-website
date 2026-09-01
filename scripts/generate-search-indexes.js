@@ -46,10 +46,19 @@ function generateSearchIndex(folder, output) {
     const content = fs.readFileSync(file, 'utf-8');
     const { data, content: body } = matter(content);
 
-    const relativePath = path.relative(contentDir, file);
+    const relativePath = path.relative(targetDir, file);
     const parsedPath = path.parse(relativePath);
 
-    const routeParts = parsedPath.dir ? parsedPath.dir.split(path.sep) : [];
+    const routeParts = [folder];
+    if (folder === 'blog') {
+      routeParts.push('posts');
+    }
+
+    if (parsedPath.dir) {
+      const dirParts = parsedPath.dir.split(path.sep);
+      routeParts.push(...dirParts);
+    }
+
     if (parsedPath.name !== 'page' && parsedPath.name !== 'index') {
       routeParts.push(parsedPath.name);
     }
