@@ -1,26 +1,51 @@
 [
   {
-    "catagory": "Docs",
+    "catagory": "Overview",
     "href": "/docs",
     "items": [
       { "label": "Getting Started", "href": "/docs/getting-started" },
       { "label": "Compatibility", "href": "/docs/compatibility" },
-      { "label": "FAQs", "href": "/docs/faqs" },
       { "label": "Design Philosophy", "href": "/docs/design-philosophy" },
-      { "label": "Changelog", "href": "/docs/changelog" },
-      { "label": "Roadmap", "href": "/docs/roadmap" },
-      { "label": "Contributing", "href": "/docs/contributing" },
-      { "label": "Code of Conduct", "href": "/docs/code-of-conduct" },
-      { "label": "Style Guide", "href": "/docs/style-guide" },
-      { "label": "License", "href": "/docs/license" },
-      { "label": "Security", "href": "/docs/security" },
-      { "label": "Support", "href": "/docs/support" },
       { "label": "Glossary", "href": "/docs/glossary" }
+    ]
+  },
+  {
+    "catagory": "Project Status",
+    "href": "/docs",
+    "items": [
+      { "label": "Changelog", "href": "/docs/changelog" },
+      { "label": "Roadmap", "href": "/docs/roadmap" }
+    ]
+  },
+  {
+    "catagory": "Community",
+    "href": "/docs",
+    "items": [
+      { "label": "Contributing", "href": "/docs/contributing" },
+      { "label": "Style Guide", "href": "/docs/style-guide" },
+      { "label": "Code of Conduct", "href": "/docs/code-of-conduct" }
+    ]
+  },
+  {
+    "catagory": "Support",
+    "href": "/docs",
+    "items": [
+      { "label": "FAQs", "href": "/docs/faqs" },
+      { "label": "Support", "href": "/docs/support" },
+      { "label": "Security", "href": "/docs/security" },
+      { "label": "License", "href": "/docs/license" }
     ]
   },
   {
     "catagory": "Modules",
     "href": "/docs/modules",
+    "items": [
+      { "label": "Will be added soon", "href": "#" }
+    ]
+  },
+  {
+    "catagory": "Tools",
+    "href": "/docs/tools",
     "items": [
       { "label": "Will be added soon", "href": "#" }
     ]
