@@ -62,7 +62,7 @@ function generateBlogIndex() {
     const pageEntries = index.slice(start, start + pageSize);
     const outputPath = path.join(rootDir, 'public', `blog-index-${page}.json`);
 
-    fs.writeFileSync(outputPath, JSON.stringify(pageEntries, null, 2));
+    fs.writeFileSync(outputPath, JSON.stringify(pageEntries));
     console.log(`Blog index page ${page} generated at ${outputPath}`);
   }
 }
