@@ -7,7 +7,7 @@ import type { MDXComponents } from 'mdx/types';
 
 import Pagination from '@/components/Pagination';
 
-import { blogMDXComponents } from './blog-mdx-components';
+import { blogMDXComponents } from './blogMdxComponents';
 
 interface PageProps {
   params: Promise<{
@@ -16,9 +16,7 @@ interface PageProps {
 }
 
 interface MDXModule {
-  default: ComponentType<{
-    components?: MDXComponents;
-  }>;
+  default: ComponentType<{ components?: MDXComponents }>;
   frontmatter?: {
     prev?: string;
     next?: string;
@@ -42,7 +40,7 @@ export default async function BlogPage({ params }: PageProps) {
   const next = BlogModule.frontmatter?.next;
 
   return (
-    <div id="main-content" className="overflow-hidden pt-16">
+    <div id="main-content" className="overflow-hidden pt-8">
       <section className="bg-surface px-6 py-16 md:px-12 lg:px-24">
         <div className="max-w-6xl mx-auto space-y-16">
           <article
