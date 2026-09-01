@@ -246,6 +246,12 @@ export default function SearchModal({ open, onClose }: SearchModalProps) {
               <ArrowDown className="w-4 h-4" aria-hidden="true" />
               <span>navigate</span>
             </div>
+            <div className="flex items-center gap-2">
+              <kbd className="text-xs text-on-surface-variant p-1 border border-outline-variant rounded-md">
+                ctrl + k
+              </kbd>
+              <span>open</span>
+            </div>
           </div>
         </div>
       </div>
