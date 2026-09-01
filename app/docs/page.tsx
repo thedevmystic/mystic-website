@@ -1,16 +1,20 @@
 /* Docs Main Page */
 
-import { notFound } from 'next/navigation';
-import { ComponentType } from 'react';
-import type { Metadata } from 'next';
 import fs from 'fs/promises';
 import path from 'path';
-import Pagination from '@/components/Pagination';
+
+import { ComponentType } from 'react';
+
+import type { Metadata } from 'next';
+
+import { notFound } from 'next/navigation';
+
 import Breadcrumb from '@/components/Breadcrumb';
-import TableOfContents from '@/components/TableOfContent';
+import Pagination from '@/components/Pagination';
 import SidebarDrawer from '@/components/SidebarDrawer';
-import { extractToc } from '@/utils/toc';
+import TableOfContents from '@/components/TableOfContent';
 import { getDrawerContent } from '@/utils/drawer';
+import { extractToc } from '@/utils/toc';
 
 interface MDXModule {
   default: ComponentType;
@@ -32,14 +36,14 @@ export default async function DocPage() {
   let source: string = '';
   try {
     source = await fs.readFile(filePath, 'utf-8');
-  } catch (error) {
+  } catch {
     notFound();
   }
 
   let DocModule: MDXModule;
   try {
     DocModule = (await import(`../../content/docs/page.mdx`)) as MDXModule;
-  } catch (error) {
+  } catch {
     notFound();
   }
 

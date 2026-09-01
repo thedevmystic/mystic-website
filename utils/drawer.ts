@@ -16,7 +16,7 @@ export async function getDrawerContent(slug: string[]): Promise<SidebarDrawerIte
       const fileContent = await fs.readFile(drawerFilePath, 'utf-8');
       const drawerContent: SidebarDrawerItem[] = JSON.parse(fileContent);
       return drawerContent;
-    } catch (error) {
+    } catch {
       // If the file doesn't exist, continue to the next iteration
       continue;
     }

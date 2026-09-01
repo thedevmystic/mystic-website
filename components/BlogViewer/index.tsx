@@ -3,7 +3,9 @@
 'use client';
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+
 import Link from 'next/link';
+
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
 import Button from '@/components/Button';
@@ -24,6 +26,7 @@ const CHEVRON_WIDTH = 28;
 
 export default function BlogViewer() {
   const [entries, setEntries] = useState<BlogEntry[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(true);
@@ -65,6 +68,7 @@ export default function BlogViewer() {
   }, []);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchPage(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

@@ -12,10 +12,10 @@ export default function CreatorSection() {
           Who&apos;s Building This
         </h2>
         <p className="text-md text-on-surface-variant max-w-2xl leading-relaxed">
-          I'm <span className="font-bold">Surya</span> — just a random guy in the madness of
-          multiverse! I'm also known as <span className="italic">thedevmystic</span> and I maintain
-          The Mystic Framework. There is nothing much interesting about me besides I love JoJo's and
-          want to get into MIT.
+          I&apos;m <span className="font-bold">Surya</span> — just a random guy in the madness of
+          multiverse! I&apos;m also known as <span className="italic">thedevmystic</span> and I
+          maintain The Mystic Framework. There is nothing much interesting about me besides I love
+          JoJo&apos;s and want to get into MIT.
         </p>
       </div>
     </section>

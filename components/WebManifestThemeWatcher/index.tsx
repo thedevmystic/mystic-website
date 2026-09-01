@@ -3,6 +3,7 @@
 'use client';
 
 import { useEffect } from 'react';
+
 import { useTheme } from '@/styles/ThemeProvider';
 
 export default function WebManifestThemeWtacher() {

@@ -3,6 +3,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+
 import { usePathname } from 'next/navigation';
 
 import { Search, Sun, Moon, Monitor, Menu, X } from 'lucide-react';
@@ -12,8 +13,8 @@ import Button from '@/components/Button';
 import Link from '@/components/Link';
 import Logo from '@/components/Logo';
 import SearchModal from '@/components/SearchModal';
-import Constants from '@/utils/Constants';
 import { useTheme } from '@/styles/ThemeProvider';
+import Constants from '@/utils/Constants';
 
 interface NavItem {
   label: string;
@@ -111,6 +112,7 @@ export default function Navbar() {
 
   useEffect(() => {
     if (!isHome) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsScrolled(true);
       return;
     }

@@ -3,8 +3,9 @@
 'use client';
 
 import { useEffect } from 'react';
-import { OverlayScrollbars } from 'overlayscrollbars';
+
 import Lenis from 'lenis';
+import { OverlayScrollbars } from 'overlayscrollbars';
 
 import 'overlayscrollbars/styles/overlayscrollbars.css';
 import 'lenis/dist/lenis.css';

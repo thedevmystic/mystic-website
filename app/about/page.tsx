@@ -2,8 +2,8 @@
 
 import type { Metadata } from 'next';
 
-import ProjectSection from './ProjectSection';
 import CreatorSection from './CreatorSection';
+import ProjectSection from './ProjectSection';
 
 export const metadata: Metadata = {
   title: 'About | Mystic Framework',

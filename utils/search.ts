@@ -21,8 +21,8 @@ const SEARCH_OPTIONS = {
 
 function parseQuery(raw: string) {
   const operatorRegex = /(include|exclude|section):"([^"]+)"/g;
-  let include: string[] = [];
-  let exclude: string[] = [];
+  const include: string[] = [];
+  const exclude: string[] = [];
   let section: 'docs' | 'blog' | null = null;
 
   const cleanQuery = raw

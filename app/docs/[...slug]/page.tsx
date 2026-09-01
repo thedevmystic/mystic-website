@@ -1,16 +1,20 @@
 /* Docs Page */
 
-import { notFound } from 'next/navigation';
-import { ComponentType } from 'react';
-import type { Metadata } from 'next';
 import fs from 'fs/promises';
 import path from 'path';
-import Pagination from '@/components/Pagination';
+
+import { ComponentType } from 'react';
+
+import type { Metadata } from 'next';
+
+import { notFound } from 'next/navigation';
+
 import Breadcrumb from '@/components/Breadcrumb';
-import TableOfContents from '@/components/TableOfContent';
+import Pagination from '@/components/Pagination';
 import SidebarDrawer from '@/components/SidebarDrawer';
-import { extractToc } from '@/utils/toc';
+import TableOfContents from '@/components/TableOfContent';
 import { getDrawerContent } from '@/utils/drawer';
+import { extractToc } from '@/utils/toc';
 
 interface PageProps {
   params: Promise<{
@@ -34,7 +38,7 @@ export async function getDocModule(slug?: string[]): Promise<MDXModule> {
   const slugPath = (slug || []).join('/');
   try {
     return (await import(`../../../content/docs/${slugPath}/page.mdx`)) as MDXModule;
-  } catch (error) {
+  } catch {
     return notFound();
   }
 }
@@ -60,7 +64,7 @@ export default async function DocPage({ params }: PageProps) {
   let source: string = '';
   try {
     source = await fs.readFile(filePath, 'utf-8');
-  } catch (error) {
+  } catch {
     notFound();
   }
 

@@ -1,6 +1,7 @@
 /* Third Party Notices Page */
 
 import type { Metadata } from 'next';
+
 import Link from '@/components/Link';
 
 const dependencies = [

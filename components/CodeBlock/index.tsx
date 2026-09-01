@@ -1,7 +1,8 @@
 /* Code Block component */
 
-import CopyButton from './CopyButton';
 import getHighlighter from '@/utils/highlighter';
+
+import CopyButton from './CopyButton';
 
 interface CodeBlockProps {
   code: string;

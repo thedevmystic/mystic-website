@@ -1,14 +1,16 @@
 /* Blog Page */
 
-import { notFound } from 'next/navigation';
 import { ComponentType } from 'react';
+
 import type { Metadata } from 'next';
 
-import type { MDXComponents } from 'mdx/types';
+import { notFound } from 'next/navigation';
 
 import Pagination from '@/components/Pagination';
 
 import { blogMDXComponents } from './blogMdxComponents';
+
+import type { MDXComponents } from 'mdx/types';
 
 interface PageProps {
   params: Promise<{
@@ -30,7 +32,7 @@ export async function getBlogModule(slug?: string[]): Promise<MDXModule> {
   const slugPath = (slug || []).join('/');
   try {
     return (await import(`../../../../content/blog/${slugPath}/page.mdx`)) as MDXModule;
-  } catch (error) {
+  } catch {
     return notFound();
   }
 }

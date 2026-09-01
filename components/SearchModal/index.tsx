@@ -3,14 +3,15 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+
 import { useRouter } from 'next/navigation';
+
 import { ArrowUp, ArrowDown, CornerDownLeft, Search } from 'lucide-react';
 import { OverlayScrollbars } from 'overlayscrollbars';
 
 import Modal from '@/components/Modal';
 import { useSearchIndexStatus } from '@/hooks/useSearchIndexStatus';
 import debounce from '@/utils/debounce';
-import { search, type SearchResult as SearchOutcome, type SearchHit } from '@/utils/search';
 import {
   recordSearch,
   getSavedSearches,
@@ -18,6 +19,7 @@ import {
   removeSearch,
   type SavedSearch,
 } from '@/utils/savedSearches';
+import { search, type SearchResult as SearchOutcome, type SearchHit } from '@/utils/search';
 
 import RecentSearch from './RecentSearch';
 import SearchResults from './SearchResults';
@@ -143,8 +145,11 @@ export default function SearchModal({ open, onClose }: SearchModalProps) {
 
   useEffect(() => {
     if (!open) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSearchQuery('');
+
       setOutcome(null);
+
       setSelectedIndex(0);
     } else {
       refreshSaved();

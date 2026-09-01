@@ -1,6 +1,7 @@
 /* Blog Main Page */
 
 import type { Metadata } from 'next';
+
 import BlogViewer from '@/components/BlogViewer';
 
 export const metadata: Metadata = {

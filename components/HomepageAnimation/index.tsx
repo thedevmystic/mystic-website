@@ -107,7 +107,7 @@ export default function HomepageAnimation() {
       cancelAnimationFrame(frameId);
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [theme]);
 
   return (
     <>

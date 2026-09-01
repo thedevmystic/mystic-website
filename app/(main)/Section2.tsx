@@ -43,9 +43,9 @@ export default function Section2() {
           <div className="bg-surface-container-low text-on-surface text-sm font-mono overflow-hidden rounded-xl border border-outline-variant w-full">
             <div className="flex flex-row items-center justify-start text-on-surface-variant px-4 py-1 border-b border-outline-variant">
               <span className="text-xs font-mono mr-auto">main.cpp</span>
-              <span className="w-2 h-2 rounded-full bg-error mr-2"></span>
-              <span className="w-2 h-2 rounded-full bg-warning mr-2"></span>
-              <span className="w-2 h-2 rounded-full bg-success"></span>
+              <span className="w-2 h-2 rounded-full bg-error mr-2" />
+              <span className="w-2 h-2 rounded-full bg-warning mr-2" />
+              <span className="w-2 h-2 rounded-full bg-success" />
             </div>
             <div className="px-4 py-2">
               <pre className="text-sm font-mono overflow-auto">

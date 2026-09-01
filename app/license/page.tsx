@@ -2,8 +2,8 @@
 
 import type { Metadata } from 'next';
 
-import Link from '@/components/Link';
 import CodeBlock from '@/components/CodeBlock';
+import Link from '@/components/Link';
 
 const APACHE_LICENSE_TEXT = `
 

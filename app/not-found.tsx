@@ -3,6 +3,7 @@
 'use client';
 
 import { useRef } from 'react';
+
 import Image from 'next/image';
 
 import Button from '@/components/Button';
@@ -23,7 +24,7 @@ export default function NotFound() {
           <h1 className="text-4xl text-on-surface font-semibold mb-4">Oops!</h1>
           <p className="text-lg text-on-surface-variant mb-8 leading-relaxed">
             It looks like there is nothing but a sleeping cat here. <br />
-            But don't fret! We'll get you back.
+            But don&apos;t fret! We&apos;ll get you back.
           </p>
 
           <Button variant="secondary" onClick={handleClick} className="rounded-md">
