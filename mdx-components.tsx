@@ -142,6 +142,8 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ),
     li: ({ children }) => <li className="pl-1 [&>p]:my-0 [&>ul]:my-2 [&>ol]:my-2">{children}</li>,
 
+    hr: () => <hr className="my-8 border border-outline-variant/20" />,
+
     pre: ({ children }) => {
       const codeElement = children as React.ReactElement<{
         className?: string;
