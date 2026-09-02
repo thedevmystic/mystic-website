@@ -1,0 +1,74 @@
+---
+title: 'Glossary'
+tags: ['docs']
+excerpt: 'Familiarize yourself with the terminology and concepts used in the framework.'
+breadcrumbs: ['Docs', 'Glossary']
+drawerId: 'overview--glossary'
+prev: '/docs/design-philosophy'
+next: '/docs/changelog'
+---
+
+# Glossary
+
+This section outlines the terminology and concepts used in the framework. Understanding these will help you better understand the
+documentation.
+
+> [!NOTE]
+> This glossary is not exhaustive and will be updated as the framework evolves. If you come across a term that is not defined here,
+> please reach out to the maintainers or contribute to the documentation.
+
+## Terms
+
+#### A
+
+- ABI: Application Binary Interface. The low-level interface between two binary program modules, often between the operating system and user programs.
+- API: Application Programming Interface. The set of functions, classes, and methods provided by the framework for developers to use in their applications.
+
+#### C
+
+- Compile-time: The time at which the source code is compiled into executable code, as opposed to runtime, which is when the program is running.
+- Compile-time Evaluation: Ability of the compiler to evaluate expressions and perform computations at compile time, rather than at runtime.
+- Concepts: In C++, concepts are a way to specify constraints on template parameters, allowing for more expressive and readable code. (since C++20)
+- CRTP: Curiously Recurring Template Pattern. This is a C++ programming technique where a class template derives from itself, allowing for static polymorphism.
+
+#### H
+
+- Headers: In C++, headers are files that contain declarations of functions, classes, and variables. They are included in source files to provide the necessary information for compilation.
+- Header-only Library: A library that consists entirely of header files, allowing for easier distribution and usage without the need for separate compilation.
+
+#### M
+
+- Module: A self-contained unit of code that can be reused across different parts of the framework or in different projects.
+- Mystic Framework or MFW: The framework itself, which is a collection of modules and libraries designed to provide a set of tools and abstractions for developers.
+
+#### R
+
+- RAII: Resource Acquisition Is Initialization. This is a programming idiom in C++ where resource allocation is tied to object lifetime, ensuring that resources are properly released when objects go out of scope.
+- Runtime: The time during which a program is running, as opposed to compile-time, which is when the source code is compiled into executable code.
+
+#### S
+
+- SFINAE: Substitution Failure Is Not An Error. This is a C++ programming technique that allows for the selection of function overloads based on the validity of template substitutions.
+- Source Code: The human-readable code written by developers in a programming language, which is then compiled or interpreted into executable code.
+- Static Polymorphism: A form of polymorphism in C++ where the method to be invoked is determined at compile time, often achieved through templates and CRTP.
+
+#### T
+
+- TMP: Template Metaprogramming. This is a programming technique in C++ that uses templates to perform computations and generate code at compile time, allowing for more efficient and flexible code.
+
+#### Z
+
+- Zero-cost Abstraction: A design principle in programming that aims to provide high-level abstractions without incurring additional runtime overhead, meaning that the abstraction should not introduce any performance penalty compared to lower-level code.
+
+## Framework Modules
+
+- [CMake Module](/docs/modules/cmake): CMake build utilities and modules.
+- [Common Module](/docs/modules/common): Core utilities, constants, and foundational types.
+- [Containers Module](/docs/modules/containers): Custom data structures optimized for the framework.
+- [HAL Module](/docs/modules/hal): Hardware Abstraction Layer for cross-platform hardware access.
+- [Status Module](/docs/modules/status): Status codes, management, and error handling utilities.
+- [Traits Module](/docs/modules/traits): Type traits and compile-time inspection utilities.
+
+## Resources
+
+You can find information about C++ concepts and terminology in the following resources: [Stroustrup's C++ Programming Language](https://www.stroustrup.com/C++.html), [cppreference.com](https://en.cppreference.com/w/), and [ISO C++](https://isocpp.org/).
