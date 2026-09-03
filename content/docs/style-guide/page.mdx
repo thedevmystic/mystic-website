@@ -1,0 +1,1680 @@
+---
+title: 'Style Guide'
+tags: ['docs']
+excerpt: 'Follow the recommended coding standards and best practices for working with the framework.'
+breadcrumbs: ['Docs', 'Style Guide']
+drawerId: 'community--style-guide'
+prev: '/docs/contributing'
+next: '/docs/code-of-conduct'
+---
+
+# Style Guide
+
+This style guide provides recommended coding standards and best practices for working with the framework. Following these
+guidelines will help maintain code consistency, readability, and maintainability across the project.
+
+
+## Background
+
+C++ is the primary language of Mystic Framework (MFW). C++ is an incredibly powerful language and provides one of the best, if not the
+best performance. But it is also sufficiently complex and there are many nuances to the language. Some nuances can make this powerful
+language be bug-prone and look like ancient magic.
+
+So, the goal of this style guide is to establish a list of do's and dont's to make use of this power without some degree of headache.
+This guide exists to make the codebase manageable while still using the language productively. This is heavily inspired by the
+[Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html).
+
+> [!NOTE]
+> This style guide assumes that the reader is familiar with the language.
+
+## What is a Style Guide?
+
+A style guide is a set of standards and conventions that developers follow when writing code. It helps ensure that the codebase is consistent,
+readable, and maintainable. By adhering to a style guide, developers can reduce confusion, improve collaboration, and make it easier for new
+contributors to understand the code.
+
+
+## Enivronment Details
+
+C++ is a pretty scattered language when it comes to the environment. There are many compilers, many versions of the same compiler, many
+different platforms, and even many different standards of the language itself. This can make it quite confusing to know what is supported and
+what is not. The following are the details of the environment that this style guide assumes.
+
+### C++ Language Standard
+
+The current C++ standard used by the framework is **C++23**. Do not use features that are not  stable yet. The C++ version will advance and
+it'll advance agressively.
+
+Generally, Do not use non-standard extensions (GCC-extensions, Clang-extensions, or others). See [non-standard extensions](#non-standard-extensions)
+for exceptions and rules.
+
+You should use modern and expressive features whenever you can. But if a feature can be ported to C++20 easily, then you may consider
+porting it.
+
+### Compiler
+
+The framework supports all 3 major compilers:
+- GCC (GNU Compiler Collection)
+- Clang (LLVM-based compiler)
+- MSVC (Microsoft Visual C++)
+
+It is tested against the latest stable versions of these compilers. It is recommended to use the latest stable version of your preferred
+compiler to ensure compatibility and take advantage of the latest features and optimizations. If you can't use the latest stable version,
+then here are the minimum versions of the compilers that are supported by the framework:
+- GCC 14 and above
+- Clang 18 and above
+- MSVC v143 and above
+
+A good rule of thumb, if you are using a compiler that is not listed here, is to check if it supports C++23 and C++ Modules. If it does,
+then it should work with the framework.
+
+### Platform and Architecture
+
+The framework is compatible with the following platforms (64-bit versions only):
+- Windows 10 and above
+- Linux distributions (Ubuntu, Fedora, Debian, etc)
+
+It does not support macOS or any other operating systems at this time and there are no plans to support them in the near future.
+
+### Build System
+
+The framework uses **CMake** (v3.30 or higher) as its build system. It is recommended to use the latest version of CMake for the most seamless
+exprience as the recent versions of CMake have better support for C++ Modules and other modern C++ features.
+
+### Build Generator
+
+The framework is built with **Ninja** (v0.11.0 or higher) as its build generator. It is highly recommended to use Ninja as your build generator
+because it is one of the few build generators that has good support for C++ Modules. Other build generators may work, but they may not have
+good support for C++ Modules.
+
+
+## Project Structure and Files
+
+This section ouutlines the recommended project structure and file organization for the framework.
+
+### General Project Structure
+
+Since the framework is module-heavy, the project structure is made to reflect it. For example:
+```
+AwesomeProject
+├── source
+│   ├── private
+│   │   ├── internal_file1.cpp
+│   │   ├── internal_file2.cpp
+│   │   └── internal_module.cppm
+│   ├── public
+│   │   ├── other_public_file.cppm
+│   │   ├── public_file.cppm
+│   │   └── public_macros.hpp
+│   ├── test
+│   │   ├── bar.test.cpp
+│   │   └── foo.test.cpp
+│   └── CMakeLists.txt
+└── CMakeLists.txt
+```
+
+See [module rules](#modules) for learning what module files and their corresponding source files should look like.
+
+### Files Extensions
+
+Different types of C++ files have different extensions. MFW standardizes them as:
+- Header files should have `.hpp` extension (with some exceptions, see [header rules](#header-files)).
+- Module files should have `.cppm` extension.
+- Source (implementation) files should have `.cpp` extension.
+
+Do not use any other extension for files. See Conventions used for [naming files](#naming-files).
+
+### Public vs. Private
+
+Everything that needs to be seen by the users of the codebase must reside in the public directory and anything that is not needed to be seen
+by the users must reside in the private directory.
+
+Examples of what defines "public":
+- Modules that can be included by the users.
+- Helper macro headers.
+
+Examples of what defines "private":
+- Helper/internal detail modules.
+- Helper/internal detail headers
+- ALL implementation source files.
+
+> [!NOTE]
+> C++ source implementation files are not needed to be included or seen by the users, they always reside in private.
+
+Do not mix files in directories and mirror the directory structure in both public and private.
+
+
+## Header Files
+
+Header files are used to declare the interface of a module or a library. They contain declarations of functions, classes, variables, and other
+layout elements that are needed to be seen by the users of the codebase. Header files are typically included in other source files to provide
+access to the declared elements.
+
+### Header Files vs. Modules
+
+Prefer C++ modules (`.cppm`) over header files (`.hpp`) whenever possible. The main benefit of this significantly reduced compile times
+(around ~87% faster). Modules should only define layouts and implementations should still be defined in source files (`.cpp`).
+
+### Self-Contained Policy
+
+If using headers, use [header guards](#header-guards). Generally, all the work can be done in the modules but if we have to use headers they
+should be self-contained meaning, they should include every required dependency they need and can be compiled on their own. If a header is
+only included in another header (which should be used sparingly) then it should end in `.inc`.
+
+Inline functions should be defined on-spot (if small) or at the end of the file (if large). Do not use `*-inl.hpp`.
+
+Templates should also have their definitions in the header file, but if due to some reasons we can't (e.g., `explicit`) then only define it
+in the *corresponding* source file.
+
+If a header can't be self-contained (which is extremely rare), then they may not have header guards or might not include their prerequisites.
+Name such files with `.inc` but always prefer self-contained header files whenever possible.
+
+In MFW, you will generally see headers being used to define helper macros only, in that case, they must end in `*_macros.hpp`.
+
+### Header Guards
+
+All headers file should use `#define` guard over `#pragma once` to prevent multiple inclusion error. They should be formatted as
+`<PROJECT>_<PATH>_<FILE>_HPP_`. This guarantees uniqueness. The path should be based on "full path" of the file in the source tree
+(including public/private). For example the file `AwesomeProject/source/public/awesome_header.hpp` in `AwesomeProject` should have the
+following guard:
+```cpp
+#ifndef AWESOME_PROJECT_PUBLIC_AWESOME_HEADER_HPP_
+#define AWESOME_PROJECT_PUBLIC_AWESOME_HEADER_HPP_
+
+#endif // AWESOME_PROJECT_PUBLIC_AWESOME_HEADER_HPP_
+```
+
+> [!NOTE]
+> Always end with a matching comment showing this `#endif` closes the header guard.
+
+### Include What You Use
+
+Do not rely on transitive includes, always include what you use. If header `bar.hpp` includes `baz.hpp`, and `foo.hpp` requires both, then it
+should include **both**.
+```cpp
+// foo.hpp
+
+// DO:
+#include "bar.hpp"
+#include "baz.hpp"
+
+// DON'T:
+#include "bar.hpp"
+// #include "baz.hpp" // baz.hpp being transitively included
+```
+
+This also goes for source files. If `foo.cpp` (defining `foo.hpp`) also uses symbols from `bar.hpp` then it should include `bar.hpp` in it.
+
+### Forward Declaration
+
+Do not use forward declaration whenever possible. Since the architecture is module-first, only use forward declaration when essential
+(e.g., to break circular dependency). Instead include the header file you use.
+
+### Functions in Header Files
+
+Functions defined in header files or inline functions should be defined in the header in ODR-safe manner, and should consider the following
+things:
+
+- Is function short (under 5 lines)?
+> Inline it directly at the function declaration.
+
+- Is function long but requires to be inlined for performance reasons?
+> Declare the function body only and then inline it at the bottom of the file.
+
+#### Now we have 2 cases:
+
+The inlined function/s is part of public API. In this case add this comment on top of it:
+```cpp
+// Public inline function[s] definition below.
+```
+
+The inlined function/s is part of private detail. In this case add this comment on top of it:
+```cpp
+// Implementation details only below here.
+```
+
+- Is function long and does not needs to be inlined?
+> Define it in the source file (`.cpp`).
+
+### Include Order
+
+Do not use UNIX-style path aliases (e.g., '.' or '..'). Always use the absolute path from project source directory. For example for a file
+'awesome-project/source/public/foo/bar.hpp' use:
+
+> [!NOTE]
+> `public` and `private` directories are included source directory.
+
+```cpp
+#include "foo/bar.hpp"
+```
+
+Headers should only be included using angular brackets if the library requires so. In general these type of libraries requires angular
+brackets:
+- C++ and C standard library headers (e.g., `<stdio.h>` or `<string>`).
+- POSIX, Linux, and Windows system headers (e.g., `<unistd.h>` and `<windows.h>`).
+- In rare cases third-party libraries (e.g., `<Python.h>`).
+
+Include order for a file `dir/foo.cpp` (which defines `dir/foo.hpp`) should be like this:
+1. dir/foo.hpp
+2. `<Blank line>`
+3. C standard library headers and other system libraries with `.h` extension.
+4. `<Blank line>`
+5. C++ standard library headers (without `.h` extension).
+6. `<Blank line>`
+7. Third party library headers
+8. `<Blank line>`
+9. First party modules' headers (modules in mystic-framework)
+10. `<Blank line>`
+11. Your project's headers
+12. `<Blank line>`
+
+#### Few Points to Remember
+
+- Each non-empty group should be seperated by a blank line.
+- Always prefer C++'s C standard library counterparts (e.g., prefer `<cstdio>` over `<stdio.h>`).
+- Each section should be alphabetically ordered.
+
+**Example** for `awesome-project/source/public/wow/awesome_file.hpp`:
+```cpp
+#include "wow/awesome_file.hpp"
+
+#include <sys/types.h>
+#include <unistd.h>
+
+#include <cstdint>
+#include <string>
+#include <vector>
+
+#include "some_third_party/file.h" // or .hpp
+
+#include "common/attribute.hpp"
+
+#include "wow/other_awesome_file.hpp"
+```
+
+**Exception:** Sometimes system libraries needs to be included conditionally in this case include them after every other includes.
+Keep the conditional section small and contained.
+
+```cpp
+#include "wow/awesome_file.hpp"
+
+#if defined(_WIN32)
+#  include <windows.h>
+#endif // defined(_WIN32)
+```
+
+## Modules
+
+C++ modules are a modern feature of the language that allows for better encapsulation and faster compilation times. They provide a way to
+group related code together and expose only the necessary interfaces to the users of the codebase. Modules can be used to replace traditional
+header files and can help reduce the complexity of the codebase.
+
+### When to use Modules?
+
+**Always!** Prefer modules over traditional include headers. As stated above they drastically reduce compile times which is important as MFW
+grows. Remember to use modules only for layouts while using source files for implementation.
+
+### Self Contained Policy for Modules
+
+Same as [header self contained policy](#headers-and-self-contained-policy). On top of it, import every modules, submodules, and module
+partitions needed (similar to [include everything you need](#include-everything-you-need)).
+
+### How to name modules?
+
+Modules should follow a simple naming convention:
+1. If submodule: `<PREFIX>.<PROJECT MAIN MODULE>.<SUBMODULE>`
+1. If module partition: `<PREFIX>.<PROJECT MAIN MODULE>:<PARTITION>`
+
+MFW's primary prefix is just `mystic`. So if we have a submodule `add_const` in `traits` module:
+```cpp
+export module mystic.traits.add_const;
+```
+
+### Submodules vs. Partitions
+
+Use submodules for modules needed to be seen by the users (public modules) and use partitions for modules not seen by the users
+(private modules). This allows skimming whether a module is public or private.
+
+### Forward Declaration in Modules
+
+Same as [forward declaration in header files](#forward-declaration).
+
+### Functions in Modules
+
+Similar to [headers file rule](#functions-in-header-files). Module/Source split is simular to Header/Source split, so all rule almost applies.
+
+### Include Order and Global Module Fragment
+
+In modules, the module (`.cppm`) file looks like:
+```cpp
+export module awesome.module_name;
+```
+
+And corresponding source file begins with:
+```cpp
+module awesome.module_name;
+```
+
+Modules have include order (header files) and import order (other modules, submodules, and partitions).
+
+#### Include Order
+
+All includes must be declared in `Global Module Fragment`. That is:
+```cpp
+module;
+
+// This area is global module fragment
+
+export module module_name;
+```
+
+Include order is same as [headers include order](#include-order).
+
+#### Import Order
+
+Importing modules, submodules, and partitions is done after `export` keyword:
+```cpp
+module;
+
+// Global Module Fragment
+
+export module module_name;
+
+// Import Area
+```
+
+Prefer using `#include <...>` for standard library over `import std;` as just using it makes  portablity with C++20 impossible. And most of
+the time, common standard library headers (e.g., `<string>`, `<vector>`, etc) have in-house variant (`mystic.containers.string`, `mystic.containers.vector`).
+So, **Always** try to use in-house variants over standrd library one.
+
+This is the effective import order:
+1. Third party library modules
+2. `<Blank line>`
+3. First party modules (modules in mystic-framework)
+5. `<Blank line>`
+6. Your project's submodules
+8. `<Blank line>`
+9. Your project's partition
+10. `<Blank line>`
+
+So, putting all together, for a module in `awesome/source/public/wow/module.cppm`:
+```cpp
+module;
+
+#include <sys/types.h>
+#include <unistd.h>
+
+#include "some_third_party/file.h" // or .hpp
+
+#include "common/attribute.hpp"
+
+#include "wow/other_awesome_file.hpp"
+
+export module mystic.awesome;
+
+import some_third_party.module_name;
+
+import common.types;
+import traits.add_const;
+
+import :some_partition;
+```
+
+In source files (`.cpp`), use the same:
+```cpp
+module;
+
+#include <sys/types.h>
+#include <unistd.h>
+
+#include "some_third_party/file.h" // or .hpp
+
+#include "common/attribute.hpp"
+
+#include "wow/other_awesome_file.hpp"
+
+module mystic.awesome;
+
+import some_third_party.module_name;
+
+import common.types;
+import traits.add_const;
+
+import :some_partition;
+```
+
+### Marking Export
+
+Export only the public API functions, helpers, classes, and others. Private API should strictly be never exported. Never forget to add
+export to inline functions too!
+
+### Umbrella Modules
+
+Since modules does not re-parse and bloat compile times, we generally provide a umbrella module for the specific projects, for example
+`traits` library have `mystic.traits` umbrella module. But in internal project usage, it is advisable to use the specific submodule you need
+as it makes skimming easier. Like use `mystic.traits.add_const` when you only need `mystic::traits::AddConst`. In short, umbrella modules are
+a convenience feature for end-user not library authors.
+
+
+## Scoping
+
+In C++, scoping is the practice of limiting the visibility and accessibility of variables, functions, and other identifiers to a specific
+part of the codebase. Proper scoping helps prevent naming conflicts, improves code organization, and enhances maintainability.
+
+### Namespace
+
+Code should always be placed inside a namespace (with few exceptions) to avoid name collisions.
+
+- Do not use `using namespace foo;`.
+- Do not use inline namespaces. For unnamed namespaces see [internal linkage](#internal-linkage).
+
+When writing a namespace in MFW, keep the following rules in mind:
+- It should be under global parent namespace (i.e., `mystic::`).
+- It must follow [namespace naming rules](#naming-namespaces).
+- Terminate multiple line namespaces with comment as shown below.
+```cpp
+// in awesome.h file:
+namespace mystic::awesome {
+
+int GetAwesomeNumber() {
+  return 42;
+}
+
+int MyAwesomeFunction() {
+  int awesome_number = GetAwesomeNumber();
+  return awesome_number;
+}
+
+} // namespace mystic::awesome
+```
+- Nested namespaces should be named using `::`, see the example below.
+```cpp
+// in awesome.h file:
+// DON'T:
+namespace mystic {
+namespace awesome {
+
+// ...
+
+} // namespace awesome
+} // namespace mystic
+
+// DO:
+namespace mystic::awesome {
+
+// ...
+
+} // namespace mystic::awesome
+```
+- Namespaces wrap entire source files after includes, forward declarations, etc.
+```cpp
+// in awesome.cpp file:
+#include <...>
+#include <...>
+
+#include <...>
+#include <...>
+#include <...>
+
+class AwesomeSauce;
+
+namespace mystic::awesome {
+
+// ...
+
+} // namespace mystic::awesome
+```
+- Do not declare anything in`std::` namespace.
+- Do not use using-directive (generally).
+```cpp
+// Pollutes namespace
+using namespace foo;
+```
+- Do not use namespace aliases in the public API (since it becomes part of it). Namespace aliases can be used internally:
+```cpp
+// in awesome.h file:
+namespace mystic::awesome {
+
+inline void super_awesome() {
+  namespace baz = ::foo::bar::baz; // local to function
+}
+
+namespace internal { // internal not part of public API
+namespace sauce = ::mystic::super::sauce;
+
+void Pasta(sauce::TomatoSauce tomato_sauce);
+} // namespace internal
+
+} // namespace mystic::awesome
+```
+- Do not use inline namespaces.
+10. Add `*_internal` to signify that the namespace is for internal usage only.
+```cpp
+namespace mystic::super::sauce {
+
+class TomatoSauce {
+  // ...
+};
+
+inline TomatoSauce ServeTomatoSauce(::mystic::vegetable::Tomato tomato) {
+  TomatoSauce sauce = sauce_internal::PrepareTomatoSauce(tomato);
+  sauce.AddGarnish();
+  sauce.AddAnythingCustomerNeeds();
+  // ... add other secondary things not needed for actual sauce
+  return sauce;
+}
+
+namespace sauce_internal {
+
+inline TomatoSauce PrepareTomatoSauce(::mystic::vegetable::Tomato tomato) {
+  // Now you can change the core recipie internally without worrying about anything!
+}
+
+} // namespace sauce_internal
+
+} // namespace mystic::super::sauce
+```
+
+### Internal Linkage
+
+Always use internal linkage in source files (`.cpp`) files for symbols that are not needed to be referenced elsewhere. For internal linkage
+use `unnamed namespaces` or declare them as `static`.
+
+Do not use internal linkage in header files (`.hpp`) and for simplicity, also not in module files (`.cppm`).
+
+Format unnamed namespace similar to named namespaces but wothout any name!
+```cpp
+namespace {
+
+} // namespace
+```
+
+### Non-member, Static Member, and Global Functions
+
+Always put non-member functions in namespaces. Usage of global functions should be as minimal as possible, always try to put it in a
+namespace to avoid polluting global namespace. Do not use class only to group static memvers as it no different than just using a prefix or
+namespace. Static members should be closely related to instances of the class or its static data.
+
+Non-member functions should never depend on external variables nor have heavy dependency. If it have these, then it should be made members of
+a new class. If the non-member function is only related to its own implementation then use [internal linkage](#internal-linkage) to limit its
+scope.
+
+### Local Variables
+
+Define a function's variables in the narrowest scope possible, and initialize variables in the declaration.
+
+C++ allows you to define variables anywhere and them anywhere or declare first then assign. But it is discouraged in MFW. We encourage to
+define them as local as possible, and as close to first use as possible. This makes skimming easy. Also, initialize on declaration, instead
+of declaration then assignment.
+
+<div className="flex flex-col gap-8">
+
+```cpp
+// BAD:
+int i;
+i = F(); // Assignment after declaration
+
+// GOOD:
+int i = F(); // Intialization on declaration
+```
+
+```cpp
+// BAD:
+int jobs = GetJobs();
+// ... more code
+F(jobs); // Declaration seperate from use
+
+// GOOD:
+int jobs = GetJobs();
+F(jobs); // Declare when used
+```
+
+```cpp
+// BAD:
+mystic::containers::Vector<int> vec;
+vec.PushBack(10);
+vec.PushBack(20);
+vec.PushBack(30); // Prefer initializing using braces
+
+// GOOD:
+mystic::containers::Vector<int> vec = {10, 20, 30}; // vec starts initialized
+```
+
+</div>
+
+Variables needed for `if`, `while` and `for` statements should normally be declared within those statements, so that such variables are
+confined to those scopes. For example:
+```cpp
+for (int i = 0; i < 500; i++) {
+  int j = 20;
+  // Do work
+}
+```
+
+There is one exception, if variable is an object then it is constructed and destroyed for every interation (which can be performance bottleneck easily).
+```cpp
+// Inefficient
+for (int i = 0; i < 100000000; i++) {
+  Foo f; // ctor and dtor are called 100000000 times each.
+  f.DoSomething();
+}
+```
+
+It may be more efficient to declare such a variable used in a loop outside that loop:
+```cpp
+// Efficient
+Foo f; // ctor and dtor are called only one time each.
+for (int i = 0; i < 100000000; i++) {
+  f.DoSomething();
+}
+```
+
+### Static and Global Variables
+
+Objects with static storage duration including namespace variables, static class members, and function-local static variables are strictly
+regulated to avoid complexity, hard-to-find bugs, and initialization/destruction ordering issues across translation units.
+
+#### Initialization
+
+- Constant initialization is always allowed and should be explicitly marked with `constexpr` or `constinit`.
+- Dynamic initialization of non-local static variables is discouraged and generally forbidden, unless no aspect of the program depends on its initialization order.
+- Dynamic initialization of function-local static variables is allowed.
+
+
+#### Destruction
+
+- Objects with static storage duration are forbidden unless they are trivially destructible.
+- Fundamental types, arrays of trivially destructible types, and variables marked with `constexpr` are candidates for it.
+- Non-trivial types (such as `std::string` or `std::map`) are forbidden as static variables.
+- References are not objects and are therefore exempt from destructibility constraints, though initialization rules still apply.
+
+#### Common Patterns and Workarounds
+
+- Global strings: Use a `constexpr` variable of `StringView`, character array, or character pointer pointing to a string literal.
+- Containers: Don't rely on containers with non-trivial dtors for static variables, use simple arrays, instead.
+- Smart Pointrs: They can't be declared as static variables.
+- Custom types: Static variables of custom user-defined types require a trivial destructor and a `constexpr` constructor.
+- Dynamic allocation fallback: If all else fails, create an object dynamically and never delete it using a function-local static pointer or reference.
+
+## Thread Local Variables
+
+`thread_local` variables represent a collection of objects where each thread accesses a distinct object. They can be declared at namespace
+scope, inside functions, or as static class members, but never as ordinary class members.
+
+Prefer `thread_local` over alternative mechanisms for defining thread-local data. Also, prefer trivial types or types that run no user-provided
+code upon destruction to minimize use-after-free risks.
+
+Simulate class- or namespace-scope `thread_local` variables using a function-scope variable inside a returning function or static method
+if needed.
+
+#### Initialization
+
+- Class- or namespace-scope `thread_local` variables must be initialized with a true compile-time constant with no dynamic initialization.
+- The `constinit` (or rarely `constexpr`) attribute must be used to enforce this rule.
+```cpp
+consinit thread_local Foo foo = ...;
+```
+- Function-scope `thread_local` variables are free from initialization-order concerns.
+
+
+#### Destruction and Safety Tips
+
+- `thread_local` variables are destroyed during thread shutdown in the reverse order of their initialization.
+- Complex destructors risk hard-to-diagnose use-after-free bugs if they reference any already-destroyed `thread_local` variables on that thread.
+- Unlike globals, destructors for `thread_local` variables cannot be skipped, because skipping them leads to resource leaks proportional to the number of terminating threads.
+
+
+## Classes
+
+Classes are the fundamental building blocks of object-oriented programming in C++. They encapsulate data and behavior, allowing for the creation
+of complex data types and abstractions. Proper class design and usage are essential for creating maintainable and efficient code.
+
+### Constructors
+
+Constructors should never call virtual functions. They should also never handle something that may require status or error signaling.
+Otherwise, consider a factory function or `Init()` method. Avoid `Init()` methods on objects with no other states that affect which public
+methods may be called (semi-constructed objects of this form are particularly hard to work with correctly).
+
+### Implicit Conversions
+
+Implicit conversions are generally forbidden. They can lead to unexpected behavior and make the code harder to understand.
+Use `explicit` keyword for constructors and conversion operators to prevent implicit conversions.
+
+Copy and move constructors are not needed to be marked `explicit` as they don't perform any type conversion. But if you have a constructor
+that takes a single argument and performs type conversion, it should be marked `explicit`.
+
+Constructors that cannot be called with a single argument may omit explicit. Constructors that take a single `std::initializer_list` parameter
+should also omit explicit, in order to support copy-initialization (e.g., `MyType m = {1, 2};`).
+
+### Copyable and Movable Classes
+
+A class's public API must make clear whether the class is copyable, move-only, or neither copyable nor movable. Support copying and/or
+moving if these operations are clear and meaningful.
+
+Specifically, a copyable class should explicitly declare the copy operations, a move-only class should explicitly declare the move operations,
+and a non-copyable/movable class should explicitly delete the copy operations. A copyable class may also declare move operations in order to
+support efficient moves. Explicitly declaring or deleting all four copy/move operations is permitted, but not required. If you provide a copy
+or move assignment operator, you must also provide the corresponding constructor.
+
+```cpp
+class Copyable {
+ public:
+  Copyable(const Copyable& other) = default;
+  Copyable& operator=(const Copyable& other) = default;
+
+  // The implicit move operations are suppressed by the declarations above.
+  // You may explicitly declare move operations to support efficient moves.
+};
+
+class MoveOnly {
+ public:
+  MoveOnly(MoveOnly&& other) = default;
+  MoveOnly& operator=(MoveOnly&& other) = default;
+
+  // The copy operations are implicitly deleted, but you can
+  // spell that out explicitly if you want:
+  MoveOnly(const MoveOnly&) = delete;
+  MoveOnly& operator=(const MoveOnly&) = delete;
+};
+
+class NotCopyableOrMovable {
+ public:
+  // Not copyable or movable
+  NotCopyableOrMovable(const NotCopyableOrMovable&) = delete;
+  NotCopyableOrMovable& operator=(const NotCopyableOrMovable&) = delete;
+
+  // The move operations are implicitly disabled, but you can
+  // spell that out explicitly if you want:
+  NotCopyableOrMovable(NotCopyableOrMovable&&) = delete;
+  NotCopyableOrMovable& operator=(NotCopyableOrMovable&&) = delete;
+};
+```
+
+### Structs vs. Classes
+
+Use `struct` for Plain Old Data (POD) types and simple data structures that primarily hold data and have public members. Use `class` for
+everything else, especially for types that encapsulate behavior, have private members, or require more complex functionality.
+
+Structs should have all members public and should not have any private or protected members. It may have constructors, destructors, and member
+functions, but they should be simple and not perform complex operations.
+
+For consistency with STL, for stateless types, use `struct` instead of `class`. For example, traits, template metafunctions, etc.
+
+As a general rule of thumb, when in doubt, use `class` over `struct`.
+
+### Structs vs. Pairs or Tuples
+
+Prefer using `struct` over `std::pair` or `std::tuple` for better readability and maintainability. Structs provide named members, making it
+clear what each member represents, while pairs and tuples rely on positional access, which can be less intuitive.
+
+### Inheritance
+
+Composition is often more appropriate than inheritance. When using inheritance, make it `public`.
+
+All inheritances must be `public`, if you want to do private inheritance, you should be including an instance of the base class as a member
+instead. You may use final on classes when you don't intend to support using them as base classes.
+
+Do not overuse implementation inheritance. Composition is often more appropriate. Try to restrict use of inheritance to the "is-a" case:
+`Bar` subclasses `Foo` if it can reasonably be said that `Bar` "is a kind of" `Foo`.
+
+Limit the use of protected to those member functions that might need to be accessed from subclasses. Note that
+[data members should be private.](#access-control). Explicitly annotate overrides of virtual functions or virtual destructors with exactly
+one of an `override` or (less frequently) `final` specifier. Do not use virtual when declaring an override.
+
+Multiple inheritance is permitted, but multiple *implementation* inheritance is strongly discouraged.
+
+### Operator Overloading
+
+You may overload operators only if they make sense for the type and are intuitive to use. Overloading operators can improve code readability
+and expressiveness, but it can also lead to confusion if not done carefully. When overloading operators, follow these guidelines:
+- Overload operators only for user-defined types (classes and structs).
+- Ensure that the overloaded operator's behavior is consistent with its conventional meaning.
+- Avoid overloading operators for built-in types or standard library types.
+
+### Access Control
+
+Make data members private and provide public member functions to access and modify them. This encapsulation helps maintain the integrity
+of the data and allows for better control over how it is accessed and modified. Use `protected` access specifier only when necessary, such
+when a derived class needs to access the base class's members. Avoid using `protected` for data members, as it can lead to tight coupling
+between classes and make the code harder to maintain.
+
+### Declaration Order
+
+Follow the following order for sections in a class declaration:
+1. `public` section
+2. `protected` section (if needed)
+3. `private` section
+
+Within each section, declare members in the following order:
+- Types and type aliases (typedef, using, enum, nested structs and classes, and friend types)
+- Static constants
+- Factory functions
+- Constructors and assignment operators
+- Destructor
+- All other functions (static and non-static member functions, and friend functions)
+- All other data members (static and non-static)
+
+### Rule of Three, Five, and Zero
+
+The Rule of Three states that if a class defines one of the following special member functions, it should probably explicitly define all three:
+1. Destructor
+2. Copy constructor
+3. Copy assignment operator
+
+The Rule of Five extends the Rule of Three to include move semantics, adding two more special member functions:
+4. Move constructor
+5. Move assignment operator
+
+The Rule of Zero suggests that classes should avoid defining any of these special member functions if possible, relying on the compiler-generated
+versions instead. This can lead to simpler and more maintainable code, as it reduces the need for manual resource management.
+
+
+## Functions
+
+Functions are the building blocks of C++ programs, allowing for modularity, code reuse, and abstraction. Proper function design and usage
+are essential for creating maintainable and efficient code.
+
+### Inputs and Outputs
+
+The output of a function is generally returned by the function and in rare cases, it can be returned by reference or pointer. The input of a
+function is generally passed by value or by reference.
+
+Prefer using return values over output parameters. If a function has multiple outputs, consider returning a `struct` instead of using output
+parameters. This makes the function's interface clearer and easier to understand. Generally, you should follow this order:
+- Return by value
+- Return by reference
+- Return by pointer (avoid this unless necessary, and pointer can be `nullptr`)
+
+Parameters are either input parameters, output parameters, or both. Input parameters are used to provide data to the function, while output
+parameters are used to return data from the function. Required input parameters should be passed by value or by reference, while optional
+input parameters should be passed by pointer. Required output parameters should be passed by reference, while optional output parameters
+should be passed by pointer.
+
+The following table summarizes the recommended parameter passing conventions for different data roles:
+| Data Role | Required | Optional |
+|-----------|----------|----------|
+| Input     | `T` or `const T&` | `const T*` |
+| Output    | `T&` | `T*` |
+| Input/Output | `T&` | `T*` |
+
+> [!TIP]
+> Small and trivially copyable types (e.g., `int`, `float`, `char`, etc.) should be passed by value, while larger or non-trivially copyable
+> types (e.g., `std::string`, `std::vector`, etc.) should be passed by reference to avoid unnecessary copies.
+
+### Function Length
+
+Prefer small functions that do one thing and do it well. Functions can be long, but if they are longer than 40 lines, then consider whether
+it can be broken down into smaller pieces without harming the structure and readability of the code.
+
+If a function is too long, it can be difficult to understand and maintain. While breaking it down can improve readability and cognitive load
+on the developer modifying it later.
+
+### Function Overloading
+
+Use overloaded functions when they have clear meaning and reader can get a good idea of what happening without having to figure out which
+overload is being called. If the overloads are not clear, then consider using different function names instead.
+
+### Default Arguments
+
+Default arguments are allowed on non-virtual functions when the default is guaranteed to always have the same value. Follow the same
+restrictions as for [function overloading](function-overloading), and prefer overloaded functions if the readability gained with default
+arguments doesn't outweigh the downsides below:
+- Virtual functions cannot have default arguments, as the default value is determined by the static type of the object, not the dynamic type.
+- Default parameters are re-evaluated at each call site, which can lead to code bloat.
+- Function pointers can get messy with default arguments, prefer overloaded functions instead.
+
+If default arguments are used, they strictly cannot change their values (i.e., always same). Don't write `int foo(int x = counter++);`.
+
+### Trailing Return Type
+
+Prefer leading return types over trailing return types. Use trailing return types only when using the ordinary syntax is impractical or much
+less readable.
+
+For example, don't use trailing return type for simple functions like `int add(int a, int b)`.
+```cpp
+// BAD:
+auto Add(int a, int b) -> int {
+  return a + b;
+}
+
+// GOOD:
+int Add(int a, int b) {
+  return a + b;
+}
+```
+
+But use it when using leading return type is less readable:
+```cpp
+// BAD:
+template <typename T, typename U>
+decltype(std::declval<T&>() + std::declval<U&>()) Add(T a, U b) {
+  return a + b;
+}
+
+// GOOD:
+template <typename T, typename U>
+auto Add(T a, U b) -> decltype(a + b) {
+  return a + b;
+}
+```
+
+
+## Other C++ Features
+
+This section covers other C++ features that are important for writing clean, efficient, and maintainable code.
+
+### Smart Pointers
+
+Prefer smart pointers over raw pointers for managing dynamic memory. Smart pointers automatically manage the lifetime of the object they
+own, preventing memory leaks and dangling pointers. Use `mystic::memory::UniquePtr` for exclusive ownership, `mystic::memory::SharedPtr`
+for shared ownership, avoid `mystic::memory::WeakPtr` unless you have a specific use case for it. Avoid using raw pointers for ownership,
+and use them only for non-owning
+
+### Rvalue References
+
+Use rvalue references (`T&&`) in the following scenarios:
+- When implementing move constructors and move assignment operators.
+- When perfect forwarding arguments in template functions.
+- When `move`-ing objects is necessary for performance reasons.
+- Functions that logically "consumes" `*this` and leaves it in an empty or unusable state.
+
+### Friends
+
+Use friends whenever they are needed, but keep in mind that they should not break the class but extend it.
+
+### Exceptions
+
+Do not use exceptions at all. Exceptions are strictly forbidden in MFW. Use `mystic::Status` for error handling instead. Exceptions can lead
+to complex control flow, making it difficult to reason about the code and can introduce performance overhead. They also make it harder to ensure
+that resources are properly released, leading to potential memory leaks and other issues.
+
+### Noexcept
+
+Mark functions as `noexcept` when they are guaranteed not to throw exceptions and is useful for optimization. This allows the compiler to make
+optimizations and can improve performance.
+
+### Run-Time Type Information (RTTI)
+
+RTTI is strictly forbidden.
+
+### Casting
+
+Prefer using C++-style casts (`static_cast`, `const_cast`, and `reinterpret_cast`) over C-style casts. C++-style casts are more explicit and
+provide better type safety, making it easier to understand the intent of the code and reducing the risk of errors.
+
+- Prefer uniform braced initialization over C-style casts. For example, use `MyType x{42};` instead of `MyType(42)`.
+- Use `static_cast` as an equivalent to C-style cast that does value conversion.
+- Use `const_cast` to remove constness from a variable.
+- Use `reinterpret_cast` for low-level casts that may not be safe, such as casting between unrelated pointer types. Use it only when you know what you are doing.
+
+### Preincrement and Predecrement
+
+Use prefix increment/decrement (`++i`), unless the code explicitly needs the result of the postfix increment/decrement (`i++`) expression.
+
+### Use of const
+
+Always use `const` in the API whenever it makes sense (function parameters, methods, variables). In some cases, `constexpr` may be better
+suited for the job than `const`.
+
+### Use of constexpr, constinit, and consteval
+
+- Use `constexpr` to define true constants or to ensure constant initialization.
+- Use `constinit` to ensure constant initialization for non-constant variables.
+- `consteval` may be used for code that must not be invoked at runtime. 
+- Avoid complexifying function definitions to enable their use with `constexpr`.
+- Do not use these to force-inline.
+
+### Integer Types
+
+Use builtin integer type (`int`) for most the cases where the size of the integer is not important. Otherwise, use fixed-width integer
+types from `mystic.common` (e.g., `mystic::int32`, `mystic::uint64`, etc.) for better portability and clarity. Avoid using `short` and `long`
+as they can be ambiguous across different platforms. For types other than `int` prefer fixed-width options instead.
+
+### Floating Point Types
+
+Use builtin floating point types (`float` and `double`) for most cases. If you want to use fixed-width floating point types, use
+`mystic.common` (e.g., `mystic::float32`, `mystic::float64`, etc.) for better portability. Avoid using `long double` as it can be ambiguous
+across different platforms.
+
+### Portable Code
+
+- Write portable code that don't rely on platform-specific behavior.
+- When working with memory addresses, use `uintptr_t` or `intptr_t` for pointer arithmetic and conversions.
+- Use braced initializaton for 64-bit constants (e.g., `int64 x{1234567890123456789};`).
+- Avoid using `short`, `long` and `long long`.
+- Avoid using `long double`.
+
+### Preprocessor Macros
+
+Prefer modern C++ alternatives over macros.
+
+- Don't define macros in header files (exception to this rule are `*_macros.hpp` files).
+- Modules naturally don't have macro-pollution.
+- `#define` macro before use and `#undef` after use.
+- Use unique names for macros to avoid name collisions. Use a prefix for macros (e.g., `MYSTIC_`).
+
+### NULL and nullptr
+
+Use `nullptr` for memory address and `\0` for null character. Avoid using `NULL` as it can be ambiguous and lead to unexpected behavior.
+
+### sizeof
+
+Prefer using `sizeof(variable)` over `sizeof(type)` for better readability and to avoid mistakes when the type of the variable changes.
+
+```cpp
+// BAD:
+int arr[10];
+size_t size = sizeof(int) * 10; // If the type of arr changes, this line will be incorrect.
+
+// GOOD:
+int arr[10];
+size_t size = sizeof(arr); // This will always be correct, regardless of the type of arr.
+```
+
+### Type Deduction
+
+Use type deduction when the type is obvious from the context and improves readability. Avoid using it just for the convenience of not having
+to write explicit types. Use `auto` for variable declarations and `decltype` for type expressions.
+
+### Structured Bindings
+
+Use structured bindings when you want to unpack a tuple, pair, or struct into individual variables.
+
+```cpp
+auto [/*field_name1=*/bound_name1, /*field_name2=*/bound_name2] = ...
+```
+
+### Class Template Argument Deduction
+
+Class template argument deduction or CTAD is a feature in C++17 that allows the compiler to deduce the template arguments of a class template
+from its constructor arguments. This can make code more concise and easier to read. Use of CTAD should follow the [type deduction](#type-deduction) rules.
+
+```cpp
+std::array arr = {1, 2, 3}; // The compiler deduces that arr is of type std::array<int, 3>
+```
+
+### Designated Initializers
+
+Use designated initializers only in the form that is compatible with the C++20 standard: with initializers in the same order as the
+corresponding fields appear in the struct definition.
+
+### Lambda Expressions
+
+- Use lambda expressions whenever appropriate.
+- Prefer explicit captures if the lambda may escape the current scope.
+
+### Template Metaprogramming
+
+Template Metaprogramming or TMP is fully allowed.
+
+### Concepts
+
+Prefer using concepts over `enable_if` for constraining template parameters. Concepts provide a more readable and expressive way to specify
+requirements for template parameters, making the code easier to understand and maintain.
+
+### Non Standard Extensions
+
+- Avoid using non-standard extensions or compiler-specific features.
+- Portable extensions headers are provided which standardize non-standard extensions across different compilers.
+
+### Aliases
+
+Use alias only if you want users to also use them. Don't use them in public API just to save time typing (internal aliases are fine).
+Prefer using `using` over `typedef` for type aliases, as it is more readable and allows for template aliases.
+
+### Switch Statements
+
+Prefer using `switch` statements over `if-else` chains when dealing with multiple discrete values of a single variable. This can improve
+readability and performance, as `switch` statements can be optimized by the compiler. Always add `default` case in `switch` statements, even
+if it is not needed. This helps to catch unexpected values and can prevent bugs. If `default` case should never be executed, then treat it as
+an error. Fallthroughs are allowed.
+
+
+## Naming
+
+Now, this is the fun part! Naming is one of the most important aspects of writing clean and maintainable code. Good names can make code
+more readable and understandable, while bad names can lead to confusion and errors. In this section, we will cover the naming conventions
+for various elements in C++ code to improve consistency and clarity.
+
+### Choosing Names
+
+- Names should be meaningful, descriptive, and convey the purpose of the entity they represent.
+- Don't use too-wordy names, but also don't use too-short names. Find a balance between brevity and clarity.
+- Treat acronyms as words, and capitalize them accordingly. For example, use `HttpRequest` instead of `HTTPRequest`.
+- Don't use niche acronyms or abbreviations that are not widely known or understood. Use full words instead. A good of rule of thumb is if it's on [wikipedia](https://en.wikipedia.org/wiki/List_of_acronyms:_A) then it's probably fine to use it. Otherwise, don't use it.
+
+### Naming Files
+
+Use `snake_case` for file names, and use `.hpp` for header files, `.cpp` for source files, and `.cppm` for module interface files.
+
+### Naming Types
+
+Use `PascalCase` for type names (classes, structs, enums, template parameters, typedefs, and type aliases). Type names should describe
+the purpose of the type and be clear and concise.
+
+### Naming Concepts
+
+Follow same rule as [naming types](#naming-types) for concepts.
+
+### Naming Variables
+
+Use `snake_case` for variable names.
+
+#### Common Variable Names
+
+Use `snake_case` for variable names, and avoid using single-letter variable names except for loop counters or iterators. Use descriptive names
+that convey the purpose of the variable.
+
+#### Data Members
+
+Use `snake_case` with trailing underscore (`_`) for data members. This helps to distinguish data members from local variables and function
+parameters. This includes both static and non-static data members, only exception is [constants](#naming-constants).
+
+#### Struct Members
+
+Use `snake_case` for struct members (without traing underscore (`_`)). This helps to distinguish struct members from local variables and
+function parameters.
+
+### Naming Constants
+
+Use `kPascalCase` for constants. This helps to distinguish constants from variables and data members. This includes both static and
+non-static constants.
+
+### Naming Functions
+
+Use `PascalCase` for function names. Function names should describe the action performed by the function and be clear and concise.
+
+> [!IMPORTANT]
+> Use `PascalCase` even for setters and getters.
+
+### Naming Namespaces
+
+Use `snake_case` for namespace names. Namespace names should be clear and concise, and convey the purpose of the namespace.
+
+### Naming Enumerators
+
+Use `PascalCase` for enum names and `kPascalCase` for enum values.
+
+### Naming Template Parameters
+
+Use `PascalCase` for template parameter names.
+
+### Naming Macros
+
+[Don't use macros please](#preprocessor-macros), think again what you're doing with your life. If you decide to ignore me then, use
+`SCREAMING_SNAKE_CASE` for macro names. They should also be prefixed with `MYSTIC_` to avoid name collisions.
+
+### Naming Aliases
+
+Use `PascalCase` for type aliases.
+
+
+## Comments
+
+Comments must be descriptive and should explain the "why" behind the code, not the "what" or "how". The code itself should be clear enough to
+convey the "what" and "how". When writing comments, write it for your audience: the future contributors who need to read it. Be a 
+goody-two-shoes because the future developer who may struggle can be - YOU. P.S., I didn't mean to threaten you :)
+
+### Comment Style
+
+Use `///` for documentation comments, and `//` for regular comments. Documentation comments should be used for public APIs, while regular
+comments should be used for internal implementation details. Avoid using block comments (`/* ... */`) as they can be harder to read.
+
+Even though documentation is handled by hand on the website, still use doxygen-style comments for documentation comments.
+
+### Files Comments
+
+Each file should containing legal boilerplate, a brief description of the file's purpose, authors, and SPDX license identifier. The file
+comment should be placed at the top of the file, before any includes or namespace declarations.
+
+### Class and Struct Comments
+
+They should generally have a brief description of the class or struct's purpose, its public API, and any important implementation details.
+
+### Function Comments
+
+Function comments should describe the function's purpose, its parameters, return value, and any important implementation details. They
+should be placed immediately before the function declaration or definition. For overloaded functions, the comment should be placed before
+the first overload, but if an overload is complex and differs significantly from the others, it may have its own comment.
+
+### Variable Comments
+
+Variables first should have descriptive names, but if the name is not enough to convey its purpose, then a comment should be added.
+
+```cpp
+// BAD:
+// This is a counter
+int c;
+
+// GOOD:
+int counter;
+```
+
+#### Class Member Comments
+
+They purpose of each data member must be clear with no doubts. If it's name alone can't provide sufficient in formation, then a comment
+should be added. The comment should be placed immediately before the data member declaration.
+
+```cpp
+private:
+  // The maximum number of items that can be stored in the container.
+  // -1 means no limit.
+  int max_items_;
+```
+
+#### Global Variable Comments
+
+Global variables should generally have comments describing what they are, what they used for, and (if unclear) why need to be global.
+
+```cpp
+// Total number of test cases to run in the test suite.
+int kTotalTestCases = 100;
+```
+
+### Implementation Comments
+
+Comment all non-obvious implementation details, especially those that may not be immediately clear to someone reading the code for the first time.
+
+### Punctuation Spelling and Grammar
+
+Pay attention to punctuation, spelling, and grammar; it is easier to read well-written comments than badly written ones. Comments should be
+complete sentences with proper capitalization and punctuation. Avoid sentence fragments. Use correct spelling and proper grammer. When listing
+items use [Oxford comma](https://en.wikipedia.org/wiki/Serial_comma) for clarity. Avoid using abbreviations or acronyms that may not be widely
+known or understood.
+
+### Markdown in Comments
+
+Markdown in comments is allowed, but should only be used when it improves readability.
+
+```cpp
+// BAD:
+/// This is a **very cool** function.
+
+// No need to use markdown for emphasis, just use proper words to describe it.
+
+// GOOD:
+/// The argument must satisfy the following conditions:
+///   - Must be a positive integer.
+///   - Must be less than 100.
+```
+
+### TODO Comments
+
+You can use `TODO` comments to indicate that something needs to be done, but they should be used sparingly and only for important tasks.
+They are temporary and should be resolved as soon as possible. Avoid using `TODO` comments for minor or trivial tasks, as they can clutter
+the code.
+
+If you want to address a particular person use `TODO(username)` for it. You may add issue number to the comment as `TODO(#1234)` if it's
+relavent. When using both write `username` first as `TODO(username, #1234)`.
+
+
+## Formatting
+
+Coding style is important for readability and maintainability of the code. Consistent formatting makes it easier to read and understand
+the code, and helps to avoid errors and bugs. In this section, we will cover the formatting guidelines for C++ code to improve consistency
+and clarity.
+
+### Line Length
+
+Use a maximum line length of 100 characters. This helps to improve readability and maintainability of the code, especially when working
+with multiple files or on smaller screens. If a line exceeds this limit, consider breaking it into multiple lines or refactoring the code.
+
+### Non-ASCII Characters
+
+Avoid them.
+
+### Spaces vs Tabs
+
+Always use spaces for indentation, and never use tabs. Use 2 spaces for each indentation level. This helps to improve consistency across
+different editors and platforms, as tabs can be displayed differently depending on the settings.
+
+### Braces
+
+Follow K&R style for braces, with the opening brace on the same line as the control statement or function declaration, and the closing brace
+on a new line. This helps to improve readability and maintainability of the code.
+```cpp
+if (condition) {
+  // Do something
+} else {
+  // Do something else
+}
+```
+
+### Function Declarations and Definitions
+
+Return type on the same line as function name, parameters on the same line if they fit. Wrap parameter lists which do not fit on a single
+line as you would wrap arguments in a function call.
+
+Functions look like this:
+```cpp
+ReturnType ClassName::FunctionName(Type par_name1, Type par_name2) {
+  DoSomething();
+  ...
+}
+```
+
+If you have too much text to fit on one line:
+```cpp
+ReturnType ClassName::FunctionName(
+    Type par_name1,
+    Type par_name2,
+    Type par_name3,
+    Type par_name4) {
+  DoSomething();
+  ...
+}
+```
+
+### Lambda Expressions
+
+Format parameters and bodies as for any other function, and capture lists like other comma-separated lists. For by-reference captures,
+do not leave a space between the ampersand (&) and the variable name.
+```cpp
+int x = 0;
+auto x_plus_n = [&x](int n) -> int { return x + n; }
+```
+
+### Floating Point Literals
+
+Always use radix point for floating point literals, even if the fractional part is zero. This helps to avoid confusion with integer
+literals and improves readability. For example, use `1.0` instead of `1` for a floating point literal.
+```cpp
+// BAD:
+float x = 1;
+float y = .1L;
+float z = 2e3;
+
+// GOOD:
+float x = 1.0;
+float y = 0.1L;
+float z = 2.0e3;
+```
+
+### Function Calls
+
+Either write the call all on a single line, wrap the arguments at the parenthesis, or start the arguments on a new line indented by four
+spaces and continue at that 4 space indent. When wrapping, use one argument per line.
+```cpp
+bool result = DoSomething(argument1, argument2, argument3);
+
+bool result = DoSomething(
+    argument1,
+    argument2,
+    argument3,
+    argument4,
+    argument5);
+```
+
+Sometimes arguments form a structure that is important for readability. In those cases, feel free to format the arguments according to
+that structure:
+```cpp
+// Transform a point by a 3x3 matrix
+my_point.Transform(
+    matrix[0][0], matrix[0][1], matrix[0][2],
+    matrix[1][0], matrix[1][1], matrix[1][2],
+    matrix[2][0], matrix[2][1], matrix[2][2]);
+```
+
+### Brace Intialization
+
+Follow same principle as [function calls](#function-calls) for brace initialization.
+
+### Loops and Branches
+
+- Space after `if`, `for`, `while`, and `switch` keywords, but not after the opening parenthesis.
+- Space after the closing parenthesis and before the opening brace.
+- Use braces for all loops and branches, even if they contain only a single statement.
+- After braces add a new line, even if the next statement is a single statement.
+- For `for` loops add a space after the semicolons, but not before them.
+
+```cpp
+// BAD:
+if (condition)
+  DoSomething();     // Where is brace?
+
+if(condition) {      // No space after if
+  DoSomething();
+}
+
+if (condition) { DoSomething(); } // No new line after brace
+
+if (condition){     // No space after closing parenthesis
+  DoSomething();
+}
+
+// GOOD:
+if (condition) {
+  DoSomething();
+}
+
+// Same rule applies to for and while loops:
+for (int i = 0; i < n; ++i) {
+  DoSomething();
+}
+
+while (condition) {
+  DoSomething();
+}
+```
+
+For `switch` statements not use braces for the `case`, but do use braces for the `switch` statement itself. Add a new line after each
+case statement, even if it contains only a single statement. Indent case statements by 2 spaces, and indent the statements within each
+case by 2 more spaces. Use `break` statement at the end of each case statement, unless you want to fall through to the next case. If you
+want to fall through, add a comment indicating that it is intentional.
+
+```cpp
+switch (value) {
+  case 1:
+    DoSomething();
+    break;
+  case 2:
+    DoSomethingElse();
+    // fall through or prefer using annotation
+  case 3:
+    DoAnotherThing();
+    break;
+  default:
+    HandleDefaultCase();
+    break;
+}
+```
+
+### Pointer and Reference Types
+
+Use the following alignments for pointer and reference expressions:
+```cpp
+x = *p;
+x = &y;
+x = r.y;
+x = r->y;
+```
+
+Note that:
+
+- There are no spaces around the period or arrow when accessing a member.
+- Pointer operators have no space after the * or &.
+
+For defining types use the same rule:
+```cpp
+char* c;
+const std::string& str;
+int* GetPointer();
+std::vector<char*>  // Note no space between '*' and '>'
+```
+
+Generally defining multiple variables in a single statement is okay as long it's not references or pointers.
+```cpp
+int x = 0, y = 1, z = 2; // okay
+int* p1, *p2;            // not okay
+int& r1 = x, &r2 = y;    // not okay
+```
+
+### Boolean Expressions
+
+When breaking up long boolean expressions, break them up at logical operators (`&&`, `||`, `==`, `!=`, etc.) and don't indent the lines.
+
+This means:
+```cpp
+if (this_one_thing > this_other_thing &&
+    a_third_thing == a_fourth_thing &&
+    yet_another && last_one) {
+  ...
+}
+```
+
+### Return Statements
+
+Don't surround return values with parentheses, unless the return value is a complex expression that requires them for clarity.
+```cpp
+// BAD:
+return (x + y);
+
+// GOOD:
+return x + y;
+
+// BAD:
+return some_complex_expression && another_complex_expression && yet_another_complex_expression;
+
+// GOOD:
+return (some_complex_expression &&
+        another_complex_expression &&
+        yet_another_complex_expression);
+```
+
+### Variables and Constants
+
+Prefer braced initialization over parenthesis initialization for variables and constants. This helps to avoid narrowing conversions.
+
+```cpp
+// BAD:
+int x(42); // Parenthesis initialization
+
+// GOOD:
+int x{42}; // Braced initialization
+```
+
+Assignment operator should have spaces around it, and the value being assigned should be on the right side of the operator. For example:
+```cpp
+// BAD:
+int x=42; // No spaces around assignment operator
+
+// GOOD:
+int x = 42; // Spaces around assignment operator
+```
+
+Use assignment operator normally, there are no heavy rules for it.
+
+### Preprocessor Directives or Macros
+
+The hash mark (`#`) should be the first character on the line, with no leading spaces or tabs. In case of if-directives, the `#` should
+still be the first character on the line, but the directive should be indented by 2 spaces.
+```
+#if CONDITION
+#  define MACRO_NAME value
+#else
+#  define MACRO_NAME other_value
+#endif
+
+int ACoolFunction() {
+  // ...
+  for (int i = 0; i < 10; ++i) {
+#if CONDITION
+  // Do something
+#else
+  // Do something else
+#endif
+  }
+  // ...
+}
+```
+
+### Class Format
+
+Sections in `public`, `protected`, and `private` order, each indented one space.
+```cpp
+class MyClass : public OtherClass {
+ public:      // Note the 1 space indent!
+  MyClass();  // Regular 2 space indent.
+  explicit MyClass(int var);
+  MyClass(const MyClass& other);
+  MyClass& operator=(const MyClass& other);
+  ~MyClass() {}
+
+  void SomeFunction();
+  void SomeFunctionThatDoesNothing() {}
+
+  void set_some_var(int var) { some_var_ = var; }
+  int some_var() const { return some_var_; }
+
+ private:
+  bool SomeInternalFunction();
+
+  int some_var_;
+  int some_other_var_;
+};
+```
+
+Note that:
+- The `public`, `protected`, and `private` access specifiers are indented by 1 space.
+- The member functions and data members are indented by 2 spaces.
+- Any base class name should be on the same line as the subclass name, subject to the 100-column limit.
+- Except for the first instance, these keywords should be preceded by a blank line. This rule is optional in small classes.
+- The public section should be first, followed by the protected and finally the private section.
+
+### Constructor Initialization List
+
+Constructor initializer lists can be all on one line or with subsequent lines indented four spaces.
+
+```cpp
+// When everything fits on one line:
+MyClass::MyClass(int var) : some_var_(var) {
+  DoSomething();
+}
+
+// If the signature and initializer list are not all on one line,
+// you must wrap before the colon and indent 4 spaces:
+MyClass::MyClass(int var)
+    : some_var_(var), some_other_var_(var + 1) {
+  DoSomething();
+}
+
+// When the list spans multiple lines, put each member on its own line
+// and align them:
+MyClass::MyClass(int var)
+    : some_var_(var),             // 4 space indent
+      some_other_var_(var + 1) {  // lined up
+  DoSomething();
+}
+```
+
+### Namespace Format
+
+The contents of namespaces are not indented.
+```cpp
+// BAD:
+namespace my_namespace {
+
+  class MyClass {
+    // ...
+  };
+
+}  // namespace my_namespace
+
+// GOOD:
+namespace my_namespace {
+
+class MyClass {
+  // ...
+};
+
+}  // namespace my_namespace
+```
+
+### Whitespace
+
+No trailing whitespace at the end of lines. Use a single blank line to separate logical sections of code, but avoid excessive blank lines.
+
+---
+
+That's it for the C++ style guide! Following these guidelines will help you write clean, readable, and maintainable C++ code. Remember
+that consistency is key, so try to adhere to these rules throughout codebase. Happy coding!
