@@ -21,22 +21,23 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v7
 
-      - uses: pnpm/action-setup@v4
+      - name: Setup pnpm and runtime
+        uses: pnpm/setup@v2
         with:
-          version: 9
+          cache: true
+          require-lockfile: true
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'pnpm'
+      - name: Pre Build
+        run: pnpm run pre
 
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm run pre
-      - run: pnpm run build
+      - name: Build
+        run: pnpm run build
 
-      - uses: actions/upload-pages-artifact@v3
+      - name: Upload
+        uses: actions/upload-pages-artifact@v5
         with:
           path: ./out
 
@@ -48,4 +49,4 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
