@@ -1,11 +1,44 @@
-/* License Page */
+---
+title: 'License'
+tags: ['docs']
+excerpt: 'Review the licensing terms and conditions for using the framework.'
+breadcrumbs: ['Docs', 'License']
+drawerId: 'support--license'
+prev: '/docs/security'
+next: '/docs/modules'
+---
 
-import type { Metadata } from 'next';
+# License
 
-import CodeBlock from '@/components/CodeBlock';
-import Link from '@/components/Link';
+Thia page provides information about the licensing terms and conditions for using the framework. Please review the following details
+carefully to ensure compliance with the license.
 
-const APACHE_LICENSE_TEXT = `
+This project is licensed under the Apache License 2.0. You are free to use, modify, and distribute the content in the framework but you must do
+so in accordance with the terms of the license. You must provide proper attribution and include a copy of the license when distributing the content.
+
+You can find the full text of the Apache License 2.0 at the following link: [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)
+
+## Main License
+
+```text
+Copyright 2026-present The Mystic Framework Authors
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+      
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
+
+## Apache 2.0 License
+
+```text
 
                                  Apache License
                            Version 2.0, January 2004
@@ -208,77 +241,7 @@ const APACHE_LICENSE_TEXT = `
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-`;
+```
 
-const MAIN_LICENSE_TEXT = `
-Copyright 2026-present The Mystic Framework Authors
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-      
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-`.trim();
-
-export const metadata: Metadata = {
-  title: 'License | Mystic Framework',
-  description: 'License information for Mystic Framework.',
-};
-
-export default function License() {
-  return (
-    <div id="main-content" className="overflow-hidden pt-16">
-      <section className="relative z-0 bg-surface px-6 py-16 md:px-12 lg:px-24">
-        <div className="max-w-6xl mx-auto space-y-16">
-          <div
-            className="flex flex-col items-start gap-y-2 rounded-md focus-visible:outline-2 focus-visible:outline-primary"
-            tabIndex={0}
-          >
-            <div className="font-mono text-sm tracking-wide uppercase text-primary">Legal</div>
-            <h2 className="text-2xl md:text-3xl font-semibold text-on-surface">
-              License Information
-            </h2>
-            <p className="text-md text-on-surface-variant max-w-2xl leading-relaxed">
-              This website is licensed under the Apache License 2.0. You are free to use, modify,
-              and distribute the content of this website in accordance with the terms of the
-              license. However you must provide proper attribution and include a copy of the license
-              when distributing the content.
-            </p>
-            <p className="text-md text-on-surface-variant max-w-4xl leading-relaxed">
-              For more information about the license, please visit the{' '}
-              <Link
-                variant="underline"
-                href="https://www.apache.org/licenses/LICENSE-2.0"
-                target="_blank"
-              >
-                official Apache License 2.0 page
-              </Link>
-              .
-            </p>
-          </div>
-          <div className="flex flex-col gap-16">
-            <div
-              className="flex flex-col gap-3 rounded-md focus-visible:outline-2 focus-visible:outline-primary"
-              tabIndex={0}
-            >
-              <h3 className="font-sans font-semibold text-xl text-on-surface">Main License</h3>
-              <CodeBlock code={MAIN_LICENSE_TEXT} language="text" label="LICENSE" />
-            </div>
-            <div className="flex flex-col gap-3 rounded-md focus-visible:outline-2 focus-visible:outline-primary">
-              <h3 className="font-sans font-semibold text-xl text-on-surface">
-                Apache License 2.0
-              </h3>
-              <CodeBlock code={APACHE_LICENSE_TEXT} language="text" label="APACHE_LICENSE" />
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-  );
-}
+We value and respect the contributions of the open-source community. By using this framework, you agree to abide by the terms of the
+Apache License 2.0 and acknowledge the importance of proper attribution and compliance with licensing requirements.
