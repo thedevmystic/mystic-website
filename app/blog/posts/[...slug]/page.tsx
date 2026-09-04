@@ -1,5 +1,8 @@
 /* Blog Page */
 
+import fs from 'fs/promises';
+import path from 'path';
+
 import { ComponentType } from 'react';
 
 import type { Metadata } from 'next';
@@ -28,7 +31,39 @@ interface MDXModule {
   };
 }
 
-export async function getBlogModule(slug?: string[]): Promise<MDXModule> {
+async function getBlogSlugs(dir: string, baseDir = dir): Promise<string[][]> {
+  const entries = await fs.readdir(dir, { withFileTypes: true });
+  let paths: string[][] = [];
+
+  for (const entry of entries) {
+    const fullPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      const subPaths = await getBlogSlugs(fullPath, baseDir);
+      paths.push(...subPaths);
+    } else if (entry.name === 'page.mdx') {
+      const relativePath = path.relative(baseDir, dir);
+      const slug = relativePath ? relativePath.split(path.sep) : [];
+      paths.push(slug);
+    }
+  }
+
+  return paths;
+}
+
+export async function generateStaticParams() {
+  const blogDir = path.join(process.cwd(), 'content', 'blog');
+
+  try {
+    const slugs = await getBlogSlugs(blogDir);
+    return slugs.map((slug) => ({
+      slug,
+    }));
+  } catch {
+    return [];
+  }
+}
+
+async function getBlogModule(slug?: string[]): Promise<MDXModule> {
   const slugPath = (slug || []).join('/');
   try {
     return (await import(`../../../../content/blog/${slugPath}/page.mdx`)) as MDXModule;

@@ -2,6 +2,8 @@
 
 import type { MetadataRoute } from 'next';
 
+export const dynamic = 'force-static';
+
 type ExtendedManifest = MetadataRoute.Manifest & {
   user_preferences?: {
     color_scheme?: {

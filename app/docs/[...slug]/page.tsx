@@ -34,7 +34,39 @@ interface MDXModule {
   };
 }
 
-export async function getDocModule(slug?: string[]): Promise<MDXModule> {
+async function getDocSlugs(dir: string, baseDir = dir): Promise<string[][]> {
+  const entries = await fs.readdir(dir, { withFileTypes: true });
+  let paths: string[][] = [];
+
+  for (const entry of entries) {
+    const fullPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      const subPaths = await getDocSlugs(fullPath, baseDir);
+      paths.push(...subPaths);
+    } else if (entry.name === 'page.mdx') {
+      const relativePath = path.relative(baseDir, dir);
+      const slug = relativePath ? relativePath.split(path.sep) : [];
+      paths.push(slug);
+    }
+  }
+
+  return paths;
+}
+
+export async function generateStaticParams() {
+  const contentDir = path.join(process.cwd(), 'content', 'docs');
+
+  try {
+    const slugs = await getDocSlugs(contentDir);
+    return slugs.map((slug) => ({
+      slug,
+    }));
+  } catch {
+    return [];
+  }
+}
+
+async function getDocModule(slug?: string[]): Promise<MDXModule> {
   const slugPath = (slug || []).join('/');
   try {
     return (await import(`../../../content/docs/${slugPath}/page.mdx`)) as MDXModule;
