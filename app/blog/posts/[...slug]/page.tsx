@@ -33,7 +33,7 @@ interface MDXModule {
 
 async function getBlogSlugs(dir: string, baseDir = dir): Promise<string[][]> {
   const entries = await fs.readdir(dir, { withFileTypes: true });
-  let paths: string[][] = [];
+  const paths: string[][] = [];
 
   for (const entry of entries) {
     const fullPath = path.join(dir, entry.name);
