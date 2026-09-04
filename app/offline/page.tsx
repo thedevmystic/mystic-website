@@ -19,7 +19,7 @@ export default function Offline() {
           >
             <div className="font-mono text-sm tracking-wide uppercase text-primary">Offline</div>
             <h2 className="text-2xl md:text-3xl font-semibold text-on-surface">
-              It seems you're offline
+              It seems you&apos;re offline
             </h2>
             <p className="text-md text-on-surface-variant max-w-2xl leading-relaxed">
               Please check your internet connection and try again. If the problem persists, you can

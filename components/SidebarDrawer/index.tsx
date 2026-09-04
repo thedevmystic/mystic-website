@@ -3,15 +3,17 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+
 import { usePathname } from 'next/navigation';
 
 import { ChevronDown, PanelLeftOpen, X } from 'lucide-react';
 import { OverlayScrollbars } from 'overlayscrollbars';
 
 import Button from '@/components/Button';
-import Portal from '../Portal';
 import Link from '@/components/Link';
 import Modal from '@/components/Modal';
+
+import Portal from '../Portal';
 
 export interface SidebarDrawerItem {
   catagory: string;
@@ -55,6 +57,7 @@ export default function SidebarDrawer({ items, currentId }: SidebarDrawerProps) 
 
   // Close mobile panel on route change
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMobileOpen(false);
   }, [pathname]);
 
