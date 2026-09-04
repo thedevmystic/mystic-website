@@ -1,0 +1,29 @@
+/* Code syntax highlighting styles for light and dark themes */
+
+:root {
+  --code-background: var(--color-surface-container-low);
+  --code-foreground: var(--color-on-surface);
+  --code-token-keyword: #005b66;
+  --code-token-string: #0b8043;
+  --code-token-comment: #526366;
+  --code-token-function: #0277bd;
+  --code-token-constant: #c6422b;
+  --code-token-parameter: #5e35b1;
+  --code-token-string-expression: #00838f;
+  --code-token-punctuation: #4a6265;
+  --code-token-link: #00796b;
+}
+
+.dark {
+  --code-background: var(--color-surface-container-low);
+  --code-foreground: var(--color-on-surface);
+  --code-token-keyword: #4dd0e1;
+  --code-token-string: #81c784;
+  --code-token-comment: #8a9e9f;
+  --code-token-function: #64b5f6;
+  --code-token-constant: #ff8a65;
+  --code-token-parameter: #b39ddb;
+  --code-token-string-expression: #18ffff;
+  --code-token-punctuation: #b4c2c4;
+  --code-token-link: #64ffda;
+}

@@ -1,31 +1,15 @@
-/**
- * Copyright 2026-present Suryansh Singh
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * ------------------------------------------------------------------------------------------------
- *
- * @file next.config.ts
- * @description Configuration file for Next.js framework.
- * @author thedevmystic (Surya)
- * @copyright 2026-present Suryansh Singh Apache-2.0 License
- *
- * SPDX-FileCopyrightText: 2026-present Suryansh Singh
- * SPDX-License-Identifier: Apache-2.0
- */
+/* Next.js configuration file for the project. */
 
 import type { NextConfig } from 'next';
 
+import createMDX from '@next/mdx';
+import withSerwistInit from '@serwist/next';
+
 const nextConfig: NextConfig = {
+  output: 'export',
+  images: {
+    unoptimized: true,
+  },
   basePath: process.env.NEXT_PUBLIC_BASE_PATH || '',
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
   trailingSlash: true,
@@ -34,4 +18,32 @@ const nextConfig: NextConfig = {
   turbopack: {},
 };
 
-export default nextConfig;
+const withMDX = createMDX({
+  extension: /\.mdx?$/,
+  options: {
+    remarkPlugins: [
+      'remark-gfm',
+      ['remark-github-blockquote-alert', { tagName: 'blockquote' }],
+      'remark-frontmatter',
+      ['remark-mdx-frontmatter', { name: 'frontmatter' }],
+      'remark-math',
+    ],
+    rehypePlugins: [
+      'rehype-katex',
+      'rehype-slug',
+      [
+        'rehype-autolink-headings',
+        { behavior: 'append', properties: { className: 'heading-anchor' } },
+      ],
+      ['rehype-external-links', { target: '_blank', rel: ['noopener', 'noreferrer'] }],
+    ],
+  },
+});
+
+const withSerwist = withSerwistInit({
+  swSrc: 'app/sw.ts',
+  swDest: 'public/sw.js',
+  disable: process.env.NODE_ENV === 'development',
+});
+
+export default withSerwist(withMDX(nextConfig));

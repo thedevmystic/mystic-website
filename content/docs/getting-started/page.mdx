@@ -1,0 +1,101 @@
+---
+title: 'Getting Started'
+tags: ['docs']
+excerpt: 'Learn how to set up and configure the framework for your project.'
+breadcrumbs: ['Docs', 'Getting Started']
+drawerId: 'overview--getting-started'
+prev: '/docs'
+next: '/docs/compatibility'
+---
+
+# Getting Started
+
+This guide will help you set up and configure the framework for your project. Follow the steps below to get started quickly.
+
+## Available Methods
+
+Currently, you can use the following methods to set up your project:
+- via CMake's `FetchContent`
+- via framework's CMake module
+- via official install tool
+
+## CMake's FetchContent
+
+This method is pretty straightforward. You can use CMake's `FetchContent` module to include the framework in your project.
+Here's an example of how to do it:
+
+```cmake
+include(FetchContent)
+
+FetchContent_Declare(
+  <MODULE_NAME>
+  GIT_REPOSITORY https://github.com/mystic-framework/<MODULE_NAME>.git
+  GIT_TAG <TAG>
+)
+
+FetchContent_MakeAvailable(<MODULE_NAME>)
+```
+
+Here, replace `<MODULE_NAME>` with the name of the module you want to include and `<TAG>` with the specific tag or branch you want to use.
+
+
+## Framework's CMake Module
+
+Mystic Framework provides a comprehensive CMake module that simplifies many tasks. One of these tasks includes the consumption of first-party
+framework modules. To use the CMake module, you need to include it in your `CMakeLists.txt` file as follows:
+
+```cmake
+include(FetchContent)
+
+FetchContent_Declare(
+    mystic_cmake
+    GIT_REPOSITORY https://github.com/mystic-framework/cmake.git
+    GIT_TAG        main # or other tags
+)
+FetchContent_MakeAvailable(mystic_cmake)
+
+list(APPEND CMAKE_MODULE_PATH "${mystic_cmake_SOURCE_DIR}/modules")
+
+include(mystic_import_module)
+mystic_import_module(<MODULE_NAME>)
+```
+
+You can replace `<MODULE_NAME>` with the name of the module you want to import. The `import_module` function will handle the rest for you.
+The Main benefit of this method is that it eliminates the need to manually write `FetchContent` for each module and replaces it with a single
+function call. It also integrates with the framework better (e.g., checking via `find_package` if the module is already available, etc).
+
+Please refer to the [CMake module documentation](/docs/modules/cmake) for more details on how to use the module effectively. You can import
+the CMake module itself differently, the above example is the most general one but not the recommended one.
+
+
+## Official Install Tool
+
+MFW also provides a Python-based install tool that can be used to install framework's modules on the host system. This tool is designed
+to simplify the installation process and manage dependencies effectively. Note that this tool will not integrate it into your projects
+automatically. You will still need to use `find_package` or `import_module` in your CMakeLists.txt file.
+
+- First, ensure you have Python (v3.13+) installed on your system. You can download it from the [official Python website](https://www.python.org/downloads/) or via your package manager. For example, when installing on Ubuntu:
+
+```bash
+sudo apt install python3 python3-pip
+```
+
+- Next, install the install tool using pip:
+
+```bash
+pip install mystic-framework-install-tool
+```
+
+- After installation, you can use the tool to install the framework's modules. For example, to install a module named `<MODULE_NAME>`, run:
+
+```bash
+mfw-install <MODULE_NAME>
+```
+
+Some quick commands you can use with the install tool:
+- `mfw-install <MODULE_NAME>`: Installs the specified module.
+- `mfw-install --list`: Lists all available modules.
+- `mfw-install --help`: Displays help information about the tool.
+
+There are also some other commands available. Please refer to the [install tool documentation](/docs/tools/mfw-install) for more details
+on how to use the tool effectively.

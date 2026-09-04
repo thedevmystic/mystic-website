@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Search Indexes
+public/docs-search-index.json
+public/blog-search-index.json
+
+# Blog Indexes
+public/blog-index-*.json

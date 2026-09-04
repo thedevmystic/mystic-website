@@ -27,14 +27,16 @@ import { Allura, Fraunces, IBM_Plex_Sans, JetBrains_Mono } from 'next/font/googl
 
 export const fraunces = Fraunces({
   subsets: ['latin'],
+  style: ['normal', 'italic'],
   weight: 'variable',
   variable: '--font-fraunces',
-  preload: true,
+  preload: false,
   display: 'swap',
 });
 
 export const ibmPlexSans = IBM_Plex_Sans({
   subsets: ['latin'],
+  style: ['normal', 'italic'],
   weight: 'variable',
   variable: '--font-ibm-plex-sans',
   preload: true,
@@ -45,7 +47,7 @@ export const jetBrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   weight: 'variable',
   variable: '--font-jetbrains-mono',
-  preload: true,
+  preload: false,
   display: 'swap',
 });
 
@@ -53,7 +55,7 @@ export const allura = Allura({
   subsets: ['latin'],
   weight: '400',
   variable: '--font-allura',
-  preload: true,
+  preload: false,
   display: 'swap',
 });
 

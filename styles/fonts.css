@@ -8,14 +8,14 @@
   --font-cursive: var(--font-allura, cursive);
 
   /* Font sizes (fluid) */
-  --font-xs: clamp(0.6944rem, 0.6593rem + 0.1759vw, 0.8rem);
-  --font-sm: clamp(0.8333rem, 0.7778rem + 0.2778vw, 1rem);
-  --font-md: clamp(1rem, 0.9167rem + 0.4167vw, 1.25rem);
-  --font-lg: clamp(1.2rem, 1.0792rem + 0.6042vw, 1.5625rem);
-  --font-xl: clamp(1.44rem, 1.269rem + 0.8552vw, 1.9531rem);
-  --font-2xl: clamp(1.728rem, 1.4902rem + 1.189vw, 2.4414rem);
-  --font-3xl: clamp(2.0736rem, 1.7475rem + 1.6303vw, 3.0518rem);
-  --font-4xl: clamp(2.4883rem, 2.0462rem + 2.2106vw, 3.8147rem);
+  --font-xs: clamp(0.7813rem, 0.7938rem + -0.0161vw, 0.7901rem);
+  --font-sm: clamp(0.8889rem, 0.869rem + 0.0884vw, 0.9375rem);
+  --font-md: clamp(1rem, 0.9489rem + 0.2273vw, 1.125rem);
+  --font-lg: clamp(1.125rem, 1.033rem + 0.4091vw, 1.35rem);
+  --font-xl: clamp(1.2656rem, 1.1207rem + 0.6443vw, 1.62rem);
+  --font-2xl: clamp(1.4238rem, 1.211rem + 0.9458vw, 1.944rem);
+  --font-3xl: clamp(1.6018rem, 1.3028rem + 1.3291vw, 2.3328rem);
+  --font-4xl: clamp(1.802rem, 1.394rem + 1.8133vw, 2.7994rem);
 
   /* Line heights */
   --line-height-xs: 1.2;

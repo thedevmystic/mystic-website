@@ -1,0 +1,109 @@
+---
+title: 'FAQs'
+tags: ['docs']
+excerpt: 'Find answers to common questions and troubleshooting tips.'
+breadcrumbs: ['Docs', 'FAQs']
+drawerId: 'support--faqs'
+prev: '/docs/code-of-conduct'
+next: '/docs/support'
+---
+
+# FAQs
+
+This page provides answers to frequently asked questions and troubleshooting tips for common issues. If you can't find the answer
+you're looking for, please reach out to me for further assistance.
+
+## Setup and Installation
+
+**Q:** Which installation method should I use?
+
+It depends on what you prefer:
+- Quick, simple, and no dependency: Use FetchContent.
+- Better integration, local installation checks, and easier in long-term: Use framework's CMake module.
+- System-wide installation: Use install tool.
+
+**Q:** Do I require install tool if I'm already using CMake module?
+
+No, you don't require install tool. They solve entirely different problems:
+- CMake module: Handles integration with CMake. Doesn't care about if the module is installed or not.
+- Install tool: Installs modules system-wide, so each project don't have to rebuild it again and again.
+
+> [!IMPORTANT]
+> `mfw-install` only installs modules on host system, you still need to manually integrate in your project.
+
+**Q:** What Python version does the install tool require?
+
+It requires Python v3.13 or above.
+
+
+## Project Status
+
+**Q:** Is Mystic Framework production-ready?
+
+No, it is still not production-ready. Codebase is growing is rapidly and we'll inform you which modules are production-ready. To stay updated
+with project status and module releases, you can follow the [project roadmap](/docs/roadmap) and [blog](/docs/blog).
+
+**Q:** Which modules are currently available?
+
+The following modules are currently available:
+- `CMake` - CMake module for integrating Mystic Framework into your project.
+
+Other modules will be added soon.
+
+**Q:** What platforms and environments are supported?
+
+| Category | Supported Versions |
+|----------|-------------------|
+| Platform | Windows 10 and above, Linux (Ubuntu, Fedora, Debian) |
+| Architecture | x86_64 (64-bit) |
+| Python Version | 3.13+ |
+| C++ Standard | C++23 (recommended), C++20 (limited support) |
+| Compiler | GCC 14+, Clang 18+, MSVC 17.10+ |
+| Standard Library | libstdc++, libc++, MSVC STL |
+| Build System | CMake 3.30+ |
+| Generator | Ninja |
+
+**Q:** How can I contribute to Mystic Framework?
+
+Just follow the [Contributing Guidelines](/docs/contributing) and submit a pull request. We welcome contributions from the community to help
+improve Mystic Framework.
+
+
+## Design
+
+**Q:** Why C++ instead of Rust/Zig/modern alternatives?
+
+I'll be blunt here, I like C++ better than any other "modern" language.
+
+**Q:** What is the design philosophy behind Mystic Framework?
+
+Five core principles guide the design of Mystic Framework:
+- Zero-overhead
+- Performant
+- Elegant
+- Modern
+- Modular
+
+For more details, please refer to the [Design Philosophy](/docs/design-philosophy) page.
+
+**Q:** Is everything opt-in?
+
+Yes.
+
+
+## Troubleshooting
+
+**Q:** Where do I report bugs or ask questions if something isn't in the docs?
+
+You can report bugs or ask questions on specific modules' GitHub issues page. If you have a general question, you can also reach out
+to me directly via email or social media.
+
+**Q:** What if I want to add a FAQ or documentation that I think is missing?
+
+You can submit a pull request to add the FAQ or documentation. Please follow the [Contributing Guidelines](/docs/contributing) for
+instructions on how to contribute to the project.
+
+---
+
+FAQs will be updated regularly as new questions arise and as the project evolves. If you have any suggestions for additional FAQs or
+improvements to existing ones, please feel free to reach out.

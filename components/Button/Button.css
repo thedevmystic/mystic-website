@@ -7,25 +7,24 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 4px 12px;
+  padding: 2px 12px;
   border-radius: 9999px;
-  font-size: var(--font-sm);
+  font-size: inherit;
   font-weight: 500;
   outline: none; /* Cursor snaps to it */
   cursor: none;
-  transition:
-    outline 0.2s ease,
-    outline-offset 0.2s ease;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
 }
 
 .button:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
+  outline-color: var(--color-primary);
 }
 
 .button.primary {
   background-color: var(--color-primary);
   color: var(--color-on-primary);
+  border: 1px solid var(--color-primary);
 }
 
 .button.secondary {
@@ -39,7 +38,33 @@
   color: var(--color-primary);
 }
 
+.button.outline {
+  background-color: transparent;
+  color: var(--color-on-surface);
+  border: 1px solid var(--color-on-surface);
+}
+
 .button.ui {
   background-color: transparent;
   color: var(--color-on-surface);
+}
+
+.button.inherit-color {
+  background-color: transparent;
+  color: inherit;
+}
+
+.button.circular {
+  border-radius: 50%;
+  padding: 2px;
+  min-height: 32px;
+  min-width: 32px;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-on-surface);
+}
+
+.button.disabled {
+  opacity: 0.5;
+  pointer-events: none;
 }
