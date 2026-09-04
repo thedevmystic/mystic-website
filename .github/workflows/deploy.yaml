@@ -24,8 +24,9 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v7
 
+      # TODO: When pnpm/setup finally fixes @v2 to point to latest version, change to @v2
       - name: Setup pnpm and runtime
-        uses: pnpm/setup@v2
+        uses: pnpm/setup@v2.1.0
         with:
           cache: true
           require-lockfile: true
