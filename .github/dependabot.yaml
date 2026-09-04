@@ -1,33 +1,33 @@
 version: 2
 updates:
   # Maintain GitHub Actions
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: 'github-actions'
+    directory: '/'
     schedule:
-      interval: "monthly"
+      interval: 'monthly'
     open-pull-requests-limit: 5
     groups:
       github-actions-dependencies:
         patterns:
-          - "*"
+          - '*'
     labels:
-      - "dependencies"
+      - 'dependencies'
   # Maintain NPM Packages
-  - package-ecosystem: "npm"
-    directory: "/"
+  - package-ecosystem: 'npm'
+    directory: '/'
     schedule:
-      interval: "weekly"
-      day: "sunday"
+      interval: 'weekly'
+      day: 'sunday'
     open-pull-requests-limit: 5
     groups:
       npm-dependencies:
         patterns:
-          - "*"
+          - '*'
         exclude-patterns:
-          - "eslint"
-          - "typescript"
+          - 'eslint'
+          - 'typescript'
     labels:
-      - "dependencies"
+      - 'dependencies'
     ignore:
-      - dependency-name: "eslint"
-      - dependency-name: "typescript"
+      - dependency-name: 'eslint'
+      - dependency-name: 'typescript'
