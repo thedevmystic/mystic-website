@@ -1,0 +1,85 @@
+---
+title: 'GitHub Actions - Pre Commit'
+tags: ['docs', 'modules', 'github-actions']
+excerpt: 'API Reference for Pre Commit GitHub Actions'
+breadcrumbs: ['Docs', 'Modules', 'GitHub Actions', 'API Reference', 'Pre Commit']
+drawerId: 'api-reference--pre-commit'
+prev: '/docs/modules/github-actions/api-reference'
+next: '/docs/modules/github-actions/api-reference/cpp-compatibility'
+---
+
+# API Reference - Pre Commit
+
+This page provides an overview of the Pre Commit GitHub Actions API Reference. It includes information on how to use the Pre Commit action
+in your GitHub workflows, along with examples and configuration options.
+
+## Description
+
+This action configures Python and pre-commit and runs it to ensure basic code hygiene.
+
+## Usage
+
+You can use the Pre Commit GitHub Action in your workflow by adding the following step to your workflow YAML file:
+```yaml
+name: "Pre Commit"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+
+      - name: Pre Commit
+        uses: mystic-framework/github-actions/pre-commit@v1
+```
+
+## Configuration Options
+
+It accepts the following configuration options:
+| Option | Description | Default |
+|--------|-------------|---------|
+| `use-cache` | Whether to use caching for pre-commit hooks | `true` |
+| `args` | Additional arguments to pass to the pre-commit command | `"--all-files"` |
+
+## Examples
+
+### Example 1: Basic Usage
+
+```yaml
+- name: Pre Commit
+  uses: mystic-framework/github-actions/pre-commit@v1
+```
+
+### Example 2: Without Cache
+
+```yaml
+- name: Pre Commit
+  uses: mystic-framework/github-actions/pre-commit@v1
+  with:
+    use-cache: false
+```
+
+### Example 3: Custom Args
+
+```yaml
+- name: Pre Commit
+  uses: mystic-framework/github-actions/pre-commit@v1
+  with:
+    args: "--all-files --show-diff-on-failure"
+```
+
+## Few Details
+
+- It uses latest version of both Python and pre-commit.
+- It looks for `.pre-commit-config.yaml` in the root of your repository. If it is not found, the action will fail. Make sure to include this configuration file in your repository for the action to work correctly.
+- It caches the pre-commit environment as well as pip dependencies to speed up subsequent runs. You can disable caching by setting `use-cache` to `false`.

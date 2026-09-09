@@ -1,0 +1,159 @@
+---
+title: 'Troubleshooting'
+tags: ['docs', 'modules', github-actions']
+excerpt: 'Common issues and solutions for GitHub Actions workflows.'
+breadcrumbs: ['Docs', 'Modules', 'GitHub Actions', 'Troubleshooting']
+drawerId: 'github-actions--troubleshooting'
+prev: '/docs/modules/github-actions/changelog'
+next: '/docs/modules/github-actions/api-reference'
+---
+
+# Troubleshooting
+
+Answer to common issues and solutions for GitHub Actions module. If you still have issues, [please reach out to us](/contact).
+
+
+## General Questions
+
+**Q:** My workflow is not triggering on push or pull request events. What could be the issue?
+
+Make sure that your workflow file is located in the `.github/workflows` directory of your repository and that the `on` section is correctly
+configured for the events you want to trigger the workflow. Also, check if there are any branch filters that might be preventing the workflow
+from running.
+
+**Q:** I don't want to use caches in my workflow. How can I disable them?
+
+Every action in the module accepts a `use-cache` input. You can set this input to `false` to disable caching for that specific action. For example:
+```yaml
+name: "CI/CD Workflow Name"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  workflow-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+
+      - name: Step Name
+        uses: mystic-framework/github-actions/<action>@v1
+        with:
+          use-cache: false
+```
+
+**Q:** I want to change the working directory for my action. How can I do that?
+
+Actions that needs to work with a specific working directory can accept a `working-directory` input. You can set this input to the desired directory path.
+
+Currently, the `working-directory` input is only supported for the following actions:
+- `cpp-compatibility`
+- `python-compatibility`
+- `sonarqube`
+
+## Questions related to Pre-commit action
+
+**Q:** Why is my pre-commit action failing with "No pre-commit configuration file found"?
+
+You need to ensure that you have a `.pre-commit-config.yaml` file in the root of your repository. This file defines the hooks that
+pre-commit will run. If it's missing, the action will fail.
+
+**Q:** I need to pass additional arguments to the pre-commit action. How can I do that?
+
+You can pass additional arguments to the pre-commit action by using the `args` input in your workflow file.
+
+**Q:** The pre-commit action is failing with a specific hook error. How can I debug this?
+
+You can debug the pre-commit action by running the pre-commit command locally on your machine. This will allow you to see the output and any
+errors that occur. You can also enable debug logging in your workflow by setting the `ACTIONS_STEP_DEBUG` secret to `true`. This will provide
+more detailed logs in the GitHub Actions interface.
+
+## Questions related to C++ action
+
+**Q:** I want to use a different C++ compiler version than the default. How can I specify a different compiler?
+
+You can specify a different C++ compiler by using the `compiler` input in your workflow file.
+
+**Q:** I need to pass additional system-wide install commands to the C++ action. How can I do that?
+
+You can pass additional system-wide install commands to the C++ action by using the `install-command` input in your workflow file.
+
+**Q:** Is it only compatible with Ubuntu? Can I use it on other operating systems?
+
+You can use other OSes.
+
+**Q:** Is it only supports CMake and Ninja build systems? Can I use it with other build systems?
+
+Yes, it only supports CMake and Ninja build systems. If you need to use a different build system, you may need to create a custom action or modify the
+existing action to support your desired build system.
+
+**Q:** I want to pass additional arguments to CMake.
+
+You can pass additional arguments to CMake by using the `additional-cmake-args` input in your workflow file. This allows you to customize
+the CMake configuration process according to your project's needs.
+
+## Questions related to Python action
+
+**Q:** I want to use a different Python version than the default. How can I specify a different version?
+
+You can specify a different Python version by using the `python-version` input in your workflow file.
+
+**Q:** I don't want to run linting in my workflow. How can I disable it?
+
+You can disable linting in the Python action by setting the `lint` input to `false` in your workflow file.
+
+**Q:** Is it only compatible with Ubuntu? Can I use it on other operating systems?
+
+You can use other OSes.
+
+**Q:** I want to install additional Python packages in my workflow. How can I do that?
+
+You can install additional Python packages by using the `install-command` input in your workflow file. This allows you to specify custom
+commands to install any required packages.
+
+## Questions related to SonarQube action
+
+**Q:** I want to use a different SonarQube server than the default. How can I specify a different server?
+
+Sorry, but the SonarQube action is currently hardcoded to use the default SonarQube server. If you need to use a different server,
+you may need to create a custom action or modify the existing action to support your desired server.
+
+**Q:** Which languages are supported by the SonarQube action?
+
+C++ and Python. You can pass `language` input to specify the language for analysis. The action will then run the appropriate analysis
+for the specified language.
+
+**Q:** How pass my SonarQube token to the action?
+
+You can pass your SonarQube token to the action by using the `sonar-token` input in your workflow file. Make sure to store your token
+securely in GitHub Secrets and reference it in your workflow file.
+
+**Q:** Which coverage tools are supported for C++ and Python?
+
+For C++, the SonarQube action supports coverage tools like `gcov` and `lcov`. You can use the `cpp-coverage-tool` input to specify the
+coverage tool you want to use. Alongside `cpp-coverage-tool-args` input to pass additional arguments to the coverage tool.
+
+For Python, it only uses `pytest-cov` for coverage analysis. You can use the `python-coverage-tool-args` input to pass additional
+arguments to `pytest-cov`.
+
+**Q:** I ran but no coverage report was generated for C++. What could be the issue?
+
+Make sure your CMake configuration is set up to generate coverage data. You may need to add the appropriate flags to your CMake
+configuration to enable coverage generation. Specifically, enable your coverage based on an CMake option such as `ENABLE_COVERAGE`
+or similar and add right flags. Then pass it to the action as `cpp-coverage-option`.
+
+**Q:** I ran but no coverage report was generated for Python. What could be the issue?
+
+A common issue that I also faced was that `pytest-cov` was not configured to generate data relative to the source code. By default it hardcodes
+absolute paths, you need to set in `pyproject.toml` the following configuration to generate relative paths for coverage data:
+```toml
+[tool.coverage.run]
+relative_files = true
+```

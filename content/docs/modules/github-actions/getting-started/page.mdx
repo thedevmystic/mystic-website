@@ -1,0 +1,53 @@
+---
+title: 'Getting Started'
+tags: ['docs', 'modules', 'github-actions']
+excerpt: 'Get started with GitHub Actions and learn how to automate your workflows.'
+breadcrumbs: ['Docs', 'Modules', 'GitHub Actions', 'Getting Started']
+drawerId: 'github-actions--getting-started'
+prev: '/docs/modules/github-actions'
+next: '/docs/modules/github-actions/changelog'
+---
+
+# Getting Started with GitHub Actions
+
+This guide will help you get started with GitHub Actions module and help you automating your software development workflows.
+
+## Available Actions
+
+- Pre-Commit Checks
+- C++ Compatibility
+- Python Compatibility & Linting
+- SonarQubeCloud Integration
+
+You can use the actions in your workflows as follows:
+
+```yaml
+name: "CI/CD Workflow Name"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  workflow-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+
+      - name: Step Name
+        uses: mystic-framework/github-actions/<action>@v1
+```
+
+## API References
+
+API references for the available actions:
+- [Pre-Commit Checks](/docs/modules/github-actions/api-reference/pre-commit-checks)
+- [C++ Compatibility](/docs/modules/github-actions/api-reference/cpp-compatibility)
+- [Python Compatibility & Linting](/docs/modules/github-actions/api-reference/python-compatibility)
+- [SonarQubeCloud Integration](/docs/modules/github-actions/api-reference/sonarqube)

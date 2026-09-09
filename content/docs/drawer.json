@@ -37,17 +37,11 @@
     ]
   },
   {
-    "catagory": "Modules",
-    "href": "/docs/modules",
+    "catagory": "Documentation",
+    "href": "/docs",
     "items": [
-      { "label": "Will be added soon", "href": "#" }
-    ]
-  },
-  {
-    "catagory": "Tools",
-    "href": "/docs/tools",
-    "items": [
-      { "label": "Will be added soon", "href": "#" }
+      { "label": "Modules", "href": "/docs/modules" },
+      { "label": "Tools", "href": "/docs/tools" }
     ]
   }
 ]

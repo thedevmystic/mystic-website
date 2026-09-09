@@ -1,0 +1,166 @@
+---
+title: 'GitHub Actions - C++ Compatibility'
+tags: ['docs', 'modules', 'github-actions']
+excerpt: 'API Reference for C++ Compatibility GitHub Actions'
+breadcrumbs: ['Docs', 'Modules', 'GitHub Actions', 'API Reference', 'C++ Compatibility']
+drawerId: 'api-reference--c++-compatibility'
+prev: '/docs/modules/github-actions/api-reference/pre-commit'
+next: '/docs/modules/github-actions/api-reference/python-compatibility'
+---
+
+# API Reference - C++ Compatibility
+
+This page provides an overview of the C++ Compatibility GitHub Actions API Reference. It includes information on how to use the C++ Compatibility action
+in your GitHub workflows, along with examples and configuration options.
+
+## Description
+
+This action builds a CMake-based C++ project (via Ninja) and optionally runs its test suite with CTest. It supports cross-compiler
+configuration and caching of build artifacts and ccache data for faster re-runs.
+
+## Usage
+
+To use the C++ Compatibility GitHub Action in your workflow, you need to include it in your workflow YAML file. Below is an
+example of how to set up a basic workflow that checks for C++ compatibility.
+
+```yaml
+name: "C++ Compatibility"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  cpp-compatibility:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+
+      - name: C++ Compatibility
+        uses: mystic-framework/github-actions/cpp-compatibility@v1
+```
+
+## Configuration Options
+
+It accepts the following configuration options:
+| Option | Description | Default |
+| ------ | ----------- | ------- |
+| `use-cache` | Whether to use cache or not. | `true` |
+| `compiler` | Compiler to run the compatibility check. | `gcc` |
+| `install-command` | Install command to run before setup (e.g., installing system dependencies). | `""` |
+| `build-type` | Build type of the project. | `Release` |
+| `working-directory` | Current working directory (i.e., where `CMakeLists.txt` is located). | `.` |
+| `additional-cmake-args` | Additional CMake arguments. | `""` |
+| `run-tests` | Whether to run tests or not. | `true` |
+
+## Examples
+
+### Example 1: Basic Usage
+
+```yaml
+- name: C++ Compatibility
+  uses: mystic-framework/github-actions/cpp-compatibility@v1
+```
+
+### Example 2: Without Cache
+
+```yaml
+- name: C++ Compatibility
+  uses: mystic-framework/github-actions/cpp-compatibility@v1
+  with:
+    use-cache: false
+```
+
+### Example 3: Multiple Compilers
+
+```yaml
+name: "C++ Compatibility"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  cpp-compatibility:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        compiler: [gcc, clang]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+
+      - name: C++ Compatibility
+        uses: mystic-framework/github-actions/cpp-compatibility@v1
+        with:
+          compiler: ${{ matrix.compiler }}
+          build-type: Release
+```
+
+### Example 4: Install Command
+
+```yaml
+- name: C++ Compatibility
+  uses: mystic-framework/github-actions/cpp-compatibility@v1
+  with:
+    install-command: "sudo apt-get update && sudo apt-get install -y libssl-dev"
+```
+
+### Example 5: Build Type
+
+```yaml
+- name: C++ Compatibility
+  uses: mystic-framework/github-actions/cpp-compatibility@v1
+  with:
+    # Valid values: Debug, Release, RelWithDebInfo, MinSizeRel
+    build-type: Debug
+```
+
+### Example 6: Working Directory
+
+```yaml
+- name: C++ Compatibility
+  uses: mystic-framework/github-actions/cpp-compatibility@v1
+  with:
+    # This can be useful if you have a monorepo or if your CMakeLists.txt is not in the root directory.
+    working-directory: "path/to/your/project"
+```
+
+### Example 7: Additional CMake Args
+
+```yaml
+- name: C++ Compatibility
+  uses: mystic-framework/github-actions/cpp-compatibility@v1
+  with:
+    additional-cmake-args: "-DCMAKE_CXX_STANDARD=17 -DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+```
+
+### Example 8: Run Tests
+
+```yaml
+- name: C++ Compatibility
+  uses: mystic-framework/github-actions/cpp-compatibility@v1
+  with:
+    run-tests: true # Set to false if you don't want to run tests after building the
+```
+
+## Few Details
+
+- It uses `aminya/setup-cpp`, so when passing `compiler` argument provide what it expects for compiler. Visit it's repository: [aminya/setup-cpp](https://github.com/aminya/setup-cpp).
+- Every script runs in `bash` shell.
+- When passing install command, pass your runner's OS compatible one.
+- Changing `working-directory` affects everything in the build and test process.
+- For caching, it uses CCache.
+- For testing, it directly calls `ctest`, so make sure to register your tests properly.

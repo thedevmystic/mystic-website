@@ -1,0 +1,22 @@
+[
+  {
+    "catagory": "GitHub Actions",
+    "href": "/docs/modules/github-actions",
+    "items": [
+      { "label": "Overview", "href": "/docs/modules/github-actions" },
+      { "label": "Getting Started", "href": "/docs/modules/github-actions/getting-started" },
+      { "label": "Changelog", "href": "/docs/modules/github-actions/changelog" },
+      { "label": "Troubleshooting", "href": "/docs/modules/github-actions/troubleshooting" }
+    ]
+  },
+  {
+    "catagory": "API Reference",
+    "href": "/docs/modules/github-actions/api-reference",
+    "items": [
+      { "label": "Pre Commit", "href": "/docs/modules/github-actions/api-reference/pre-commit" },
+      { "label": "C++ Compatibility", "href": "/docs/modules/github-actions/api-reference/cpp-compatibility" },
+      { "label": "Python Compatibility", "href": "/docs/modules/github-actions/api-reference/python-compatibility" },
+      { "label": "SonarQube Coverage", "href": "/docs/modules/github-actions/api-reference/sonarqube" }
+    ]
+  }
+]

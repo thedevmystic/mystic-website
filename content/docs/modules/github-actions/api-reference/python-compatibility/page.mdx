@@ -1,0 +1,144 @@
+---
+title: 'GitHub Actions - Python Compatibility'
+tags: ['docs', 'modules', 'github-actions']
+excerpt: 'API Reference for Python Compatibility GitHub Actions'
+breadcrumbs: ['Docs', 'Modules', 'GitHub Actions', 'API Reference', 'Python Compatibility']
+drawerId: 'api-reference--python-compatibility'
+prev: '/docs/modules/github-actions/api-reference/python-compatibility'
+next: '/docs/modules/github-actions/api-reference/sonarqube'
+---
+
+# API Reference - Python Compatibility
+
+This page provides an overview of the Python Compatibility GitHub Actions API Reference. It includes information on how to use the Python Compatibility action
+in your GitHub workflows, along with examples and configuration options.
+
+## Description
+
+This action sets up a Python environment, optionally lints/format-checks the project with Ruff, and runs its test suite with
+pytest. Dependency and virtual environment caching is supported out of the box.
+
+## Usage
+
+To use the Python Compatibility GitHub Action in your workflow, you need to include it in your workflow YAML file. Below is an
+example of how to set up a basic workflow that checks for Python compatibility.
+
+```yaml
+name: "Python Compatibility"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  python-compatibility:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+
+      - name: Python Compatibility
+        uses: mystic-framework/github-actions/python-compatibility@v1
+```
+
+## Configuration Options
+
+It accepts the following configuration options:
+| Option | Description | Default |
+| ------ | ----------- | ------- |
+| `use-cache` | Whether to use cache or not. | `true` |
+| `python-version` | Python version to use for the compatibility check. | `3.x` |
+| `install-command` | Install command to run. | `pip install --group dev .` |
+| `working-directory` | Where the Python project (`requirements.txt` / `pyproject.toml`) is located. | `.` |
+| `lint` | Whether to run Ruff format check and lint or not. | `true` |
+| `run-tests` | Whether to run tests or not. | `true` |
+
+## Examples
+
+### Example 1: Basic Usage
+
+```yaml
+- name: "Python Compatibility"
+  uses: mystic-framework/github-actions/python-compatibility@v1
+```
+
+### Example 2: Without Cache
+
+```yaml
+- name: "Python Compatibility"
+  uses: mystic-framework/github-actions/python-compatibility@v1
+  with:
+    use-cache: false
+```
+
+### Example 3: Multiple Python Versions
+
+```yaml
+name: "Python Compatibility"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  python-compatibility:
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12", "3.x"]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+
+      - name: Python Compatibility
+        uses: mystic-framework/github-actions/python-compatibility@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+```
+
+### Example 4: Install Command
+
+```yaml
+- name: "Python Compatibility"
+  uses: mystic-framework/github-actions/python-compatibility@v1
+  with:
+    install-command: "pip install .[dev]"
+```
+
+### Example 5: Working Directory
+
+```yaml
+- name: "Python Compatibility"
+  uses: mystic-framework/github-actions/python-compatibility@v1
+  with:
+    # Helpful for monorepos where the Python project is not in the root of the repository
+    working-directory: "paths/to/python/project"
+```
+
+### Example 6: Lint and Test Options
+
+```yaml
+- name: "Python Compatibility"
+  uses: mystic-framework/github-actions/python-compatibility@v1
+  with:
+    lint: false
+    run-tests: false
+```
+
+## Few Details
+
+- It caches `~/.cache/pip` and `./.venv` by default, but you can disable caching by setting `use-cache: false`.
+- It uses `bash` shell for every step.
+- Uses `x.y` format for Python versions, e.g., `3.11`, `3.12`, or `3.x` for the latest version.
+- When `lint` is enabled, it runs `ruff format --check` and `ruff check .` commands.
+- For `run-tests`, it runs `pytest` command.

@@ -1,0 +1,184 @@
+---
+title: 'GitHub Actions - SonarQube'
+tags: ['docs', 'modules', 'github-actions']
+excerpt: 'API Reference for SonarQube GitHub Actions'
+breadcrumbs: ['Docs', 'Modules', 'GitHub Actions', 'API Reference', 'SonarQube']
+drawerId: 'api-reference--sonarqube'
+prev: '/docs/modules/github-actions/api-reference/python-compatibility'
+---
+
+# API Reference - SonarQube
+
+This page provides an overview of the SonarQube GitHub Actions API Reference. It includes information on how to use the
+SonarQube action in your GitHub workflows, along with examples and configuration options.
+
+## Description
+
+This action generates test coverage reports for either a C++ or Python project and uploads them to SonarQube Cloud. Behavior
+branches based on the `language` input, so C++-only and Python-only arguments only apply when the matching language is selected.
+
+## Usage
+
+To use the SonarQube GitHub Action, include the following step in your GitHub Actions workflow:
+
+```yaml
+name: SonarQube Analysis
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  sonarqube:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0  # Necessary for SonarQube to analyze
+
+      - name: SonarQube Coverage
+        uses: mystic-framework/github-actions/sonarqube@v1
+        with:
+          language: <YOUR_LANGUAGE>  # Specify the language (e.g., 'cpp' or 'python')
+          sonar-token: ${{ secrets.SONAR_TOKEN }}
+```
+
+## Configuration Options
+
+It accepts the following configuration options:
+
+**Common Arguments**
+
+| Option | Description | Default |
+| ------ | ----------- | ------- |
+| `language` | The language of the project. Valid options: `cpp` or `python`. | **Required** |
+| `sonar-token` | SonarQube Cloud token. | **Required** |
+| `use-cache` | Whether to use cache or not. | `true` |
+| `working-directory` | Current working directory (i.e., where `CMakeLists.txt` / `pyproject.toml` is located). | `.` |
+
+**C++-specific Arguments**
+
+| Option | Description | Default |
+| ------ | ----------- | ------- |
+| `cpp-coverage-tool` | Coverage tool used for C++. Valid options: `gcov` or `llvm-cov`. | `llvm-cov` |
+| `cpp-coverage-tool-args` | Any additional arguments passed to gcov or llvm-cov. | `""` |
+| `cpp-coverage-option` | CMake option that enables coverage building for your project. | `MYSTIC_ENABLE_COVERAGE` |
+| `cpp-additional-cmake-args` | Additional CMake arguments (C++ only). | `""` |
+
+**Python-specific Arguments**
+
+| Option | Description | Default |
+| ------ | ----------- | ------- |
+| `python-version` | Python version to use for the coverage report. | `3.x` |
+| `python-coverage-tool-args` | Any additional arguments passed to the Python coverage tool. | `""` |
+
+## Examples
+
+### Example 1: Basic C++ Project
+
+```yaml
+- name: SonarQube Coverage
+  uses: mystic-framework/github-actions/sonarqube@v1
+  with:
+    language: cpp
+    sonar-token: ${{ secrets.SONAR_TOKEN }}
+```
+
+### Example 2: Basic Python Project
+
+```yaml
+- name: SonarQube Coverage
+  uses: mystic-framework/github-actions/sonarqube@v1
+  with:
+    language: python
+    sonar-token: ${{ secrets.SONAR_TOKEN }}
+```
+
+### Example 3: C++ Project with Custom Coverage Tool
+
+```yaml
+- name: SonarQube Coverage
+  uses: mystic-framework/github-actions/sonarqube@v1
+  with:
+    language: cpp
+    sonar-token: ${{ secrets.SONAR_TOKEN }}
+    cpp-coverage-tool: gcov
+    cpp-coverage-tool-args: "--branch"
+```
+
+### Example 4: C++ Project with Additional CMake Arguments
+
+```yaml
+- name: SonarQube Coverage
+  uses: mystic-framework/github-actions/sonarqube@v1
+  with:
+    language: cpp
+    sonar-token: ${{ secrets.SONAR_TOKEN }}
+    cpp-additional-cmake-args: "-DMY_CUSTOM_OPTION=ON"
+```
+
+### Example 5: Custom CMake Option for C++ Project
+
+```yaml
+- name: SonarQube Coverage
+  uses: mystic-framework/github-actions/sonarqube@v1
+  with:
+    language: cpp
+    sonar-token: ${{ secrets.SONAR_TOKEN }}
+    cpp-coverage-option: "MY_CUSTOM_COVERAGE_OPTION"
+```
+
+### Example 6: Python Project with Custom Coverage Tool Arguments
+
+```yaml
+- name: SonarQube Coverage
+  uses: mystic-framework/github-actions/sonarqube@v1
+  with:
+    language: python
+    sonar-token: ${{ secrets.SONAR_TOKEN }}
+    python-coverage-tool-args: "--branch"
+```
+
+### Example 7: Python Project with Specific Python Version
+
+```yaml
+- name: SonarQube Coverage
+  uses: mystic-framework/github-actions/sonarqube@v1
+  with:
+    language: python
+    sonar-token: ${{ secrets.SONAR_TOKEN }}
+    python-version: "3.9"
+```
+
+### Example 8: Without Cache
+
+```yaml
+- name: SonarQube Coverage
+  uses: mystic-framework/github-actions/sonarqube@v1
+  with:
+    language: <YOUR_LANGUAGE>
+    sonar-token: ${{ secrets.SONAR_TOKEN }}
+    use-cache: false
+```
+
+### Example 9: Custom Working Directory
+
+```yaml
+- name: SonarQube Coverage
+  uses: mystic-framework/github-actions/sonarqube@v1
+  with:
+    language: <YOUR_LANGUAGE>
+    sonar-token: ${{ secrets.SONAR_TOKEN }}
+    # Useful for monorepos or projects with a non-standard structure
+    working-directory: "path/to/your/project"
+```
+
+## Few Details
+
+- This uses `sonar-scanner` to upload the coverage report to SonarQube Cloud.
+- Caching, configuring, and building project is similar to [C++ Compatibility GitHub Action](/docs/modules/github-actions/api-reference/cpp-compatibility) and [Python Compatibility GitHub Action](/docs/modules/github-actions/api-reference/python-compatibility).
