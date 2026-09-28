@@ -1355,13 +1355,12 @@ ReturnType ClassName::FunctionName(Type par_name1, Type par_name2) {
 }
 ```
 
-If you have too much text to fit on one line:
+If you have too much text to fit on one line, put one parameter per line and align them with the first parameter:
 ```cpp
-ReturnType ClassName::FunctionName(
-    Type par_name1,
-    Type par_name2,
-    Type par_name3,
-    Type par_name4) {
+ReturnType ClassName::FunctionName(Type par_name1,
+                                   Type par_name2,
+                                   Type par_name3,
+                                   Type par_name4) {
   DoSomething();
   ...
 }
@@ -1394,27 +1393,25 @@ float z = 2.0e3;
 
 ### Function Calls
 
-Either write the call all on a single line, wrap the arguments at the parenthesis, or start the arguments on a new line indented by four
-spaces and continue at that 4 space indent. When wrapping, use one argument per line.
+Either write the call all on a single line, or wrap the arguments and align them with the first argument (right after the opening
+parenthesis). When wrapping, use one argument per line.
 ```cpp
 bool result = DoSomething(argument1, argument2, argument3);
 
-bool result = DoSomething(
-    argument1,
-    argument2,
-    argument3,
-    argument4,
-    argument5);
+bool result = DoSomething(argument1,
+                          argument2,
+                          argument3,
+                          argument4,
+                          argument5);
 ```
 
 Sometimes arguments form a structure that is important for readability. In those cases, feel free to format the arguments according to
-that structure:
+that structure (keep them aligned with the first argument):
 ```cpp
 // Transform a point by a 3x3 matrix
-my_point.Transform(
-    matrix[0][0], matrix[0][1], matrix[0][2],
-    matrix[1][0], matrix[1][1], matrix[1][2],
-    matrix[2][0], matrix[2][1], matrix[2][2]);
+my_point.Transform(matrix[0][0], matrix[0][1], matrix[0][2],
+                   matrix[1][0], matrix[1][1], matrix[1][2],
+                   matrix[2][0], matrix[2][1], matrix[2][2]);
 ```
 
 ### Brace Intialization
