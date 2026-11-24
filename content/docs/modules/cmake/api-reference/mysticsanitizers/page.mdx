@@ -1,0 +1,63 @@
+---
+title: 'API Reference - MysticSanitizers'
+tags: ['docs', 'modules', 'cmake']
+excerpt: 'API Reference for the CMake module - MysticSanitizers.'
+breadcrumbs: ['Docs', 'Modules', 'CMake', 'API Reference', 'MysticSanitizers']
+drawerId: 'api-reference--mysticsanitizers'
+prev: '/docs/modules/cmake/api-reference/mysticlint'
+next: '/docs/modules/cmake/api-reference/mysticimportmodule'
+---
+
+# API Reference - MysticSanitizers
+
+`MysticSanitizers` module provides `mystic_sanitizers()` function it is used to enable sanitizers for a target.
+
+It features the following sanitizers:
+- AddressSanitizer (ASan)
+- ThreadSanitizer (TSan)
+- UndefinedBehaviorSanitizer (UBSan)
+- MemorySanitizer (MSan)
+
+Available sanitizers may vary depending on the compiler. A quick reference:
+| Sanitizer | Supported Compilers |
+| --------- | ------------------- |
+| AddressSanitizer (ASan) | GCC, Clang, MSVC |
+| ThreadSanitizer (TSan) | GCC, Clang |
+| UndefinedBehaviorSanitizer (UBSan) | GCC, Clang |
+| MemorySanitizer (MSan) | Clang |
+
+It respects the options set by `mystic_setup_options()` and applies the appropriate sanitizers to the specified targets. Options respected by this function includes:
+- `<PROJECT_PREFIX>_ENABLE_SANITIZERS`: Enables sanitizers for the specified targets.
+- `<PROJECT_PREFIX>_SANITIZER`: Which sanitizer to enable for the specified targets. It can be one of the following values: `address`, `thread`, `undefined`, or `memory`. If not set, it defaults to `address`.
+
+## Prerequisites
+
+- Before using the `MysticSanitizers` module, ensure that you have the following prerequisites:
+- Called `mystic_project()` from `MysticProject` module.
+
+## Function Signature
+
+```cmake
+mystic_sanitizers(<LIST_OF_TARGETS>)
+```
+
+Here, `<LIST_OF_TARGETS>` is a list of targets for which you want to enable sanitizers.
+
+## Basic Usage
+
+To use the `MysticSanitizers` module, you need to include it in your `CMakeLists.txt` file and call the `mystic_sanitizers()` function. Here's an example of how to do this:
+
+```cmake
+# ... CMakeLists.txt content ...
+
+include(MysticSanitizers)
+mystic_sanitizers(my_target my_other_target)
+
+# ... rest of your CMakeLists.txt content ...
+```
+
+## Technical Notes
+
+- It exits with error if the specified sanitizer is not supported by the compiler.
+- For unknown compilers it will do nothing and print a warning message.
+- For specific flags added view the implementation of `mystic_sanitizers()` function in the [GitHub repository](https://github.com/mystic-framework/cmake/blob/main/modules/MysticSanitizers.cmake).

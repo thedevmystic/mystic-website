@@ -1,0 +1,75 @@
+---
+title: 'API Reference - MysticThirdPartyConfig'
+tags: ['docs', 'modules', 'cmake']
+excerpt: 'API Reference for the CMake module - MysticThirdPartyConfig.'
+breadcrumbs: ['Docs', 'Modules', 'CMake', 'API Reference', 'MysticThirdPartyConfig']
+drawerId: 'api-reference--mysticthirdpartyconfig'
+prev: '/docs/modules/cmake/api-reference/mysticincludemodules'
+next: '/docs/modules/cmake/api-reference/mysticincludethirdparty'
+---
+
+# API Reference - MysticThirdPartyConfig
+
+`MysticThirdPartyConfig` module provides `mystic_third_party_config()` function it is used to define how to import third-party dependencies.
+
+## Prerequisites
+
+Before using the `MysticThirdPartyConfig` module, ensure that you have the following prerequisites:
+- Called `mystic_project()` from `MysticProject` module.
+- Called `mystic_setup_options()` from `MysticSetupOptions` module.
+
+## Function Signature
+
+```cmake
+mystic_third_party_config(<NAME>
+  [VERSION <VERSION>]
+  [GIT_URL <GIT_URL>]
+  [GIT_TAG <GIT_TAG>]
+  [FAIL_IF_SYSTEM_NOT_FOUND]
+)
+```
+
+Here:
+- `<NAME>` is the name of the third-party dependency (required).
+- `[VERSION <VERSION>]` is the version of the third-party dependency used for `find_package()` (optional). If not provided, it'll do a unconstrained search for the dependency.
+- `[GIT_URL <GIT_URL>]` is the URL of the git repository for the third-party dependency (optional only when using only `find_package()`).
+- `[GIT_TAG <GIT_TAG>]` is the tag or branch of the git repository for the third-party dependency (optional similar to `GIT_URL`). If not provided, defaults to "main".
+- `[FAIL_IF_SYSTEM_NOT_FOUND]` is a flag used to directly fail when `find_package()` fails instead of trying to fetch the dependency from the git repository (optional). If not provided, defaults to `OFF`.
+
+This function gracefully uses `FetchContent` to fetch the dependency from the git repository if `find_package()` fails, unless the `FAIL_IF_SYSTEM_NOT_FOUND` flag is set.
+It uses `USE_SYSTEM_<NAME>` option to determine whether to call `find_package()`. These options are setup by `mystic_setup_third_party_options()` from `MysticSetupOptions` module.
+
+## Basic Usage
+
+To use the `MysticThirdPartyConfig` module, you need to include it in your `CMakeLists.txt` file and call the `mystic_third_party_config()` function. Here's an example of how to do this:
+
+```cmake
+# ... CMakeLists.txt content ...
+
+include(MysticThirdPartyConfig)
+mystic_third_party_config(my_cool_library
+  VERSION 1.2.3
+  GIT_URL https://github.com/user/my_cool_library.git
+  GIT_TAG v1.2.3
+)
+```
+
+## With Fail Flag
+
+```cmake
+# ... CMakeLists.txt content ...
+
+include(MysticThirdPartyConfig)
+mystic_third_party_config(my_cool_library
+  VERSION 1.2.3
+  GIT_URL https://github.com/user/my_cool_library.git
+  GIT_TAG v1.2.3
+  FAIL_IF_SYSTEM_NOT_FOUND
+)
+```
+
+## Technical Notes
+
+- It features a graceful fallback mechanism to fetch the dependency from the git repository if `find_package()` fails, unless the `FAIL_IF_SYSTEM_NOT_FOUND` flag is set.
+- It uses `USE_SYSTEM_<NAME>` option to determine whether to call `find_package()`. These options are setup by `mystic_setup_third_party_options()` from `MysticSetupOptions` module.
+- For more details on how the function works, view the implementation of `mystic_third_party_config()` function in the [GitHub repository](https://github.com/mystic-framework/cmake/blob/main/modules/MysticThirdPartyConfig.cmake).

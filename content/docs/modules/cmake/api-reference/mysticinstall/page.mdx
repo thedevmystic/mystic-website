@@ -1,0 +1,51 @@
+---
+title: 'API Reference - MysticInstall'
+tags: ['docs', 'modules', 'cmake']
+excerpt: 'API Reference for the CMake module - MysticInstall.'
+breadcrumbs: ['Docs', 'Modules', 'CMake', 'API Reference', 'MysticInstall']
+drawerId: 'api-reference--mysticinstall'
+prev: '/docs/modules/cmake/api-reference/mysticcompileoptions'
+next: '/docs/modules/cmake/api-reference/mysticsetupoptions'
+---
+
+# API Reference - MysticInstall
+
+`MysticInstall` module provides `mystic_install()` function it is used to standardize the installation of files in Mystic Framework.
+
+## Prerequisites
+
+Before using the `MysticInstall` module, ensure that you have the following prerequisites:
+- Called `mystic_project()` from `MysticProject` module.
+- Called `mystic_setup_options()` from `MysticSetupOptions` module.
+
+## Function Signature
+
+```cmake
+mystic_install(MAIN_TARGET)
+```
+
+Here , `MAIN_TARGET` is the main target of the project.
+
+## Basic Usage
+
+To use the `MysticInstall` module, you need to include it in your `CMakeLists.txt` file and call the `mystic_install()` function. Here's an example of how to do this:
+
+```cmake
+# ... CMakeLists.txt content ...
+
+include(MysticInstall)
+mystic_install(my_main_target)
+
+# ... rest of your CMakeLists.txt content ...
+```
+
+It respects the install option set by `mystic_setup_options()` and installs the files to the appropriate directories. 
+
+## Technical Notes
+
+- It uses the `GNUInstallDirs` module to determine the appropriate installation directories for different types of files (e.g., binaries, libraries, headers, etc.).
+- It works with C++ modules and installs the module interface files to the appropriate directories.
+- It installs targets under `Mystic::` namespace to avoid conflicts with other libraries or projects.
+- It uses `SameMajorVersion` policy for version compatibility file.
+- For it's implementation details view the implementation of `mystic_install()` function in the [GitHub repository](https://github.com/mystic-framework/cmake/blob/main/modules/MysticInstall.cmake).
+

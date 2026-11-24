@@ -4,7 +4,8 @@
     "href": "/docs/modules",
     "items": [
       { "label": "Overview", "href": "/docs/modules" },
-      { "label": "GitHub Actions", "href": "/docs/modules/github-actions" }
+      { "label": "GitHub Actions", "href": "/docs/modules/github-actions" },
+      { "label": "CMake", "href": "/docs/modules/cmake" }
     ]
   }
 ]

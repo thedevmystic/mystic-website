@@ -1,0 +1,57 @@
+---
+title: 'API Reference - MysticAsciiBanner'
+tags: ['docs', 'modules', 'cmake']
+excerpt: 'API Reference for the CMake module - MysticAsciiBanner.'
+breadcrumbs: ['Docs', 'Modules', 'CMake', 'API Reference', 'MysticAsciiBanner']
+drawerId: 'api-reference--mysticasciibanner'
+prev: '/docs/modules/cmake/api-reference/mysticincludethirdparty'
+next: '/docs/modules/cmake/api-reference/mysticmessage'
+---
+
+# API Reference - MysticAsciiBanner
+
+`MysticAsciiBanner` module provides `mystic_ascii_banner()` function it is used to display an ASCII banner in the console output.
+
+It displays the banner in ASCII block shadow art style. It is also written only in CMake with no external dependencies.
+
+## Function Signature
+
+```cmake
+mystic_ascii_banner(<BANNER_TEXT>)
+```
+
+Here, `<BANNER_TEXT>` is the text that you want to display in the ASCII banner.
+
+## Basic Usage
+
+To use the `MysticAsciiBanner` module, you need to include it in your `CMakeLists.txt` file and call the `mystic_ascii_banner()` function. Here's an example of how to do this:
+
+```cmake
+# ... CMakeLists.txt content ...
+
+include(MysticAsciiBanner)
+mystic_ascii_banner("Welcome to Mystic Framework")
+
+# ... rest of your CMakeLists.txt content ...
+```
+
+You can aslo define `MYSTIC_ASCII_BANNER_DISABLE` option to disable the banner display. This can be useful in CI/CD pipelines or when you want to suppress the banner for any reason.
+
+```cmake
+# ... CMakeLists.txt content ...
+
+include(MysticAsciiBanner)
+
+# Disable the banner display
+set(MYSTIC_ASCII_BANNER_DISABLE ON CACHE BOOL "Disable ASCII banner display")
+
+mystic_ascii_banner("Welcome to Mystic Framework") # Does not display the banner
+```
+
+## Technical Notes
+
+- The banner is displayed in ASCII block shadow art style.
+- The banner is displayed only once during the CMake configuration process.
+- The banner can be disabled by setting the `MYSTIC_ASCII_BANNER_DISABLE` option to `ON`.
+- The banner is implemented entirely in CMake with no external dependencies.
+- To view the implementation of `mystic_ascii_banner()` function, you can check the [GitHub repository](https://github.com/mystic-framework/cmake/blob/main/modules/MysticAsciiBanner.cmake).

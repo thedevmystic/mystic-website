@@ -1,0 +1,163 @@
+---
+title: 'API Reference - MysticTest'
+tags: ['docs', 'modules', 'cmake']
+excerpt: 'API Reference for the CMake module - MysticTest.'
+breadcrumbs: ['Docs', 'Modules', 'CMake', 'API Reference', 'MysticTest']
+drawerId: 'api-reference--mystictest'
+prev: '/docs/modules/cmake/api-reference/mysticsetupoptions'
+next: '/docs/modules/cmake/api-reference/mysticcoverage'
+---
+
+# API Reference - MysticTest
+
+`MysticTest` module provides `mystic_enable_testing()` and `mystic_test()` function it is used setup tests for a target.
+
+## Prerequisites
+
+Before using the `MysticTest` module, ensure that you have the following prerequisites:
+- Called `mystic_project()` from `MysticProject` module.
+- Called `mystic_setup_options()` from `MysticSetupOptions` module.
+
+## Function Signatures
+
+```cmake
+# ... CMakeLists.txt content ...
+
+# Detects and sets testing framework to be used for tests.
+mystic_enable_testing(
+  [TEST_FRAMEWORK <TEST_FRAMEWORK>]
+  [THIRD_PARTY_DIR <THIRD_PARTY_DIR>]
+)
+
+# Registers a test target with the specified source files and optional dependencies.
+mystic_test(<TARGET>
+  SOURCES <SOURCE FILES>
+  [DEPENDENCIES <DEPENDENCIES>]
+  [NO_MAIN]
+)
+
+# ... rest of your CMakeLists.txt content ...
+```
+
+Here for `mystic_enable_testing()`:
+- `TEST_FRAMEWORK` is an optional argument that you can use to directly specify the testing framework. Otherwise, it tries to auto-detect the framework from third-party dependencies (in `THIRD_PARTY_DIR`).
+- `THIRD_PARTY_DIR` is an optional argument that you can use to specify the directory where third-party dependencies are located. If not provided, it defaults to `${CMAKE_CURRENT_SOURCE_DIR}/third_party`.
+
+Valid values for `TEST_FRAMEWORK` are:
+- `catch2`: Catch2 framework.
+- `gtest`: Google Test framework.
+
+For auto-detection, it checks for the presence of Catch2 or Google Test in the `THIRD_PARTY_DIR` and sets the testing framework accordingly. However, if both frameworks are present, it will prioritize Catch2 over Google Test.
+
+Here for `mystic_test()`:
+- `<TARGET>` is the name of the test target you want to create.
+- `SOURCES` is a required argument that specifies the source files for the test target.
+- `DEPENDENCIES` is an optional argument that specifies any dependencies that the test target may have (e.g., the library it is testing).
+- `NO_MAIN` is an optionl argument that indicates that the test target does not require a `main()` function from the testing framework. This is useful if the test target already provides its own `main()` function.
+
+## Basic Usage
+
+### With Auto-Detection
+
+To use the `MysticTest` module with auto-detection of the testing framework, you need to include it in your `CMakeLists.txt` file and call the `mystic_enable_testing()` function without specifying the `TEST_FRAMEWORK`. Here's an example of how to do this:
+
+```cmake
+# ... CMakeLists.txt content ...
+
+include(MysticTest)
+mystic_enable_testing() # Auto-detects from the ${CMAKE_CURRENT_SOURCE_DIR}/third_party directory.
+
+# ... later in your CMakeLists.txt file ...
+
+mystic_test(my_test_target
+  SOURCES test_main.cpp test_case1.cpp test_case2.cpp
+  DEPENDENCIES my_library
+)
+
+# ... rest of your CMakeLists.txt content ...
+```
+
+### Custom Testing Framework
+
+To use with custom framework:
+
+```cmake
+# ... CMakeLists.txt content ...
+
+include(MysticTest)
+mystic_enable_testing(TEST_FRAMEWORK catch2)
+
+# ... usage of mystic_test() remains the same ...
+```
+
+### With Custom Third-Party Directory
+
+You can also specify a custom third-party directory for auto-detection:
+
+```cmake
+# ... CMakeLists.txt content ...
+
+include(MysticTest)
+mystic_enable_testing(THIRD_PARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/custom_third_party)
+
+# ... usage of mystic_test() remains the same ...
+```
+
+> [!NOTE]
+> While you can specify both `TEST_FRAMEWORK` and `THIRD_PARTY_DIR`, they are mutually exclusive. If you define `TEST_FRAMEWORK`, it will take precedence over auto-detection from `THIRD_PARTY_DIR`.
+
+### Creating a Test Target
+
+You create a test target using the `mystic_test()` function. Here's an example:
+
+```cmake
+# ... CMakeLists.txt content ...
+
+# ... after calling mystic_enable_testing() ...
+
+mystic_test(my_test_target
+  SOURCES test_main.cpp test_case1.cpp test_case2.cpp
+)
+
+# ... rest of your CMakeLists.txt content ...
+```
+
+### With Dependencies
+
+You can specify dependencies for the test target using the `DEPENDENCIES` argument. Here's an example:
+
+```cmake
+# ... CMakeLists.txt content ...
+
+# ... after calling mystic_enable_testing() ...
+
+mystic_test(my_test_target
+  SOURCES test_main.cpp test_case1.cpp test_case2.cpp
+  DEPENDENCIES my_library
+)
+
+# ... rest of your CMakeLists.txt content ...
+```
+
+### Without Main Function
+
+If your test target does not require a `main()` function from the testing framework, you can use the `NO_MAIN` option. Here's an example:
+
+```cmake
+# ... CMakeLists.txt content ...
+
+# ... after calling mystic_enable_testing() ...
+
+mystic_test(my_test_target
+  SOURCES test_case1.cpp test_case2.cpp
+  NO_MAIN
+)
+
+# ... rest of your CMakeLists.txt content ...
+```
+
+## Technical Notes
+
+- The `mystic_enable_testing()` function is responsible for detecting and setting up the appropriate testing framework based on the provided arguments or auto-detection.
+- The `mystic_test()` function registers a test target with the specified source files and optional dependencies, allowing you to create and manage tests for your project.
+- To view the implementation of `mystic_enable_testing()` and `mystic_test()` functions, refer to the [GitHub repository](https://github.com/mystic-framework/cmake/blob/main/modules/MysticTest.cmake).

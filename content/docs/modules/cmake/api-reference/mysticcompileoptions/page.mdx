@@ -1,0 +1,57 @@
+---
+title: 'API Reference - MysticCompileOptions'
+tags: ['docs', 'modules', 'cmake']
+excerpt: 'API Reference for the CMake module - MysticCompileOptions.'
+breadcrumbs: ['Docs', 'Modules', 'CMake', 'API Reference', 'MysticCompileOptions']
+drawerId: 'api-reference--mysticcompileoptions'
+prev: '/docs/modules/cmake/api-reference/mysticproject  '
+next: '/docs/modules/cmake/api-reference/mysticinstall'
+---
+
+# API Reference - MysticCompileOptions
+
+`MysticCompileOptions` module provides `mystic_compile_options()` function it is used to define compile options for a target.
+
+## Prerequisites
+
+Before using the `MysticCompileOptions` module, ensure that you have the following prerequisites:
+- Called `mystic_project()` from `MysticProject` module.
+- Called `mystic_setup_options()` from `MysticSetupOptions` module.
+
+## Function Signature
+
+```cmake
+mystic_compile_options(<LIST_OF_TARGETS>)
+```
+
+Here, `<LIST_OF_TARGETS>` is a list of targets for which you want to set the compile options.
+
+## Basic Usage
+
+To use the `MysticCompileOptions` module, you need to include it in your `CMakeLists.txt` file and call the `mystic_compile_options()`
+function. Here's an example of how to do this:
+
+```cmake
+# ... CMakeLists.txt content ...
+
+include(MysticCompileOptions)
+mystic_compile_options(my_target my_other_target)
+
+# ... rest of your CMakeLists.txt content ...
+```
+
+It respects the options set by `mystic_setup_options()` and applies the appropriate compile options to the specified targets. Options
+respected by this function includes:
+- `MYSTIC_ENABLE_WARNINGS`: Enables extended compiler warnings.
+- `MYSTIC_ENABLE_LTO`: Enables Link Time Optimization (LTO) for the specified targets.
+- `MYSTIC_ENABLE_NARCH`: Enables architecture-specific optimizations for the specified targets.
+
+It also adds build type specific compile options for the specified targets. For example, if the build type is `Debug`, it will add
+`-g -O0` to the compile options, and so on. It always sets Position Independent Code (PIC) for the specified targets, which is required
+for creating shared libraries. It enables colored output for diagnostics messages for the supported compilers.
+
+## Technical Notes
+
+- Always enabled flags are: Build type specific flags, Position Independent Code (PIC), and colored output for diagnostics messages.
+- Opt-in flags are: Extended compiler warnings, Link Time Optimization (LTO), and architecture-specific optimizations. These can be enabled or disabled by users.
+- For specific flags added view the implementation of `mystic_compile_options()` function in the [GitHub repository](https://github.com/mystic-framework/cmake/blob/main/modules/MysticCompileOptions.cmake).

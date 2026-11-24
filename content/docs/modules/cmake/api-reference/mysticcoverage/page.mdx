@@ -1,0 +1,47 @@
+---
+title: 'API Reference - MysticCoverage'
+tags: ['docs', 'modules', 'cmake']
+excerpt: 'API Reference for the CMake module - MysticCoverage.'
+breadcrumbs: ['Docs', 'Modules', 'CMake', 'API Reference', 'MysticCoverage']
+drawerId: 'api-reference--mysticcoverage'
+prev: '/docs/modules/cmake/api-reference/mystictest'
+next: '/docs/modules/cmake/api-reference/mysticlint'
+---
+
+# API Reference - MysticCoverage
+
+`MysticCoverage` module provides `mystic_coverage()` function it is used to enable code coverage for a target.
+
+## Prerequisites
+
+Before using the `MysticCoverage` module, ensure that you have the following prerequisites:
+- Called `mystic_project()` from `MysticProject` module.
+- Called `mystic_setup_options()` from `MysticSetupOptions` module.
+
+## Function Signature
+
+```cmake
+mystic_coverage(<LIST_OF_TARGETS>)
+```
+
+Here, `<LIST_OF_TARGETS>` is a list of targets for which you want to enable code coverage.
+
+## Basic Usage
+
+To use the `MysticCoverage` module, you need to include it in your `CMakeLists.txt` file and call the `mystic_coverage()` function. Here's an example of how to do this:
+
+```cmake
+# ... CMakeLists.txt content ...
+
+include(MysticCoverage)
+mystic_coverage(my_target my_other_target)
+
+# ... rest of your CMakeLists.txt content ...
+```
+
+It respects the options set by `mystic_setup_options()` and applies the appropriate code coverage flags to the specified targets.
+
+## Technical Notes
+
+- It sets the necessary compiler and linker flags to enable code coverage for the specified targets.
+- To view the specific flags added, you can check the implementation of `mystic_coverage()` function in the [GitHub repository](https://github.com/mystic-framework/cmake/blob/main/modules/MysticCoverage.cmake).

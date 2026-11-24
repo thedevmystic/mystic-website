@@ -1,0 +1,67 @@
+---
+title: 'API Reference - MysticImportModule'
+tags: ['docs', 'modules', 'cmake']
+excerpt: 'API Reference for the CMake module - MysticImportModule.'
+breadcrumbs: ['Docs', 'Modules', 'CMake', 'API Reference', 'MysticImportModule']
+drawerId: 'api-reference--mysticimportmodule'
+prev: '/docs/modules/cmake/api-reference/mysticlint'
+next: '/docs/modules/cmake/api-reference/mysticincludemodules'
+---
+
+# API Reference - MysticImportModule
+
+`MysticImportModule` module provides `mystic_prepare_for_import()` and `mystic_import_module()` function it is used to import a module (a standalone piece of framework) from the Mystic framework (a.k.a., first-party modules).
+
+## Prerequisites
+
+Before using the `MysticImportModule` module, ensure that you have the following prerequisites:
+- Called `mystic_project()` from `MysticProject` module.
+- Called `mystic_setup_options()` from `MysticSetupOptions` module.
+
+## Function Signatures
+
+```cmake
+# Sets up options and configurations for the imported module.
+mystic_prepare_for_import(<MODULE_NAME>)
+
+# Imports a module from the Mystic framework.
+mystic_import_module(<MODULE_NAME>
+  VERSION <VERSION>
+  GIT_TAG <GIT_TAG>
+)
+```
+
+Here for `mystic_prepare_for_import()`:
+- `<MODULE_NAME>` is the name of the module you want to prepare for import. It must be a valid module name within the Mystic framework. Otherwise, it will throw an error.
+
+This function sets up options for the child module to be imported.
+
+Here for `mystic_import_module()`:
+- `<MODULE_NAME>` is the name of the module you want to import. It must be a valid module name within the Mystic framework. Otherwise, it will throw an error.
+- `VERSION` is an optional argument that specifies the version of the module to import. It is used for `find_package()` to find the correct version of the module. If not provided, it will use `find_package()` without version constraints.
+- `GIT_TAG` is an optional argument that specifies the Git tag of the module to import. It is used for `FetchContent()` to fetch the correct version of the module from the Git repository. If not provided, it will use `FetchContent()` with "main" branch.
+
+## Basic Usage
+
+To use the `MysticImportModule` module, you need to include it in your `CMakeLists.txt` file and call the `mystic_prepare_for_import()` and `mystic_import_module()` functions. Here's an example of how to do this:
+
+```cmake
+# ... CMakeLists.txt content ...
+
+include(MysticImportModule)
+mystic_prepare_for_import(MyModule)
+mystic_import_module(MyModule VERSION 1.0.0 GIT_TAG v1.0.0)
+
+# ... rest of your CMakeLists.txt content ...
+```
+
+Best practice is to provide both `VERSION` and `GIT_TAG` arguments to ensure that the correct version of the module is imported. If you only provide one of them, it may lead to unexpected behavior or errors.
+
+> [!IMPORTANT]
+> `mystic_prepare_for_import()` must be called before `mystic_import_module()`. Otherwise, it will not set up the options for the child module, and it may lead to unexpected behavior or errors.
+
+## Technical Notes
+
+- `mystic_prepare_for_import()` sets up options for the child module to be imported. It must be called before `mystic_import_module()`.
+- `mystic_import_module()` features both `find_package()` and `FetchContent()` to import the module. It uses `find_package()` to find the module in the system, and if not found, it uses `FetchContent()` to fetch the module from the Git repository.
+- To view the implementation of `mystic_prepare_for_import()` and `mystic_import_module()` functions, refer to the [GitHub repository](https://github.com/mystic-framework/cmake/blob/main/modules/MysticImportModule.cmake).

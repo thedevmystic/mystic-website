@@ -1,0 +1,76 @@
+---
+title: 'API Reference - MysticMessage'
+tags: ['docs', 'modules', 'cmake']
+excerpt: 'API Reference for the CMake module - MysticMessage.'
+breadcrumbs: ['Docs', 'Modules', 'CMake', 'API Reference', 'MysticMessage']
+drawerId: 'api-reference--mysticmessage'
+prev: '/docs/modules/cmake/api-reference/mysticasciibanner'
+---
+
+# API Reference - MysticMessage
+
+`MysticMessage` module provides `mystic_message()` function it is used to display messages during the CMake configuration process.
+
+It is essentially a wrapper around the `message()` function provided by CMake, but it adds additional features and formatting options to enhance the output.
+
+Added functionalities include:
+- Message prefixing with custom `MYSTIC_MESSAGE_CUSTOM_PREFIX` variable. If not defined, it defaults to `[MYSTIC]`.
+- Filtering only error messages.
+
+## Function Signature
+
+```cmake
+mystic_message(<MESSAGE_TYPE> <MESSAGE_TEXT>)
+```
+
+Here , `<MESSAGE_TYPE>` is the type of message you want to display (e.g., `STATUS`, `WARNING`, `ERROR`), and `<MESSAGE_TEXT>` is the text of the message you want to display.
+
+## Basic Usage
+
+To use the `MysticMessage` module, you need to include it in your `CMakeLists.txt` file and call the `mystic_message()` function. Here's an example of how to do this:
+
+```cmake
+# ... CMakeLists.txt content ...
+
+include(MysticMessage)
+mystic_message(STATUS "This is a status message.")
+
+# ... rest of your CMakeLists.txt content ...
+```
+
+## Customizing Message Prefix
+
+You can customize the message prefix by setting the `MYSTIC_MESSAGE_CUSTOM_PREFIX` variable. If this variable is not defined, it defaults to `[MYSTIC]`.
+
+```cmake
+mystic_message(STATUS "This message will have the default prefix.")
+set(MYSTIC_MESSAGE_CUSTOM_PREFIX "[CUSTOM_PREFIX]")
+mystic_message(STATUS "This message will have a custom prefix.")
+```
+
+## Suppressing All Messages
+
+You can disable all messages via `MYSTIC_MESSAGE_DISABLE` variable. If this variable is set to `ON`, all messages will be suppressed.
+
+```cmake
+set(MYSTIC_MESSAGE_DISABLE ON)
+# All messages afterward will be suppressed. Until the variable is set to `OFF`.
+mystic_message(STATUS "This message will not be displayed.")
+```
+
+## Outputting Only Error Messages
+
+You can filter only error messages via `MYSTIC_MESSAGE_ONLY_ERRORS` variable. If this variable is set to `ON`, only error messages will be displayed.
+
+```cmake
+set(MYSTIC_MESSAGE_ONLY_ERRORS ON)
+# Only error messages afterward will be displayed. Until the variable is set to `OFF`.
+mystic_message(STATUS "This status message will not be displayed.")
+mystic_message(ERROR "This error message will be displayed.")
+```
+
+## Technical Notes
+
+- The `mystic_message()` function is a wrapper around the `message()` function provided by CMake, but it adds additional features and formatting options to enhance the output.
+- The `MYSTIC_MESSAGE_CUSTOM_PREFIX` variable allows you to customize the message prefix, while the `MYSTIC_MESSAGE_DISABLE` and `MYSTIC_MESSAGE_ONLY_ERRORS` variables allow you to control the output of messages.
+- For more details on the implementation of `mystic_message()` function, you can view the source code in the [GitHub repository](https://github.com/mystic-framework/cmake/blob/main/modules/MysticMessage.cmake).

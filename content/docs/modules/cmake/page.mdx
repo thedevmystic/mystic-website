@@ -1,0 +1,51 @@
+---
+title: 'CMake - Overview'
+tags: ['docs', 'modules', 'cmake']
+excerpt: 'Essential CMake modules to configure project, maintain code quality, and streamline dependency management.'
+breadcrumbs: ['Docs', 'Modules', 'CMake']
+drawerId: 'cmake---overview'
+next: '/docs/modules/cmake/getting-started'
+---
+
+# Module: CMake
+
+This module provides essential [CMake](https://cmake.org/) modules to configure your project, maintain code quality, and streamline
+dependency management. It is designed to be highly customizable, cross-platform, and enforces best practices for writing good CMake scripts.
+
+You can also visit the [CMake Repository](https://github.com/mystic-framework/cmake) for more information and to contribute to the project.
+
+## Features
+
+- **Cross Platform:** Supports various platforms such as Windows, Linux, and macOS.
+- **Cross Compiler Support:** Supports cross-compilation for different architectures and platforms.
+- **Customizable:** Highly flexible via comprehensive options to customize the CMake scripts.
+- **Ease of Use:** Provides a set of pre-defined modules and functions to simplify common tasks in CMake. It is also extremely easy to use and integrate into existing CMake projects.
+
+## Available Functions
+
+It provides modules in the following categories:
+
+- **Project Configuration**
+  - `MysticProject`: Configures the project.
+  - `MysticCompileOptions`: Configures compiler options.
+  - `MysticInstall`: Configures installation options.
+  - `MysticSetupOptions`: Sets up project options.
+  - `MysticTest`: Configures testing options.
+
+- **Code Quality**
+  - `MysticCoverage`: Configures code coverage options.
+  - `MysticLint`: Configures linting options (`clang-format` and `clang-tidy`).
+  - `MysticSanitizers`: Configures sanitizers options (`AddressSanitizer`, `ThreadSanitizer`, etc).
+
+- **Dependency Management**
+  - `MysticImportModule`: Imports a first party (from MFW) module.
+  - `MysticIncludeModules`: Includes every module from `modules/` directory.
+  - `MysticThirdPartyConfig`: Configures third party dependencies.
+  - `MysticIncludeThirdParty`: Includes third party dependencies from `third_party/` directory.
+
+- **Miscellaneous**
+  - `MysticAsciiBanner`: Displays an ASCII banner (makes boring CI interesting!).
+  - `MysticMessage`: Wraps `message()` function to control the output verbosity and prefixing.
+
+In the next sections, we will explore the individual functions included in this module and how to use them effectively in your CMake
+projects.

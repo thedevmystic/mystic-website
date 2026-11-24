@@ -1,0 +1,104 @@
+---
+title: 'API Reference - MysticLint'
+tags: ['docs', 'modules', 'cmake']
+excerpt: 'API Reference for the CMake module - MysticLint.'
+breadcrumbs: ['Docs', 'Modules', 'CMake', 'API Reference', 'MysticLint']
+drawerId: 'api-reference--mysticlint'
+prev: '/docs/modules/cmake/api-reference/mysticcoverage'
+next: '/docs/modules/cmake/api-reference/mysticsanitizers'
+---
+
+# API Reference - MysticLint
+
+`MysticLint` module provides `mystic_lint()` function it is used to enable linting for a target.
+
+It enables linting via:
+- `clang-tidy`
+- `clang-format`
+
+## Prerequisites
+
+Before using the `MysticLint` module, ensure that you have the following prerequisites:
+- Called `mystic_project()` from `MysticProject` module.
+- Called `mystic_setup_options()` from `MysticSetupOptions` module.
+- Working installation of `clang-tidy` and `clang-format` in your system.
+- Working installation of Python3 (it is required for dependency scanning).
+
+## Function Signature
+
+```cmake
+mystic_lint(<LIST_OF_TARGETS>
+  [FORMAT_ARGS <FORMAT_ARGS>]
+  [TIDY_ARGS <TIDY_ARGS>]
+  [DISABLE_FORMAT]
+  [DISABLE_TIDY]
+)
+```
+
+Here:
+- `<LIST_OF_TARGETS>` is a list of targets for which you want to enable linting.
+- `[FORMAT_ARGS <FORMAT_ARGS>]` is an optional argument to specify additional arguments for `clang-format`. It defaults to `-i --style=file`.
+- `[TIDY_ARGS <TIDY_ARGS>]` is an optional argument to specify additional arguments for `clang-tidy`. It defaults to `--fix`.
+- `[DISABLE_FORMAT]` is an optional argument to disable `clang-format` linting for the specified targets.
+- `[DISABLE_TIDY]` is an optional argument to disable `clang-tidy` linting for the specified targets
+
+It creates 6 targets:
+- `format_<target_name>`: This target runs `clang-format` on the specified target.
+- `format`: This is a master target that runs all `format_*` targets.
+- `lint_<target_name>`: This target runs `clang-tidy` on the specified target with dependency scanning and fine-grained per-file dependency analysis (results in faster linting).
+- `lint`: This is a master target that runs all `lint_*` targets.
+- `lint_full_<target_name>`: This target runs `clang-tidy` on the specified target without dependency scanning (results in slower linting).
+- `lint_full`: This is a master target that runs all `lint_full_*` targets.
+
+It respects the options set by `mystic_setup_options()` and sets up the appropriate linting targets for the specified targets.
+
+## Basic Usage
+
+To use the `MysticLint` module, you need to include it in your `CMakeLists.txt` file and call the `mystic_lint()` function. Here's an example of how to do this:
+
+```cmake
+# ... CMakeLists.txt content ...
+
+include(MysticLint)
+mystic_lint(my_target my_other_target)
+
+# ... rest of your CMakeLists.txt content ...
+```
+
+### With Custom Arguments
+
+You can add custom arguments to `clang-format` and `clang-tidy` by using the `FORMAT_ARGS` and `TIDY_ARGS` options. Here's an example:
+
+```cmake
+# ... CMakeLists.txt content ...
+
+include(MysticLint)
+mystic_lint(my_target my_other_target
+  FORMAT_ARGS "-i --style=Google"
+  TIDY_ARGS "--fix --checks=*,-clang-analyzer-*"
+)
+
+# ... rest of your CMakeLists.txt content ...
+```
+
+### Disabling
+
+You can disable `clang-format` or `clang-tidy` for specific targets by using the `DISABLE_FORMAT` and `DISABLE_TIDY` options. Here's an example:
+
+```cmake
+# ... CMakeLists.txt content ...
+
+include(MysticLint)
+mystic_lint(my_target
+  DISABLE_FORMAT         # Disable clang-format for my_target
+  DISABLE_TIDY           # Disable clang-tidy for my_target
+)
+```
+
+## Technical Notes
+
+- It uses `gen_tidy_deps.py` script to generate dependency information for `clang-tidy` via `clang-scan-deps`. It is very much needed when working with C++ modules.
+- By using dependency scanning, it can perform fine-grained per-file dependency analysis, which results in faster linting.
+- It uses `${CMAKE_BINARY_DIR}/stamps/tidy/` directory to store all the stamps.
+- It requires `${CMAKE_BINARY_DIR}/compile_commands.json` file to be generated, so it enforced it always.
+- To view the implementation of `mystic_lint()` function, refer to the [GitHub repository](https://github.com/mystic-framework/cmake/blob/main/modules/MysticLint.cmake).

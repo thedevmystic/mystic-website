@@ -1,0 +1,112 @@
+---
+title: 'API Reference - MysticProject'
+tags: ['docs', 'modules', 'cmake']
+excerpt: 'API Reference for the CMake module - MysticProject.'
+breadcrumbs: ['Docs', 'Modules', 'CMake', 'API Reference', 'MysticProject']
+drawerId: 'api-reference--mysticproject'
+prev: '/docs/modules/cmake/api-reference'
+next: '/docs/modules/cmake/api-reference/mysticcompileoptions'
+---
+
+# API Reference - MysticProject
+
+`MysticProject` module provides `mystic_project()` function it is used to define configure a project it reads from
+`${CMAKE_CURRENT_SOURCE_DIR}/project.json` and sets up the fields for the `project()` function.
+
+## Valid JSON Fields
+
+Valid `project.json` fields are:
+- `name`: The name of the project. This is a required field.
+- `version`: The version of the project. This is an optional field.
+- `description`: A brief description of the project. This is an optional field.
+- `homepage`: The URL of the project's homepage. This is an optional field.
+- `languages`: A list of programming languages used in the project. This is an optional field.
+- `cxx_standard`: The C++ standard version to be used in the project. This is an optional field and only applicable if C++ is one of the languages specified in the `languages` field.
+- `license`: The license (SPDX identifier) of the project. This is an optional field.
+
+Putting all together, a valid `project.json` file might look like this:
+
+```json
+{
+  "name": "MyProject",
+  "version": "1.0.0",
+  "description": "A brief description of MyProject.",
+  "homepage": "https://www.myproject.com",
+  "languages": ["C++"],
+  "cxx_standard": 23,
+  "license": "Apache-2.0"
+}
+```
+
+## Function Signature
+
+```cmake
+mystic_project([JSON_FILE <path_to_json_file>])
+```
+
+**Arguments:**
+- `JSON_FILE`: Optional. The path to the `project.json` file. If not provided, it defaults to `${CMAKE_CURRENT_SOURCE_DIR}/project.json`.
+
+## Basic Usage
+
+To use the `MysticProject` module, you need to include it in your `CMakeLists.txt` file and call the `mystic_project()` function.
+Here's an example of how to do this:
+
+```cmake
+# ... CMakeLists.txt content ...
+
+include(MysticProject)
+mystic_project()
+project(MYPROJECT_PROJECT_ARGUMENTS)
+
+# ... rest of your CMakeLists.txt content ...
+```
+
+> [!NOTE]
+> The `mystic_project()` function sets up arguments in a variable called `<PROJECT_NAME_IN_UPPERCASE>_PROJECT_ARGUMENTS` so you
+> still have to pass it to the `project()` function.
+
+The above behavior is due to CMake needs a literal call to `project()` function otherwise it will give warnings about missing
+project name, etc.
+
+So, if your `name` field in `project.json` is `MyProject`, the variable will be called `MYPROJECT_PROJECT_ARGUMENTS`.
+
+## Custom JSON File
+
+You can also specify a custom path to the `project.json` file by providing the `JSON_FILE` argument to the `mystic_project()` function. For example:
+
+```cmake
+# ... CMakeLists.txt content ...
+
+include(MysticProject)
+mystic_project(JSON_FILE "${CMAKE_CURRENT_SOURCE_DIR}/cmake/custom_project.json")
+project(MYPROJECT_PROJECT_ARGUMENTS)
+
+# ... rest of your CMakeLists.txt content ...
+```
+
+## Other Variables
+
+It also sets up the following variables:
+- `<MYSTIC_PROJECT_PREFIX>_PROJECT_NAME`: The name of the project.
+- `<MYSTIC_PROJECT_PREFIX>_PROJECT_VERSION`: The version of the project.
+- `<MYSTIC_PROJECT_PREFIX>_PROJECT_DESCRIPTION`: The description of the project.
+- `<MYSTIC_PROJECT_PREFIX>_PROJECT_HOMEPAGE`: The homepage of the project.
+- `<MYSTIC_PROJECT_PREFIX>_PROJECT_LANGUAGES`: The list of programming languages used in the project.
+- `<MYSTIC_PROJECT_PREFIX>_PROJECT_CXX_STANDARD`: The C++ standard version to be used in the project.
+- `<MYSTIC_PROJECT_PREFIX>_PROJECT_LICENSE`: The license of the project.
+
+For `_MYSTIC_PROJECT_PREFIX`, see the [Technical Notes](#technical-notes) section below.
+
+## Techinal Notes
+
+- This function is **required** to be called before using any other modules in MFW's CMake module.
+- This function sets up `_MYSTIC_PROJECT_PREFIX` it is an directory-scoped, inherited variable used to prefix all other variables that MFW sets up. It is used to avoid variable name collisions with other CMake modules.
+- When optional fields are not provided in the `project.json` file, the corresponding variables will not be set.
+- The `version` field should follow the [Semantic Versioning](https://semver.org/) format.
+- The `languages` field should be a list of valid CMake language identifiers (e.g., `C`, `CXX`, `Fortran`, etc.).
+- The `cxx_standard` field should be a valid C++ standard version (e.g., `11`, `14`, `17`, `20`, `23`, etc.) and is only applicable if C++ is one of the languages specified in the `languages` field.
+- The `license` field should be a valid [SPDX identifier](https://spdx.org/licenses/).
+- Don't forget to call `project()` function after calling `mystic_project()` function, otherwise CMake will give warnings about missing project name, etc.
+- This function does not escape the values in the `project.json` file, so make sure to provide valid values that do not contain special characters that may cause issues in CMake.
+- For its implementation details view the implementation of `mystic_project()` function in the [GitHub repository](https://github.com/mystic-framework/cmake/blob/main/modules/MysticProject.cmake).

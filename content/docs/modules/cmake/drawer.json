@@ -1,0 +1,31 @@
+[
+  {
+    "catagory": "CMake",
+    "href": "/docs/modules/cmake",
+    "items": [
+      { "label": "Overview", "href": "/docs/modules/cmake" },
+      { "label": "Getting Started", "href": "/docs/modules/cmake/getting-started" },
+      { "label": "Changelog", "href": "/docs/modules/cmake/changelog" }
+    ]
+  },
+  {
+    "catagory": "API Reference",
+    "href": "/docs/modules/cmake/api-reference",
+    "items": [
+      { "label": "MysticProject", "href": "/docs/modules/cmake/api-reference/mysticproject" },
+      { "label": "MysticCompileOptions", "href": "/docs/modules/cmake/api-reference/mysticcompileoptions" },
+      { "label": "MysticInstall", "href": "/docs/modules/cmake/api-reference/mysticinstall" },
+      { "label": "MysticSetupOptions", "href": "/docs/modules/cmake/api-reference/mysticsetupoptions" },
+      { "label": "MysticTest", "href": "/docs/modules/cmake/api-reference/mystictest" },
+      { "label": "MysticCoverage", "href": "/docs/modules/cmake/api-reference/mysticcoverage" },
+      { "label": "MysticLint", "href": "/docs/modules/cmake/api-reference/mysticlint" },
+      { "label": "MysticSanitizers", "href": "/docs/modules/cmake/api-reference/mysticsanitizers" },
+      { "label": "MysticImportModule", "href": "/docs/modules/cmake/api-reference/mysticimportmodule" },
+      { "label": "MysticIncludeModules", "href": "/docs/modules/cmake/api-reference/mysticincludemodules" },
+      { "label": "MysticThirdPartyConfig", "href": "/docs/modules/cmake/api-reference/mysticthirdpartyconfig" },
+      { "label": "MysticIncludeThirdParty", "href": "/docs/modules/cmake/api-reference/mysticincludethirdparty" },
+      { "label": "MysticAsciiBanner", "href": "/docs/modules/cmake/api-reference/mysticasciibanner" },
+      { "label": "MysticMessage", "href": "/docs/modules/cmake/api-reference/mysticmessage" }
+    ]
+  }
+]

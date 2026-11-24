@@ -1,0 +1,53 @@
+---
+title: 'API Reference - MysticSetupOptions'
+tags: ['docs', 'modules', 'cmake']
+excerpt: 'API Reference for the CMake module - MysticSetupOptions.'
+breadcrumbs: ['Docs', 'Modules', 'CMake', 'API Reference', 'MysticSetupOptions']
+drawerId: 'api-reference--mysticsetupoptions'
+prev: '/docs/modules/cmake/api-reference/mysticinstall'
+next: '/docs/modules/cmake/api-reference/mystictest'
+---
+
+# API Reference - MysticSetupOptions
+
+`MysticSetupOptions` provides 3 functions to setup options for the project. These functions are:
+- `mystic_setup_options()`: This function is used to setup base options for the project.
+- `mystic_setup_feature_options()`: This function is used to setup feature options for the project (i.e., `ENABLE_*` category).
+- `mystic_setup_third_party_options()`: This function is used to setup third-party options for the project (i.e., `USE_SYSTEM_*` category for third-party libraries).
+
+## Prerequisites
+
+Before using the `MysticSetupOptions` module, ensure that you have the following prerequisites:
+- Called `mystic_project()` from `MysticProject` module.
+
+## Function Signatures
+
+```cmake
+mystic_setup_options() # Takes no arguments. Sets up base options for the project.
+mystic_setup_feature_options(<LIST_OF_FEATURES>)
+mystic_setup_third_party_options(<LIST_OF_THIRD_PARTY_LIBRARIES>)
+```
+
+Here both `<LIST_OF_FEATURES>` and `<LIST_OF_THIRD_PARTY_LIBRARIES>` are lists of strings that represent the features and third-party libraries for which options need to be set up.
+
+## Basic Usage
+
+To use the `MysticSetupOptions` module, you need to include it in your `CMakeLists.txt` file and call the appropriate functions to set up options for your project. Here's an example of how to do this:
+
+```cmake
+# ... CMakeLists.txt content ...
+
+include(MysticSetupOptions)
+# Setup base options for the project
+mystic_setup_options()
+# Setup feature X, Y, and Z options for the project
+mystic_setup_feature_options("FeatureX" "FeatureY" "FeatureZ")
+# Setup third-party libraries A, B, and C options for the project
+mystic_setup_third_party_options("LibraryA" "LibraryB" "LibraryC")
+
+# ... rest of CMakeLists.txt content ...
+```
+
+## Technical Notes
+
+- To view all options defined by the `MysticSetupOptions` module and how it defines them, visit the [GitHub repository](https://github.com/mystic-framework/cmake/blob/main/modules/MysticSetupOptions.cmake).

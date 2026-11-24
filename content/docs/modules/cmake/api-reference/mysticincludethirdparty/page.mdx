@@ -1,0 +1,58 @@
+---
+title: 'API Reference - MysticIncludeThirdParty'
+tags: ['docs', 'modules', 'cmake']
+excerpt: 'API Reference for the CMake module - MysticIncludeThirdParty.'
+breadcrumbs: ['Docs', 'Modules', 'CMake', 'API Reference', 'MysticIncludeThirdParty']
+drawerId: 'api-reference--mysticincludethirdparty'
+prev: '/docs/modules/cmake/api-reference/mysticthirdpartyconfig'
+next: '/docs/modules/cmake/api-reference/mysticasciibanner'
+---
+
+# API Reference - MysticIncludeThirdParty
+
+`MysticIncludeThirdParty` module provides `mystic_include_third_party()` function it is used to process all the third party modules in the `third_party` directory of the project.
+
+## Prerequisites
+
+Before using the `MysticIncludeThirdParty` module, ensure that you have the following prerequisites:
+- Called `mystic_project()` from `MysticProject` module.
+- Called `mystic_setup_options()` from `MysticSetupOptions` module.
+
+## Function Signature
+
+```cmake
+mystic_include_third_party([<ROOT_DIR>])
+```
+
+Here, `<ROOT_DIR>` is an optional argument that specifies the third party directory of the project. If not provided, it defaults to `${CMAKE_CURRENT_SOURCE_DIR}/third_party`.
+
+## Basic Usage
+
+To use the `MysticIncludeThirdParty` module, you need to include it in your `CMakeLists.txt` file and call the `mystic_include_third_party()` function. Here's an example of how to do this:
+
+```cmake
+# ... CMakeLists.txt content ...
+
+include(MysticIncludeThirdParty)
+mystic_include_third_party()
+
+# ... rest of your CMakeLists.txt content ...
+```
+
+## With Custom Third Party Directory
+
+To use a custom third party directory, you can provide the path to the `mystic_include_third_party()` function. Here's an example:
+
+```cmake
+# ... CMakeLists.txt content ...
+
+include(MysticIncludeThirdParty)
+mystic_include_third_party(${CMAKE_CURRENT_SOURCE_DIR}/custom_third_party)
+
+# ... rest of your CMakeLists.txt content ...
+```
+
+## Technical Notes
+
+- This function recursively processes all the third party in the specified third party directory and includes them in the project. It ensures that all the third party are available for use in the project.
+- To view the implementation of `mystic_include_third_party()` function, you can check the [GitHub repository](https://github.com/mystic-framework/cmake/blob/main/modules/MysticIncludeThirdParty.cmake).

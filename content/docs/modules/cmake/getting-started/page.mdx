@@ -1,0 +1,103 @@
+---
+title: 'Getting Started'
+tags: ['docs', 'modules', 'cmake']
+excerpt: 'Get started with CMake module and learn how to build your C++ projects.'
+breadcrumbs: ['Docs', 'Modules', 'CMake', 'Getting Started']
+drawerId: 'cmake--getting-started'
+prev: '/docs/modules/cmake'
+next: '/docs/modules/cmake/changelog'
+---
+
+# Getting Started with CMake
+
+This guide will help you get started with MFW's CMake module and help you build your C++ projects.
+
+## How to Integrate?
+
+We have four methods to integrate MFW's CMake module into your project:
+- Via `FetchContent`
+- Via Git Submodules
+- Just copy-pasting the CMake files
+- Via framework's CMake project import helper (recommended)
+
+### Via `FetchContent`
+
+This is quite simple and straightforward. You can use CMake's `FetchContent` module to download and include MFW's CMake module in your project. Here's an example of how to do it:
+
+```cmake
+include(FetchContent)
+
+FetchContent_Declare(
+    mystic_cmake
+    GIT_REPOSITORY https://github.com/mystic-framework/cmake.git
+    GIT_TAG        v1.0.0 # or other tags
+)
+FetchContent_MakeAvailable(mystic_cmake)
+
+list(APPEND CMAKE_MODULE_PATH "${mystic_cmake_SOURCE_DIR}/modules")
+
+# Include desired modules
+include(mystic_ascii_banner)
+include(mystic_options)
+```
+
+### Via Git Submodules
+
+Add MFW's CMake module as a Git submodule in your project:
+
+```bash
+git submodule add https://github.com/mystic-framework/cmake.git third_party/mystic-cmake
+```
+
+Then, in your `CMakeLists.txt`, you can include the module like this:
+
+```cmake
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/third_party/mystic-cmake/modules")
+
+# Include desired modules
+include(mystic_ascii_banner)
+include(mystic_options)
+```
+
+### Just Copy-Pasting the Files
+
+- Copy the `.cmake` files from the `modules/` directory directly into your project's `cmake/` folder.
+- In your `CMakeLists.txt`, you can include the module like this:
+
+```cmake
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+```
+
+### Via Framework's Helper
+
+You can find the helper script in the following [Gist](https://gist.github.com/thedevmystic/5ec35ec2dfaa6ee9efafbc178e774185).
+
+- Put the script in `cmake/MysticImportCMake.cmake` in your project. You can change it's name if you want.
+- In your `CMakeLists.txt`, you can include the module like this:
+
+```cmake
+include(cmake/MysticImportCMake.cmake)
+mystic_import_cmake()
+```
+
+This script will automatically download and include the CMake module for you. It will also set up any paths required for the
+module to work properly.
+
+## API References
+
+The following modules are available in MFW's CMake module:
+
+- [MysticProject](/docs/modules/cmake/api-reference/mysticproject)
+- [MysticCompileOptions](/docs/modules/cmake/api-reference/mysticcompileoptions)
+- [MysticInstall](/docs/modules/cmake/api-reference/mysticinstall)
+- [MysticSetupOptions](/docs/modules/cmake/api-reference/mysticsetupoptions)
+- [MysticTest](/docs/modules/cmake/api-reference/mystictest)
+- [MysticCoverage](/docs/modules/cmake/api-reference/mysticcoverage)
+- [MysticLint](/docs/modules/cmake/api-reference/mysticlint)
+- [MysticSanitizers](/docs/modules/cmake/api-reference/mysticsanitizers)
+- [MysticImportModule](/docs/modules/cmake/api-reference/mysticimportmodule)
+- [MysticIncludeModules](/docs/modules/cmake/api-reference/mysticincludemodules)
+- [MysticThirdPartyConfig](/docs/modules/cmake/api-reference/mysticthirdpartyconfig)
+- [MysticIncludeThirdParty](/docs/modules/cmake/api-reference/mysticincludethirdparty)
+- [MysticAsciiBanner](/docs/modules/cmake/api-reference/mysticasciibanner)
+- [MysticMessage](/docs/modules/cmake/api-reference/mysticmessage)
